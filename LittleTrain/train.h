@@ -28,33 +28,33 @@ typedef struct _trackNode{
     union{
         struct {
             struct _trackNode * left;
-            int ldistence;
+            int ldistance;
             struct _trackNode * right;
-            int rdistence;
+            int rdistance;
         } station;
         struct {
             branchState status;
             struct _trackNode * left;
-            int ldistence;
+            int ldistance;
             int lrange;
             struct _trackNode * right;
-            int rdistence;
+            int rdistance;
             int rrange;
             struct _trackNode * down;//down指向公共轨道里的下一个节点
-            int ddistence;
+            int ddistance;
         } branch;
         struct {
             struct _trackNode * up;
-            int udistence;
+            int udistance;
             int urange;
             struct _trackNode * down;
-            int ddistence;
+            int ddistance;
             int drange;
             struct _trackNode * left;
-            int ldistence;
+            int ldistance;
             int lrange;
             struct _trackNode * right;
-            int rdistence;
+            int rdistance;
             int rrange;
             trafficState status;
         } traffic;
