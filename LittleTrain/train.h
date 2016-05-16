@@ -100,6 +100,8 @@ typedef struct {
     double distance;//距离上一个节点的距离
     enum {permitted, forbidden} flag;
     trainState status;
+    int passTimes;
+    int serveTimes;
     int nodeList[100];//存储小火车所在轨道经过的所有节点ID
     trainQueue mission;
 } * train;
