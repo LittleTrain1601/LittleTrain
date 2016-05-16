@@ -21,6 +21,36 @@ clock_t PREVIOUS_CIRCLE;
 enum {SEQUENCING, BYTHEWAY} servicePolicy;
 enum {AUTO, MANUAL} controlPolicy;
 
+//主任务队列（输入文件中所有的命令）
+typedef struct _mainqueue{
+    enum {HEAD,STATION,TRAIN,SWITCHMETHOD} type;    //HEAD为头结点
+    union{
+        struct {
+            int id;
+            int time;
+            int train;
+        }station;
+        struct {
+            enum {clockwise, anticlockwise} direction;
+            int speed;
+            int id;
+        }train;
+        struct {
+            enum {AUTO, MANUAL} method;
+        }switchmethod;
+    };
+    struct _mainqueue * next;
+}* mainQueue;
+mainQueue mission;
+
+//小火车任务队列
+typedef struct _trainqueue{
+    enum {HEAD,STATION,LOCK}type;             //HEAD为头结点
+    int station;
+    int time;
+    struct _trainqueue * next;
+}* trainQueue;
+
 //站点节点、分岔节点、十字路节点
 typedef struct _trackNode{
     int id;
@@ -71,43 +101,39 @@ typedef struct {
     enum {permitted, forbidden} flag;
     trainState status;
     int nodeList[100];//存储小火车所在轨道经过的所有节点ID
+    trainQueue mission;
 } * train;
 //接下来两个数组存储所有的轨道上的节点和小火车，按ID顺序。在main里分配空间
 trackNode *trackNodeList;//以节点ID为下标
 train *trainList; //以小火车ID为下标
 
-
-
-//主任务队列（输入文件中所有的命令）
-typedef struct _mainqueue{
-    enum {HEAD,STATION,TRAIN,SWITCHMETHOD} type;    //HEAD为头结点
-    union{
-        struct {
-            int id;
-            int time;
-            int train;
-        }station;
-        struct {
-            enum {clockwise, anticlockwise} direction;
-            int speed;
-            int id;
-        }train;
-        struct {
-            enum {AUTO, MANUAL} method;
-        }switchmethod;
-    };
-    struct _mainqueue * next;
-}* mainQueue;
-
-//小火车任务队列
-typedef struct _trainqueue{
-    enum {HEAD,STATION,LOCK}type;             //HEAD为头结点 
-    int station; 
-    int time; 
-    struct _trainqueue * next; 
-}* trainQueue;
-
 //input模块
 void build();
+void input();
+
+//output
+void viewer();
+void logWriter();
+
+//calculator模块
+void updateTrain(int id);
+int checkTrack(int branch1, int branch2);
+int judge(int train1, int train2);
+
+//FSM
+typedef enum {ENTER, PASS} request;
+void trainStatusSwitcher(int id);
+void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID);
+void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID);
+
+//coreDataAPI
+mainQueue newMainQueue();
+void addMain(mainQueue position, mainQueue mission);
+void deleteMainMission();
+trainQueue newTrainQueue();
+void addTrain(trainQueue position, trainQueue mission);
+void deleteTrainMission();
+train newTrain();
+trackNode newTrackNode();
 
 #endif /* train_h */
