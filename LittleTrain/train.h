@@ -10,6 +10,8 @@
 #define train_h
 #include <time.h>
 
+#define MAXITEM 20
+
 typedef enum {FREE,RUN,PAUSE,LOCK,STATION}trainState;
 typedef int branchState;/*根据接收到的进入公共轨道的请求数，分叉节点状态为012，所以直接用int类型*/
 typedef int trafficState;/*根据接收到的通过十字路节点请求数，红绿灯节点状态为012，所以直接用int类型*/
