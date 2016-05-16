@@ -10,8 +10,6 @@
 #include "train.h"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    printf("Hello, World!\n");
-    //我就来试试回复版本。。。
+    build();
     return 0;
 }

@@ -107,4 +107,7 @@ typedef struct _trainqueue{
     struct _trainqueue * next; 
 }* trainQueue;
 
+//input模块
+void build();
+
 #endif /* train_h */
