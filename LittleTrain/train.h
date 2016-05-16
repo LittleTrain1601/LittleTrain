@@ -13,13 +13,13 @@
 typedef enum {FREE,RUN,PAUSE,LOCK,STATION}trainState;
 typedef int branchState;/*根据接收到的进入公共轨道的请求数，分叉节点状态为012，所以直接用int类型*/
 typedef int trafficState;/*根据接收到的通过十字路节点请求数，红绿灯节点状态为012，所以直接用int类型*/
-//一些必要的时间变量（假设时间类型是TIME）
-clock_t PROGRAM_START;
-clock_t CURRENT_CIRCLE;
-clock_t PREVIOUS_CIRCLE;
-//flags
-enum {SEQUENCING, BYTHEWAY} servicePolicy;
-enum {AUTO, MANUAL} controlPolicy;
+//一些必要的时间变量（假设时间类型是TIME）在calculator里定义
+extern clock_t PROGRAM_START;
+extern clock_t CURRENT_CIRCLE;
+extern clock_t PREVIOUS_CIRCLE;
+//flags 在FSM里定义
+extern enum {SEQUENCING, BYTHEWAY} servicePolicy;
+extern enum {AUTO, MANUAL} controlPolicy;
 
 //主任务队列（输入文件中所有的命令）
 typedef struct _mainqueue{
@@ -41,7 +41,7 @@ typedef struct _mainqueue{
     };
     struct _mainqueue * next;
 }* mainQueue;
-mainQueue mission;
+extern mainQueue mission;                      //在main里定义
 
 //小火车任务队列
 typedef struct _trainqueue{
@@ -105,9 +105,9 @@ typedef struct {
     int nodeList[100];//存储小火车所在轨道经过的所有节点ID
     trainQueue mission;
 } * train;
-//接下来两个数组存储所有的轨道上的节点和小火车，按ID顺序。在main里分配空间
-trackNode *trackNodeList;//以节点ID为下标
-train *trainList; //以小火车ID为下标
+//接下来两个数组存储所有的轨道上的节点和小火车，按ID顺序。在main里定义并分配空间
+extern trackNode *trackNodeList;//以节点ID为下标
+extern train *trainList; //以小火车ID为下标
 
 //input模块
 void build();
