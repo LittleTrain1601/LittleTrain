@@ -55,7 +55,7 @@ typedef struct _trainqueue{
 
 //站点节点、分岔节点、十字路节点
 typedef struct _trackNode{
-    int id;
+    int id;                                 //id＝－1表示新建立的空节点
     enum{STATION, BRANCH, TRAFFIC}type;
     union{
         struct {
@@ -95,7 +95,7 @@ typedef struct _trackNode{
 
 //小火车的属性
 typedef struct {
-    int id;
+    int id;                                 //id＝－1表示新建立的空节点
     int v;//速度，单位是m/s
     enum {clockwise, anticlockwise} direction;
     int lastNode;//上一个节点的编号
