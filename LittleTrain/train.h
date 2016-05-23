@@ -27,13 +27,13 @@ extern enum {AUTO, MANUAL} controlPolicy;
 typedef struct _queueNode {
     void * data;
     struct _queueNode * next;
-}queueNode;
-typedef struct {
+}* queueNode;
+typedef struct _queue{
     queueNode head;
     queueNode tail;
 }* queue;
 //主任务队列（输入文件中所有的命令）
-typedef struct {
+typedef struct _mainQueueNode{
     enum {STATION,TRAIN,SWITCHMETHOD} type;    //HEAD为头结点
     union{
         struct {
@@ -55,7 +55,7 @@ typedef struct {
 extern queue mainMission;                      //在main里定义
 
 //小火车任务队列
-typedef struct {
+typedef struct _trainQueueNode{
     enum {STATION,LOCK}type;             //HEAD为头结点
     int station;
     int time;
@@ -102,7 +102,7 @@ typedef struct _trackNode{
 } * trackNode;
 
 //小火车的属性
-typedef struct {
+typedef struct _train{
     int id;                                 //id＝－1表示新建立的空节点
     int v;//速度，单位是m/s
     enum {clockwise, anticlockwise} direction;
