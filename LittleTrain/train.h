@@ -31,7 +31,7 @@ typedef struct _queueNode {
 typedef struct {
     queueNode head;
     queueNode tail;
-}queue;
+}* queue;
 //主任务队列（输入文件中所有的命令）
 typedef struct {
     enum {HEAD,STATION,TRAIN,SWITCHMETHOD} type;    //HEAD为头结点
