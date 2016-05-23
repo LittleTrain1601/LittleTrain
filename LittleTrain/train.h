@@ -34,7 +34,7 @@ typedef struct {
 }* queue;
 //主任务队列（输入文件中所有的命令）
 typedef struct {
-    enum {HEAD,STATION,TRAIN,SWITCHMETHOD} type;    //HEAD为头结点
+    enum {STATION,TRAIN,SWITCHMETHOD} type;    //HEAD为头结点
     union{
         struct {
             int id;
@@ -56,7 +56,7 @@ extern queue mainMission;                      //在main里定义
 
 //小火车任务队列
 typedef struct {
-    enum {HEAD,STATION,LOCK}type;             //HEAD为头结点
+    enum {STATION,LOCK}type;             //HEAD为头结点
     int station;
     int time;
 }* trainQueueNode;
