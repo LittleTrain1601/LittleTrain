@@ -23,8 +23,17 @@ extern clock_t PREVIOUS_CIRCLE;
 extern enum {SEQUENCING, BYTHEWAY} servicePolicy;
 extern enum {AUTO, MANUAL} controlPolicy;
 
+//通用任务队列
+typedef struct _queueNode {
+    void * data;
+    struct _queueNode * next;
+}queueNode;
+typedef struct {
+    queueNode head;
+    queueNode tail;
+}queue;
 //主任务队列（输入文件中所有的命令）
-typedef struct _mainqueue{
+typedef struct {
     enum {HEAD,STATION,TRAIN,SWITCHMETHOD} type;    //HEAD为头结点
     union{
         struct {
@@ -41,17 +50,16 @@ typedef struct _mainqueue{
             enum {AUTO, MANUAL} method;
         }switchmethod;
     };
-    struct _mainqueue * next;
-}* mainQueue;
-extern mainQueue mission;                      //在main里定义
+}* mainQueueNode;
+//此队列节点中的data均强制转换为mainQueueNode
+extern queue mainMission;                      //在main里定义
 
 //小火车任务队列
-typedef struct _trainqueue{
+typedef struct {
     enum {HEAD,STATION,LOCK}type;             //HEAD为头结点
     int station;
     int time;
-    struct _trainqueue * next;
-}* trainQueue;
+}* trainQueueNode;
 
 //站点节点、分岔节点、十字路节点
 typedef struct _trackNode{
@@ -105,7 +113,7 @@ typedef struct {
     int passTimes;
     int serveTimes;
     int nodeList[100];//存储小火车所在轨道经过的所有节点ID
-    trainQueue mission;
+    queue mission;//此队列中的data均强制转换为trainQueueNode
 } * train;
 //接下来两个数组存储所有的轨道上的节点和小火车，按ID顺序。在main里定义并分配空间
 extern trackNode *trackNodeList;//以节点ID为下标
@@ -131,12 +139,10 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID);
 void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID);
 
 //coreDataAPI
-mainQueue newMainQueue();
-void addMain(mainQueue position, mainQueue mission);
-void deleteMainMission();
-trainQueue newTrainQueue();
-void addTrain(trainQueue position, trainQueue mission);
-void deleteTrainMission();
+queue newQueue();
+queueNode append(queue, void * data);//追加到队列末尾,返回插入的节点的地址
+queueNode insertAfter(queue, void * data, void * ptr);
+int pop(queue);//从队列中读出一个任务并将其删除。返回0表示成功，－1表示队列为空
 train newTrain();
 trackNode newTrackNode();
 
