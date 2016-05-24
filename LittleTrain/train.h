@@ -34,7 +34,7 @@ typedef struct _queue{
 }* queue;
 //主任务队列（输入文件中所有的命令）的数据结构体
 typedef struct _mainQueueNode{
-    enum {STATION,TRAIN,SWITCHMETHOD} type;    //HEAD为头结点
+    enum {STATION,TRAIN,SWITCHMETHOD,LOCK} type;    //HEAD为头结点
     union{
         struct {
             int id;
