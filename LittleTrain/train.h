@@ -32,7 +32,7 @@ typedef struct _queue{
     queueNode head;
     queueNode tail;
 }* queue;
-//主任务队列（输入文件中所有的命令）
+//主任务队列（输入文件中所有的命令）的数据结构体
 typedef struct _mainQueueNode{
     enum {STATION,TRAIN,SWITCHMETHOD} type;    //HEAD为头结点
     union{
@@ -54,7 +54,7 @@ typedef struct _mainQueueNode{
 //此队列节点中的data均强制转换为mainQueueNode
 extern queue mainMission;                      //在main里定义
 
-//小火车任务队列
+//小火车任务队列的数据结构体
 typedef struct _trainQueueNode{
     enum {STATION,LOCK}type;             //HEAD为头结点
     int station;
@@ -142,7 +142,7 @@ void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID);
 queue newQueue();
 queueNode append(queue, void * data);//追加到队列末尾,返回插入的节点的地址
 queueNode insertAfter(queue, void * data, void * ptr);
-int pop(queue);//从队列中读出一个任务并将其删除。返回0表示成功，－1表示队列为空
+void * pop(queue);//从队列中读出一个任务并将其删除。返回data指针
 train newTrain();
 trackNode newTrackNode();
 
