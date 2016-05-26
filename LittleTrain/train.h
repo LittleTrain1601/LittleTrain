@@ -83,6 +83,7 @@ typedef struct _trackNode{
             int rrange;
             struct _trackNode * down;//down指向公共轨道里的下一个节点
             int ddistance;
+            struct _trackNode * pair;
         } branch;
         struct {
             struct _trackNode * up;
