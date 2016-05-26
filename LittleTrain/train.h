@@ -16,9 +16,7 @@ typedef enum {FREE,RUN,PAUSE,LOCK,STATION}trainState;
 typedef int branchState;/*根据接收到的进入公共轨道的请求数，分叉节点状态为012，所以直接用int类型*/
 typedef int trafficState;/*根据接收到的通过十字路节点请求数，红绿灯节点状态为012，所以直接用int类型*/
 //一些必要的时间变量（假设时间类型是TIME）在calculator里定义
-extern clock_t PROGRAM_START;
-extern clock_t CURRENT_CIRCLE;
-extern clock_t PREVIOUS_CIRCLE;
+extern clock_t RUN_TIME;//小火车开始运行的时间，忽略用户输入打断的时间
 //flags 在FSM里定义
 extern enum {SEQUENCING, BYTHEWAY} servicePolicy;
 extern enum {AUTO, MANUAL} controlPolicy;
@@ -67,6 +65,7 @@ typedef struct _trackNode{
     enum{STATION, BRANCH, TRAFFIC}type;
     union{
         struct {
+            clock_t stop;//火车停靠的时刻
             struct _trackNode * left;
             int ldistance;
             struct _trackNode * right;
