@@ -106,12 +106,11 @@ typedef struct _train{
     int id;                                 //id＝－1表示新建立的空节点
     int v;//速度，单位是m/s
     enum {clockwise, anticlockwise} direction;
-    int lastNode;//上一个节点的编号
-    double distance;//距离上一个节点的距离
+    int nextNode;//下一个节点的编号
+    double distance;//距离下一个节点的距离
     enum {permitted, forbidden} flag;
     trainState status;
     int passTimes;
-    int serveTimes;
     int nodeList[100];//存储小火车所在轨道经过的所有节点ID
     queue mission;//此队列中的data均强制转换为trainQueueNode
 } * train;
