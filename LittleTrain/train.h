@@ -135,7 +135,7 @@ int checkTrack(int branch1, int branch2);
 int judge(int train1, int train2);
 
 //FSM
-typedef enum {ENTER, PASS, } request;
+typedef enum {ENTER, PASS} request;
 void trainStatusSwitcher(int id);
 void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID);
 void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID);
