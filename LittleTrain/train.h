@@ -74,6 +74,8 @@ typedef struct _trackNode{
         } station;
         struct {
             branchState status;
+            int train[2];//发出请求的火车ID
+            int flag;//flag==1则这一段轨道忙 flag==0则这一段轨道空闲
             struct _trackNode * left;
             int ldistance;
             int lrange;
@@ -97,6 +99,7 @@ typedef struct _trackNode{
             int rdistance;
             int rrange;
             trafficState status;
+            int train[2];
         } traffic;
     };
 } * trackNode;
@@ -132,7 +135,7 @@ int checkTrack(int branch1, int branch2);
 int judge(int train1, int train2);
 
 //FSM
-typedef enum {ENTER, PASS} request;
+typedef enum {ENTER, PASS, } request;
 void trainStatusSwitcher(int id);
 void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID);
 void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID);
