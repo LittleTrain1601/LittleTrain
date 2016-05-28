@@ -44,9 +44,6 @@ typedef struct _mainQueueNode{
             int speed;
             int id;
         }train;
-        struct {
-            enum policy method;
-        }switchmethod;
     };
 }* mainQueueNode;
 //此队列节点中的data均强制转换为mainQueueNode
