@@ -12,7 +12,7 @@
 
 #define MAXITEM 20
 
-typedef enum {FREE,RUN,PAUSE,LOCK,STATION}trainState;
+typedef enum {FREE,RUN,PAUSE,LOCK,STA}trainState;
 typedef int branchState;/*根据接收到的进入公共轨道的请求数，分叉节点状态为012，所以直接用int类型*/
 typedef int trafficState;/*根据接收到的通过十字路节点请求数，红绿灯节点状态为012，所以直接用int类型*/
 //一些必要的时间变量（假设时间类型是TIME）在calculator里定义
@@ -32,7 +32,7 @@ typedef struct _queue{
 }* queue;
 //主任务队列（输入文件中所有的命令）的数据结构体
 typedef struct _mainQueueNode{
-    enum {STATION,TRAIN,SWITCHMETHOD,LOCK} type;    //HEAD为头结点
+    enum {MSTATION,MTRAIN,MSWITCHMETHOD,MLOCK} type;    //HEAD为头结点
     union{
         struct {
             int id;
@@ -40,7 +40,7 @@ typedef struct _mainQueueNode{
             int train;
         }station;
         struct {
-            enum {clockwise, anticlockwise} direction;
+            enum {MCLOCLWISE, MANTICLOCKWISE} direction;
             int speed;
             int id;
         }train;
@@ -54,7 +54,7 @@ extern queue mainMission;                      //在main里定义
 
 //小火车任务队列的数据结构体
 typedef struct _trainQueueNode{
-    enum {STATION,LOCK}type;             //HEAD为头结点
+    enum {TSTATION,TLOCK}type;             //HEAD为头结点
     int station;
     int time;
 }* trainQueueNode;
@@ -143,7 +143,7 @@ void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID);
 //coreDataAPI
 queue newQueue();
 queueNode append(queue, void * data);//追加到队列末尾,返回插入的节点的地址
-queueNode deleteAfter(queue, void * ptr);//删除ptr后面的元素
+void deleteAfter(queue, queueNode ptr);//删除ptr后面的元素
 void * pop(queue);//从队列中读出一个任务并将其删除。返回data指针
 train newTrain();
 trackNode newTrackNode();
