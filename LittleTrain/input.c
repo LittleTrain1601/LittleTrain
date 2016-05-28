@@ -8,6 +8,8 @@
 
 #include "train.h"
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 //尺度说明：＃－－＃表示两个站台相距3m
 //小火车默认顺时针运行。
@@ -97,7 +99,7 @@ branchState getFreeBranch(trackNode node){
             break;
     }
 }
-void connectPreviousBranch(trackNode previousNode, trackNode currentNode) {
+void connectPreviousBranch(trackNode previousNode, trackNode currentNode, int distence) {
     switch (getFreeBranch(previousNode)) {
         case L:
             switch (previousNode->type) {
@@ -166,7 +168,8 @@ void build() {
     }
     for (int i=0; i<24; i++) {
         for (int j=0; j<80; j++) {
-            idInPosition[j][i]=-1;
+            idInPosition[i][j]=-1;
+            buff[i][j] = ' ';
         }
     }
     FILE *fp = fopen("track.txt", "r");
@@ -183,7 +186,7 @@ void build() {
     fprintf(conf, "%d\n", trainNumber);
     int nodeNumber;
     char nodeType;
-    int inputId;
+    int inputId, inputDistence;
     int inputX, inputY;
     trackNode currentNode, previousNode;
     
@@ -194,12 +197,12 @@ void build() {
         fscanf(fp, "%d%d%d%d", &x1, &y1, &x2, &y2);
         fprintf(conf, "%d %d %d %d\n", x1, y1, x2, y2);
         for (int j=x1; j<=x2; j++) {
-            buff[y1][j] = trackChar;
-            buff[y2][j] = trackChar;
+            buff[y1][j] = buff[y1][j]!=' '?buff[y1][j]: trackChar;
+            buff[y2][j] = buff[y2][j]!=' '?buff[y2][j]: trackChar;
         }
         for (int j=y1; j<=y2; j++) {
-            buff[j][x1] = trackChar;
-            buff[j][x2] = trackChar;
+            buff[j][x1] = buff[j][x1]!=' '?buff[j][x1]: trackChar;
+            buff[j][x2] = buff[j][x2]!=' '?buff[j][x2]: trackChar;
         }
         printTrack();
         printf("请输入轨道上站点数量、分岔点数量以及十字交叉点的数量和：");
@@ -207,72 +210,90 @@ void build() {
         fprintf(conf, "%d\n", nodeNumber);
         printf("节点编号排在火车编号后面。请按顺时针的顺序输入节点的类型和坐标。务必从非公共轨道上的站点开始。站点为S，分叉点为B，十字交叉点为T：\n");
         printf("请输入第%d个节点的类型和坐标：", global_id);
+        fgetc(fp);
         fscanf(fp, "%c %d %d", &nodeType, &inputX, &inputY);
         fprintf(conf, "%c %d %d\n", nodeType, inputX, inputY);
         buff[inputY][inputX] = stationChar;
+        printTrack();
         idInPosition[inputY][inputX] = global_id;
         x[global_id] = inputX;
         y[global_id] = inputY;
         currentNode = newTrackNode();
         trackNodeList[global_id] = currentNode;
-        trackNodeList[global_id+1] = newTrackNode();
+        //trackNodeList[global_id+1] = newTrackNode();
         currentNode->type = STATION;
         currentNode->id = global_id;
         trainList[i]->nodeList[trainNodeListIndex++] = global_id;
         previousNode = currentNode;
         global_id++;
+        int visited;
         for (int j=1; j<nodeNumber; j++) {
             printf("请输入第%d个节点的类型和坐标：", global_id);
+            fgetc(fp);
             fscanf(fp, "%c %d %d", &nodeType, &inputX, &inputY);
             fprintf(conf, "%c %d %d\n", nodeType, inputX, inputY);
             if (idInPosition[inputY][inputX] != -1) {
+                visited = 1;
                 global_id--;
+            } else {
+                visited = 0;
+                idInPosition[inputY][inputX] = global_id;
             }
             currentNode = trackNodeList[global_id];
             if (currentNode == NULL) {
                 currentNode = newTrackNode();
                 trackNodeList[global_id] = currentNode;
             }
-            idInPosition[inputY][inputX] = global_id;
             x[global_id] = inputX;
             y[global_id] = inputY;
+            int distence;
             switch (nodeType) {
                 case 'S':
-                    if (idInPosition[inputY][inputX]!=-1) {
+                    if (visited) {
                         break;
                     }
                     buff[inputY][inputX] = stationChar;
+                    printTrack();
                     currentNode->type = STATION;
                     currentNode->id = global_id;
                     currentNode->station.left = trackNodeList[global_id-1];
-                    currentNode->station.ldistance = getDistence(global_id-1, global_id, x1, y1, x2, y2);
-                    connectPreviousBranch(previousNode, currentNode);
+                    currentNode->station.ldistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                    connectPreviousBranch(previousNode, currentNode, currentNode->station.ldistance);
                     break;
                 case 'B':
-                    if (idInPosition[inputY][inputX] != -1) {
+                    if (visited) {
                         currentNode = trackNodeList[idInPosition[inputY][inputX]];
+                        int range;
+                        printf("请输入监测点的距离:");
+                        fscanf(fp, "%d", &range);
+                        fprintf(conf, "%d\n", range);
                         switch (getFreeBranch(currentNode)) {
                             case L:
                                 currentNode->branch.left = previousNode;
                                 currentNode->branch.ldistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                                currentNode->branch.lrange = range;
+                                connectPreviousBranch(previousNode, currentNode, currentNode->branch.ldistance);
                                 break;
                             case R:
                                 currentNode->branch.right = previousNode;
                                 currentNode->branch.rdistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                                currentNode->branch.rrange = range;
+                                connectPreviousBranch(previousNode, currentNode, currentNode->branch.rdistance);
                                 break;
                             default:
                                 break;
                         }
-                        connectPreviousBranch(previousNode, currentNode);
+                        
                         break;
                     }
                     buff[inputY][inputX] = branchChar;
+                    printTrack();
                     currentNode->type = BRANCH;
                     currentNode->id = global_id;
-                    printf("请输入这对分叉点中，另一个分叉点的ID,顺时针是进入(I)公共轨道还是出(O)公共轨道,以及到监测点的距离:");
                     char branchIO;
-                    int range;
-                    fscanf(fp, "%d %c %d\n", &inputId, &branchIO, &range);
+                    int range = 0;
+                    printf("请输入这对分叉点中，另一个分叉点的ID,顺时针是进入(I)公共轨道还是出(O)公共轨道,以及到监测点的距离:");
+                    fscanf(fp, "%d %c %d", &inputId, &branchIO, &range);
                     fprintf(conf, "%d %c %d\n", inputId, branchIO, range);
                     if (trackNodeList[inputId] == NULL) {
                         trackNodeList[inputId] = newTrackNode();
@@ -282,35 +303,63 @@ void build() {
                         case 'I':
                             if (!currentNode->branch.left) {
                                 currentNode->branch.left = previousNode;
-                                currentNode->branch.ldistance = getDistence(global_id-1, global_id, x1, y1, x2, y2);
+                                currentNode->branch.ldistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                                distence = currentNode->branch.ldistance;
                             } else {
                                 currentNode->branch.right = previousNode;
-                                currentNode->branch.rdistance = getDistence(global_id-1, global_id, x1, y1, x2, y2);
+                                currentNode->branch.rdistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                                distence = currentNode->branch.rdistance;
                             }
                             break;
                         case 'O':
                             currentNode->branch.down = previousNode;
-                            currentNode->branch.ddistance = getDistence(global_id-1, global_id, x1, y1, x2, y2);
+                            currentNode->branch.ddistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                            distence = currentNode->branch.ddistance;
                             break;
                         default:
                             break;
                     }
                     currentNode->branch.lrange = range;
                     currentNode->branch.rrange = range;
-                    connectPreviousBranch(previousNode, currentNode);
+                    currentNode->branch.train[0] = -1;
+                    currentNode->branch.train[1] = -1;
+                    connectPreviousBranch(previousNode, currentNode, distence);
                     break;
                 case 'T':
+                    printf("请输入监测点的距离:");
+                    fscanf(fp, "%d", &range);
+                    fprintf(conf, "%d\n", range);
+                    if (visited) {
+                        currentNode = trackNodeList[idInPosition[inputY][inputX]];
+                        if (inputY == y1 || inputY == y2) {
+                            currentNode->traffic.up = previousNode;
+                            currentNode->traffic.udistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                            distence = currentNode->traffic.udistance;
+                        } else {
+                            currentNode->traffic.left = previousNode;
+                            currentNode->traffic.ldistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                            distence = currentNode->traffic.ldistance;
+                        }
+                        connectPreviousBranch(previousNode, currentNode, distence);
+                        break;
+                    }
                     buff[inputY][inputX] = trafficChar;
+                    printTrack();
                     currentNode->type = TRAFFIC;
                     currentNode->id = global_id;
                     if (inputX == x1 || inputX == x2) {
                         currentNode->traffic.up = previousNode;
-                        currentNode->traffic.udistance = getDistence(global_id-1, global_id, x1, y1, x2, y2);
+                        currentNode->traffic.udistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                        distence = currentNode->traffic.udistance;
                     } else {
                         currentNode->traffic.left = previousNode;
-                        currentNode->traffic.ldistance = getDistence(global_id-1, global_id, x1, y1, x2, y2);
+                        currentNode->traffic.ldistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
+                        distence = currentNode->traffic.ldistance;
                     }
-                    connectPreviousBranch(previousNode, currentNode);
+                    currentNode->traffic.urange = currentNode->traffic.lrange = currentNode->traffic.rrange = currentNode->traffic.drange = range;
+                    currentNode->traffic.train[0] = -1;
+                    currentNode->traffic.train[1] = -1;
+                    connectPreviousBranch(previousNode, currentNode, distence);
                     break;
                 default:
                     break;
@@ -319,9 +368,77 @@ void build() {
             global_id++;
             previousNode = currentNode;
         }
-        currentNode = trackNodeList[trainList[i]->nodeList[trainNodeListIndex]];
+        currentNode = trackNodeList[trainList[i]->nodeList[0]];
         currentNode->station.left = previousNode;
         currentNode->station.ldistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
-        connectPreviousBranch(previousNode, currentNode);
+        connectPreviousBranch(previousNode, currentNode, currentNode->station.ldistance);
+        
+        printf("请指定第%d辆小火车的位置。小火车默认为顺时针，指定它前方节点的ID和距离:", i);
+        fscanf(fp, "%d%d", &inputId, &inputDistence);
+        fprintf(conf, "%d %d\n", inputId, inputDistence);
+        trainList[i]->nextNode = inputId;
+        trainList[i]->distance = inputDistence;
     }
+    fclose(fp);
+    fclose(conf);
+}
+
+void input() {
+    FILE *fp = fopen("input.txt", "r");
+    char missionType;//S代表站点的停靠请求，T表示设置火车参数，Q表示退出程序，C表示切换服务策略
+    char cmdBuff[20], trainDirection[20];
+    int nodeID, stopTime, serverTrain;
+    int trainID, trainSpeed;
+    mainQueueNode mainData;
+    
+    while (fscanf(fp, "%[STQC]", &missionType)!=EOF) {
+        switch (missionType) {
+            case 'C':
+                fscanf(fp, "%s", cmdBuff);
+                if (!strcmp(cmdBuff, "AUTO")) {
+                    controlPolicy = AUTO;
+                } else if (!strcmp(cmdBuff, "MANUAL")) {
+                    controlPolicy = MANUAL;
+                }
+                fscanf(fp, "%s", cmdBuff);
+                if (!strcmp(cmdBuff, "SEQUENCING")) {
+                    servicePolicy = SEQUENCING;
+                } else if (!strcmp(cmdBuff, "BYTHEWAY")) {
+                    servicePolicy = BYTHEWAY;
+                }
+                break;
+            case 'S':
+                fscanf(fp, "%d%d%d", &nodeID, &stopTime, &serverTrain);
+                mainData = calloc(1, sizeof(struct _mainQueueNode));
+                mainData->type = MSTATION;
+                mainData->station.id = nodeID;
+                mainData->station.time = stopTime;
+                mainData->station.train = serverTrain;
+                append(mainMission, mainData);
+                break;
+            case 'T':
+                fscanf(fp, "%d%d%s", &trainID, &trainSpeed, trainDirection);
+                mainData = calloc(1, sizeof(struct _mainQueueNode));
+                mainData->type = MTRAIN;
+                mainData->train.id = trainID;
+                mainData->train.speed = trainSpeed;
+                if (!strcmp(trainDirection, "CLOCLWISE")) {
+                    mainData->train.direction = MCLOCLWISE;
+                } else {
+                    mainData->train.direction = MANTICLOCKWISE;
+                }
+                append(mainMission, mainData);
+                break;
+            case 'Q':
+                mainData = calloc(1, sizeof(struct _mainQueueNode));
+                mainData->type = MLOCK;
+                append(mainMission, mainData);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    
+    fclose(fp);
 }
