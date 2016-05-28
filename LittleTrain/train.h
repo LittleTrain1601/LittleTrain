@@ -114,12 +114,12 @@ typedef struct _train{
     enum {permitted, forbidden} flag;
     trainState status;
     int passTimes;
-    int nodeList[100];//存储小火车所在轨道经过的所有节点ID
+    int nodeList[MAXITEM];//存储小火车所在轨道经过的所有节点ID
     queue mission;//此队列中的data均强制转换为trainQueueNode
 } * train;
 //接下来两个数组存储所有的轨道上的节点和小火车，按ID顺序。在main里定义并分配空间
-extern trackNode *trackNodeList;//以节点ID为下标
-extern train *trainList; //以小火车ID为下标
+extern trackNode trackNodeList[];//以节点ID为下标
+extern train trainList[]; //以小火车ID为下标
 
 //input模块
 void build();
@@ -143,7 +143,7 @@ void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID);
 //coreDataAPI
 queue newQueue();
 queueNode append(queue, void * data);//追加到队列末尾,返回插入的节点的地址
-queueNode insertAfter(queue, void * data, void * ptr);
+queueNode deleteAfter(queue, void * ptr);//删除ptr后面的元素
 void * pop(queue);//从队列中读出一个任务并将其删除。返回data指针
 train newTrain();
 trackNode newTrackNode();
