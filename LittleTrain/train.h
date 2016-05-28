@@ -9,6 +9,7 @@
 #ifndef train_h
 #define train_h
 #include <time.h>
+#include <stdio.h>
 
 #define MAXITEM 20
 
@@ -32,7 +33,7 @@ typedef struct _queue{
 }* queue;
 //主任务队列（输入文件中所有的命令）的数据结构体
 typedef struct _mainQueueNode{
-    enum {MSTATION,MTRAIN,MSWITCHMETHOD,MLOCK} type;    //HEAD为头结点
+    enum {MSTATION,MTRAIN,MLOCK} type;    //HEAD为头结点
     union{
         struct {
             int id;
@@ -123,6 +124,7 @@ void build();
 void input();
 
 //output
+extern FILE *outputLog;
 void viewer();
 void logWriter();
 
