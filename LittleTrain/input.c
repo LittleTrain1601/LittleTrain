@@ -205,6 +205,10 @@ void build() {
             buff[j][x2] = buff[j][x2]!=' '?buff[j][x2]: trackChar;
         }
         printTrack();
+        trainList[i]->x1 = x1;
+        trainList[i]->y1 = y1;
+        trainList[i]->x2 = x2;
+        trainList[i]->y2 = y2;
         printf("请输入轨道上站点数量、分岔点数量以及十字交叉点的数量和：");
         fscanf(fp, "%d", &nodeNumber);
         fprintf(conf, "%d\n", nodeNumber);
