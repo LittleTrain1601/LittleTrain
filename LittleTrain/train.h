@@ -114,6 +114,7 @@ typedef struct _train{
     int passTimes;
     int nodeList[MAXITEM];//存储小火车所在轨道经过的所有节点ID
     queue mission;//此队列中的data均强制转换为trainQueueNode
+    int x1, y1, x2, y2;//偷偷用来记录轨道的坐标
 } * train;
 //接下来两个数组存储所有的轨道上的节点和小火车，按ID顺序。在main里定义并分配空间
 extern trackNode trackNodeList[];//以节点ID为下标
