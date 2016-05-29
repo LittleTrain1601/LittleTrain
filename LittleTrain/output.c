@@ -192,5 +192,4 @@ void viewer() {
         }
         putchar('\n');
     }
-    printf("%lu\n", RUN_TIME);
 }

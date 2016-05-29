@@ -137,31 +137,25 @@ void trainStatusSwitcher(int id)
     trainQueueNode  currentdata;
     trainQueueNode  newcurrentdata;
     trainQueueNode  anothercurrentdata;
-    int next,i,k;
+    int next,k;
     queueNode p,q = NULL;
-    for(i=0;i<=(MAXITEM-1);i++)
-    {
-        if(trainList[i]->id==id)
-            currenttrain=trainList[i];
-    }
-    currenttrain->status=FREE;
+    currenttrain = trainList[id];
 	   switch(currenttrain->status)
         {
         case FREE:
-            currentdata=(trainQueueNode)currenttrain->mission->head->next->data;
-            if(currentdata->type==TSTATION)   //小火车接到新任务
-	        	  {
-                      currenttrain->status=RUN;
-                      fprintf(outputLog,"at %lums train%d status changes from FREE to RUN.\n",RUN_TIME,id);
-                  }//输出小火车的状态转换情况
+                if (currenttrain->mission->head->next) {
+                    currentdata=(trainQueueNode)currenttrain->mission->head->next->data;
+                    if(currentdata->type==TSTATION)   //小火车接到新任务
+                    {
+                        currenttrain->status=RUN;
+                        fprintf(outputLog,"at %lums train%d status changes from FREE to RUN.\n",RUN_TIME,id);
+                    }//输出小火车的状态转换情况
+                }
+            
             break;
         case RUN:
             next=currenttrain->nextNode;	 //小火车下一个节点编号
-            for(k=0;k<=(MAXITEM-1);k++)
-            {
-                if(trackNodeList[k]->id==next)
-                    nexttrackNode=trackNodeList[k];
-            }
+            nexttrackNode=trackNodeList[next];
             if(nexttrackNode->type==BRANCH&&arriveresponddomain(id)==1)  //到达分叉节点的响应区间
             {
                 branchNodeStatusSwitcher(ENTER,id,next);
@@ -279,9 +273,7 @@ train   currenttrain = NULL,firsttrain = NULL,secondtrain = NULL;
     for(k=0;k<=(MAXITEM-1);k++) 
         {if(trainList[k]->id==trainID)
         currenttrain=trainList[k];}
-		
-	currenttrackNode->traffic.status=0;
-    switch(currenttrackNode->traffic.status) 
+		switch(currenttrackNode->traffic.status)
 	     {
 		   case 0:
 		       if(req==ENTER)   
@@ -361,8 +353,7 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
   for(k=0;k<=(MAXITEM-1);k++) 
         {if(trainList[k]->id==trainID)
         currenttrain=trainList[k];}
-   currenttrackNode->branch.status=0;
- switch(currenttrackNode->branch.status){
+    switch(currenttrackNode->branch.status){
   	  case 0:
 	   if(req==ENTER)
 	  	   {currenttrackNode->branch.status=1;

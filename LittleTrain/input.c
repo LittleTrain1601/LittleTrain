@@ -53,7 +53,11 @@ int absDistence(int id1, int x1, int y1, int x2, int y2) {
 }
 int getDistence(int id1, int id2, int x1, int y1, int x2, int y2) {
     //以顺时针的顺序计算id1到id2两个节点间的距离
-    return absDistence(id2, x1, y1, x2, y2) - absDistence(id1, x1, y1, x2, y2);
+    int result = absDistence(id2, x1, y1, x2, y2) - absDistence(id1, x1, y1, x2, y2);
+    if (result<0) {
+        result += (x2-x1+y2-y1)*2;
+    }
+    return result;
 }
 
 enum branchStat{L, R, U, D, N};
@@ -243,14 +247,15 @@ void build() {
             } else {
                 visited = 0;
                 idInPosition[inputY][inputX] = global_id;
+                x[global_id] = inputX;
+                y[global_id] = inputY;
             }
             currentNode = trackNodeList[global_id];
             if (currentNode == NULL) {
                 currentNode = newTrackNode();
                 trackNodeList[global_id] = currentNode;
             }
-            x[global_id] = inputX;
-            y[global_id] = inputY;
+            
             int distence;
             switch (nodeType) {
                 case 'S':
@@ -384,7 +389,10 @@ void build() {
         trainList[i]->nextNode = inputId;
         trainList[i]->distance = inputDistence;
         trainList[i]->id = i;
+        trainList[i]->status = FREE;
     }
+    servicePolicy = SEQUENCING;
+    controlPolicy = AUTO;
     fclose(fp);
     fclose(conf);
 }
@@ -397,7 +405,7 @@ void input() {
     int trainID, trainSpeed;
     mainQueueNode mainData;
     
-    while (fscanf(fp, "%[STQC]", &missionType)!=EOF) {
+    while ((missionType = fgetc(fp))!=EOF) {
         switch (missionType) {
             case 'C':
                 fscanf(fp, "%s", cmdBuff);
@@ -423,6 +431,7 @@ void input() {
                 append(mainMission, mainData);
                 break;
             case 'T':
+                fgetc(fp);
                 fscanf(fp, "%d%d%s", &trainID, &trainSpeed, trainDirection);
                 mainData = calloc(1, sizeof(struct _mainQueueNode));
                 mainData->type = MTRAIN;
@@ -444,7 +453,7 @@ void input() {
                 break;
         }
     }
-    
-    
+    fclose(fp);
+    fp = fopen("input.txt", "w");
     fclose(fp);
 }
