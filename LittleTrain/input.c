@@ -175,7 +175,7 @@ void build() {
     FILE *fp = fopen("track.txt", "r");
     FILE *conf = fopen("configure.dat", "w");
     int x1,x2,y1,y2;
-    global_id = trainNumber;
+    
     if (!fp) {
         fp = stdin;
     }
@@ -184,6 +184,7 @@ void build() {
     printf("每辆小火车有且仅有一条自己的轨道。请输入小火车的数量：");
     fscanf(fp, "%d", &trainNumber);
     fprintf(conf, "%d\n", trainNumber);
+    global_id = trainNumber;
     int nodeNumber;
     char nodeType;
     int inputId, inputDistence;
@@ -382,6 +383,7 @@ void build() {
         fprintf(conf, "%d %d\n", inputId, inputDistence);
         trainList[i]->nextNode = inputId;
         trainList[i]->distance = inputDistence;
+        trainList[i]->id = i;
     }
     fclose(fp);
     fclose(conf);

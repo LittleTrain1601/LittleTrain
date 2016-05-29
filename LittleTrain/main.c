@@ -11,61 +11,82 @@
 #include<stdlib.h>
 #include "train.h"
 #include <time.h>
+
+trackNode trackNodeList[MAXITEM];//以节点ID为下标
+train trainList[MAXITEM]; //以小火车ID为下标
+
 clock_t inputtime;
 clock_t minuswhiletime;
 clock_t minussystemtime;
+extern clock_t minusinputtime;
+extern clock_t dt;
 queue mainMission;
-main(){
-	logwrite();
-   clock_t systemtime;clock_t systemcurrent;
-   clock_t whiletime;clock_t whilecurrent=0;
-   systemtime=clock();
-    clock_t Rtime;  
-      trainQueueNode trainptr;
-      trainptr=(struct _trainQueueNode*)malloc(sizeof(trainQueueNode));//小火车新数据域指针
-      trainQueueNode traindata;
-      traindata=(struct _trainQueueNode*)malloc(sizeof(trainQueueNode));//小火车数据域变量指针
-        mainQueueNode mainptr;
-        mainptr=(struct _mainQueueNode*)malloc(sizeof(mainQueueNode));//主任务队列数据域指针
-        mainptr=(mainQueueNode)pop(mainMission);
-       	FILE * outputlog=fopen("outputlog.c","w+");
-        while(mainptr->type!=LOCK){
-        	Rtime=RUN_TIME;
-            whiletime=clock();
-            minuswhiletime+=whiletime-whilecurrent;
-            whilecurrent=whiletime;//while 循环时间记录
-             int trainid=mainptr->station.train;
-            switch(mainptr->type){
-		             case 'MSTATION':{
-		        	updateTrain(mainptr->station.train);
+int secure() {
+    //检查小火车是否都处于LOCk状态。若是，则返回1，程序将结束运行
+    for (int i=0; i<MAXITEM; i++) {
+        if (trainList[i]) {
+            if (trainList[i]->status != LOCK) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+int main(){
+    mainMission = newQueue();
+    logWriter();
+    build();
+    clock_t whiletime;clock_t whilecurrent=0;
+    RUN_TIME = clock();
+    clock_t Rtime = RUN_TIME;
+    trainQueueNode trainptr;//小火车新数据域指针
+    mainQueueNode mainptr;
+    FILE * outputlog=fopen("outputlog.c","w+");
+    int trainid;
+    while(!secure()){
+        whiletime=clock();
+        minuswhiletime=whiletime-whilecurrent;
+        dt = minuswhiletime - minusinputtime;
+        RUN_TIME += dt;
+        minusinputtime = 0;
+        whilecurrent=whiletime;//while 循环时间记录
+        
+        input();
+        while ((mainptr = (mainQueueNode)pop(mainMission)) != NULL) {
+            switch (mainptr->type) {
+                case MSTATION:
+                    trainid = mainptr->station.train;
+                    trainptr = calloc(1, sizeof(struct _trainQueueNode));
                     trainptr->station=mainptr->station.id;
                     trainptr->time=mainptr->station.time;
-                   
                     append(trainList[trainid]->mission,(void *)trainptr);
-                     mainptr=(mainQueueNode)pop(mainMission);
-                     fprintf(outputlog,"at%dms train%d stop at %d for %d",RUN_TIME,trainid,trainptr->station,trainptr->time); 
-                         break; }
-               case 'MTRAIN':{
-                   trainList[mainptr->train.id]->v=mainptr->train.speed;
-                   trainList[mainptr->train.id]->direction=mainptr->train.direction;
-                   mainptr=(mainQueueNode)pop(mainMission);
-                   fprintf(outputlog,"at%dms train%d change speed to%d change direction to%d",RUN_TIME,trainid,mainptr->train.speed,mainptr->train.direction);
-               		break;
-			   }
-               case 'MSWITCHMETHOD':{
-                   if(mainptr->switchmethod.method==MANUAL)
-                     controlPolicy=MANUAL;
-                   else
-                      controlPolicy=AUTO; 
-                	fprintf(outputlog,"at%dms  change switchmethod to %u",RUN_TIME,controlPolicy);
-                   mainptr=(mainQueueNode)pop(mainMission);
-				   break;
-               }
+                    break;
+                case MTRAIN:
+                    trainid = mainptr->train.id;
+                    trainList[trainid]->v=mainptr->train.speed;
+                    if (mainptr->train.direction == MCLOCLWISE) {
+                        trainList[trainid]->direction = clockwise;
+                    } else {
+                        trainList[trainid]->direction = anticlockwise;
+                    }
+                    fprintf(outputlog,"at%lums train%d change speed to%d change direction to%d",RUN_TIME,trainid,mainptr->train.speed,mainptr->train.direction);
+                    break;
+                default:
+                    break;
             }
-            if(RUN_TIME-Rtime>=1000)
-            		viewer();
+            
+        }
+
+        for (int i=0; i<MAXITEM; i++) {
+            if (trainList[i] != NULL) {
+                updateTrain(trainList[i]->id);
+            }
+        }
+        if(RUN_TIME-Rtime>=CLOCKS_PER_SEC){
+            viewer();
+            Rtime = RUN_TIME;
+        }
     }
-    systemcurrent=clock();
-    minussystemtime=systemtime-systemcurrent;
 }
-  
+

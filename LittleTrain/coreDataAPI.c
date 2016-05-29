@@ -33,20 +33,21 @@ waitingqueue->tail->next=newqueueNode;
 waitingqueue->tail=newqueueNode;
 return newqueueNode;}
 
-//删除ptr所指向任务的下一个任务,返回删除的任务的内容 
-void * deleteAfter(queue waitingqueue, queueNode ptr)
-{ queueNode q;
-  void * r;
-  if(ptr->next==NULL)  //ptr指向队列中的最后一个任务任务队列 
-    return NULL;
-	q=ptr->next;
-      ptr->next =q->next;
-      if(ptr->next==NULL)    //若删除的为队列中的最后一个任务，则更改尾指针 
-          waitingqueue->tail=ptr;
-      r=q->data;
-      free(q);
-      return r;
-} 
+//删除ptr所指向任务的下一个任务
+void deleteAfter(queue waitingqueue, queueNode ptr){
+    queueNode q;
+    void * r;
+    if(ptr->next==NULL)  //ptr指向队列中的最后一个任务任务队列
+        return;
+    q=ptr->next;
+    ptr->next =q->next;
+    if(ptr->next==NULL)    //若删除的为队列中的最后一个任务，则更改尾指针
+        waitingqueue->tail=ptr;
+    r=q->data;
+    free(r);
+    free(q);
+    return;
+}
 
 
 //从队列中读出当前任务并将其删除，返回data指针

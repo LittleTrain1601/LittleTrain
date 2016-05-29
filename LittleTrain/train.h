@@ -19,7 +19,7 @@ typedef int trafficState;/*根据接收到的通过十字路节点请求数，�
 //一些必要的时间变量（假设时间类型是TIME）在calculator里定义
 extern clock_t RUN_TIME;//小火车开始运行的时间，忽略用户输入打断的时间
 //flags 在FSM里定义
-extern enum {SEQUENCING, BYTHEWAY} servicePolicy;
+extern enum _servicePolicy{SEQUENCING, BYTHEWAY} servicePolicy;
 extern enum policy {AUTO, MANUAL} controlPolicy;
 
 //通用任务队列
