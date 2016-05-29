@@ -28,8 +28,8 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
     trainQueueNode traindata;
     traindata=(struct _trainQueueNode*)malloc(sizeof(trainQueueNode));
     if(trainList[id]->status!=RUN){
-        int distance=trainList[id]->distance=trainList[id]->distance-x;
-        if(distance<=0){
+        trainList[id]->distance=trainList[id]->distance-x;
+        if(trainList[id]->distance<=0){
             if(trackNodeList[nodeid]->type==STATION){
                 int a=0;
                 if(servicePolicy==BYTHEWAY){
@@ -37,20 +37,29 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
                     while(traincurrentptr!=NULL){
                         traindata=(trainQueueNode) traincurrentptr->data;
                         if(nodeid==traindata->station){
-                            trackNodeList[nodeid]->station.stop=RUN_TIME+distance/trainList[id]->v;
-                            distance=0;a=1;
-                            traincurrentptr=traincurrentptr->next;
-                            break;}
+                            trackNodeList[nodeid]->station.stop=RUN_TIME+trainList[id]->distance/trainList[id]->v*CLOCKS_PER_SEC;
+                            trainList[id]->distance=0;
+                            a=1;
+                            break;
+                        }
+                        traincurrentptr=traincurrentptr->next;
                     }
                     
-                    if(a==0) {
-                        if(trainList[id]->nodeList[nodeid+1]==-1){
-                            trainList[id]->distance=trackNodeList[0]->station.ldistance-(x-trainList[id]->distance);
-                            trainList[id]->nextNode=0;
+                    if(a==0) {//jijihohogofjf
+                        int i;
+                        for (i=0; nodeid != trainList[id]->nodeList[i]; i++) {
+                            if (trainList[id]->nodeList[i] == -1) {
+                                i = 0;
+                            }
                         }
-                        else{
-                            trainList[id]->distance=trackNodeList[nodeid+1]->station.ldistance-(x-trainList[id]->distance);
-                            trainList[id]->nextNode=nodeid+1;
+                        if (trainList[id]->nodeList[++i] == -1) {
+                            i=0;
+                        }
+                        trainList[id]->nextNode = trainList[id]->nodeList[i];
+                        if (trackNodeList[nodeid]->station.left->id == trainList[id]->nextNode) {
+                            trainList[id]->distance += trackNodeList[nodeid]->station.ldistance;
+                        } else {
+                            trainList[id]->distance += trackNodeList[nodeid]->station.rdistance;
                         }
                     }
                 }
@@ -58,50 +67,74 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
                     traincurrentptr=trainList[id]->mission->head->next;
                     traindata=(trainQueueNode) traincurrentptr->data;
                     if(nodeid==traindata->station){
-                        trackNodeList[nodeid]->station.stop=RUN_TIME+distance/trainList[id]->v;
-                        distance=0;
+                        trackNodeList[nodeid]->station.stop=RUN_TIME+trainList[id]->distance/trainList[id]->v*CLOCKS_PER_SEC;
+                        trainList[id]->distance=0;
                         a=1;}
                     if(a==0) {//jijihohogofjf
-                        if(trainList[id]->nodeList[nodeid+1]==-1){
-                            trainList[id]->distance=trackNodeList[0]->station.ldistance-(x-trainList[id]->distance);
-                            trainList[id]->nextNode=0;
+                        int i;
+                        for (i=0; nodeid != trainList[id]->nodeList[i]; i++) {
+                            if (trainList[id]->nodeList[i] == -1) {
+                                i = 0;
+                            }
                         }
-                        else{
-                            trainList[id]->distance=trackNodeList[nodeid+1]->station.ldistance-(x-trainList[id]->distance);
-                            trainList[id]->nextNode=nodeid+1;
+                        if (trainList[id]->nodeList[++i] == -1) {
+                            i=0;
+                        }
+                        trainList[id]->nextNode = trainList[id]->nodeList[i];
+                        if (trackNodeList[nodeid]->station.left->id == trainList[id]->nextNode) {
+                            trainList[id]->distance += trackNodeList[nodeid]->station.ldistance;
+                        } else {
+                            trainList[id]->distance += trackNodeList[nodeid]->station.rdistance;
                         }
                     }
                 }
                 
             }
-            if(trackNodeList[nodeid]->type==BRANCH){
-                if(trainList[id]->nodeList[nodeid+1]==-1){
-                    trainList[id]->distance=trackNodeList[0]->branch.ldistance-(x-trainList[id]->distance);
-                    trainList[id]->nextNode=0;
-       									}
-                else{
-                    trainList[id]->distance=trackNodeList[nodeid+1]->branch.ldistance-(x-trainList[id]->distance);
-                    trainList[id]->nextNode=nodeid+1;
-       									}
+            else if(trackNodeList[nodeid]->type==BRANCH){
+                int i;
+                for (i=0; nodeid != trainList[id]->nodeList[i]; i++) {
+                    if (trainList[id]->nodeList[i] == -1) {
+                        i = 0;
+                    }
+                }
+                if (trainList[id]->nodeList[++i] == -1) {
+                    i=0;
+                }
+                trainList[id]->nextNode = trainList[id]->nodeList[i];
+                if (trackNodeList[nodeid]->branch.left->id == trainList[id]->nextNode) {
+                    trainList[id]->distance += trackNodeList[nodeid]->branch.ldistance;
+                } else if (trackNodeList[nodeid]->branch.right->id == trainList[id]->nextNode) {
+                    trainList[id]->distance += trackNodeList[nodeid]->branch.rdistance;
+                } else {
+                    trainList[id]->distance += trackNodeList[nodeid]->branch.ddistance;
+                }
             }
             else{
-                if(trainList[id]->nodeList[nodeid+1]==-1){
-                    trainList[id]->distance=trackNodeList[0]->traffic.ldistance-(x-trainList[id]->distance);
-                    trainList[id]->nextNode=0;
-       									}
-                else{
-                    trainList[id]->distance=trackNodeList[nodeid+1]->traffic.ldistance-(x-trainList[id]->distance);
-                    trainList[id]->nextNode=nodeid+1;
-       									}
+                int i;
+                for (i=0; nodeid != trainList[id]->nodeList[i]; i++) {
+                    if (trainList[id]->nodeList[i] == -1) {
+                        i = 0;
+                    }
+                }
+                if (trainList[id]->nodeList[++i] == -1) {
+                    i=0;
+                }
+                trainList[id]->nextNode = trainList[id]->nodeList[i];
+                if (trackNodeList[nodeid]->traffic.left->id == trainList[id]->nextNode) {
+                    trainList[id]->distance += trackNodeList[nodeid]->traffic.ldistance;
+                } else if (trackNodeList[nodeid]->traffic.right->id == trainList[id]->nextNode) {
+                    trainList[id]->distance += trackNodeList[nodeid]->traffic.rdistance;
+                } else if (trackNodeList[nodeid]->traffic.down->id == trainList[id]->nextNode){
+                    trainList[id]->distance += trackNodeList[nodeid]->traffic.ddistance;
+                } else {
+                    trainList[id]->distance += trackNodeList[nodeid]->traffic.udistance;
+                }
             }
             
         }
     				
     }
-    
-    else{
-        trainStatusSwitcher(id);
-    }
+    trainStatusSwitcher(id);
 }
 
 
