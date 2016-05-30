@@ -52,7 +52,7 @@ int main(){
         minusinputtime = 0;
         whilecurrent=whiletime;//while 循环时间记录
         
-        input();
+        input(NULL);
         while ((mainptr = (mainQueueNode)pop(mainMission)) != NULL) {
             switch (mainptr->type) {
                 case MSTATION:
@@ -88,5 +88,6 @@ int main(){
             Rtime = RUN_TIME;
         }
     }
+    fclose(outputlog);
 }
 

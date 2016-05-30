@@ -16,6 +16,7 @@ char screenBuff[24][80];
 FILE *outputLog;
 void logWriter() {
     outputLog = fopen("output.txt", "w");
+    //outputLog = stdout;
 }
 
 void putTrain(int id) {

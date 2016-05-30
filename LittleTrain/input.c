@@ -397,12 +397,16 @@ void build() {
     }
     servicePolicy = SEQUENCING;
     controlPolicy = AUTO;
+    input(fp);
     fclose(fp);
     fclose(conf);
 }
 
-void input() {
-    FILE *fp = fopen("input.txt", "r");
+void input(FILE *fp) {
+    if (!fp) {
+        fclose(fp);
+        fp = fopen("input.txt", "r");
+    }
     char missionType;//S代表站点的停靠请求，T表示设置火车参数，Q表示退出程序，C表示切换服务策略
     char cmdBuff[20], trainDirection[20];
     int nodeID, stopTime, serverTrain;
