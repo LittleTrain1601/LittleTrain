@@ -42,7 +42,7 @@ void printTrack() {
 int absDistence(int id1, int x1, int y1, int x2, int y2) {
     //矩形左上角到某一点的距离
     if (y[id1] == y1) {
-        return x2 - x[id1];
+        return x[id1] - x1;
     } else if (x[id1] == x2) {
         return x2-x1+y[id1]-y1;
     } else if (y[id1] == y2) {
@@ -53,7 +53,9 @@ int absDistence(int id1, int x1, int y1, int x2, int y2) {
 }
 int getDistence(int id1, int id2, int x1, int y1, int x2, int y2) {
     //以顺时针的顺序计算id1到id2两个节点间的距离
-    int result = absDistence(id2, x1, y1, x2, y2) - absDistence(id1, x1, y1, x2, y2);
+    int d1 = absDistence(id2, x1, y1, x2, y2);
+    int d2 = absDistence(id1, x1, y1, x2, y2);
+    int result = d1 - d2;
     if (result<0) {
         result += (x2-x1+y2-y1)*2;
     }
@@ -79,12 +81,10 @@ branchState getFreeBranch(trackNode node){
                 } else {
                     return N;
                 }
+            } else if (node->branch.left || node->branch.right) {
+                return D;
             } else {
-                if (node->branch.left || node->branch.right) {
-                    return D;
-                } else {
-                    return L;
-                }
+                return L;
             }
             break;
         case TRAFFIC:
@@ -109,15 +109,15 @@ void connectPreviousBranch(trackNode previousNode, trackNode currentNode, int di
             switch (previousNode->type) {
                 case STATION:
                     previousNode->station.left = currentNode;
-                    previousNode->station.ldistance = currentNode->station.ldistance;
+                    previousNode->station.ldistance = distence;
                     break;
                 case BRANCH:
                     previousNode->branch.left = currentNode;
-                    previousNode->branch.ldistance = currentNode->station.ldistance;
+                    previousNode->branch.ldistance = distence;
                     break;
                 case TRAFFIC:
                     previousNode->traffic.left = currentNode;
-                    previousNode->traffic.ldistance = currentNode->station.ldistance;
+                    previousNode->traffic.ldistance = distence;
                     break;
                 default:
                     break;
@@ -127,15 +127,15 @@ void connectPreviousBranch(trackNode previousNode, trackNode currentNode, int di
             switch (previousNode->type) {
                 case STATION:
                     previousNode->station.right = currentNode;
-                    previousNode->station.rdistance = currentNode->station.ldistance;
+                    previousNode->station.rdistance = distence;
                     break;
                 case BRANCH:
                     previousNode->branch.right = currentNode;
-                    previousNode->branch.rdistance = currentNode->station.ldistance;
+                    previousNode->branch.rdistance = distence;
                     break;
                 case TRAFFIC:
                     previousNode->traffic.right = currentNode;
-                    previousNode->traffic.rdistance = currentNode->station.ldistance;
+                    previousNode->traffic.rdistance = distence;
                     break;
                 default:
                     break;
@@ -143,17 +143,17 @@ void connectPreviousBranch(trackNode previousNode, trackNode currentNode, int di
             break;
         case U:
             previousNode->traffic.up = currentNode;
-            previousNode->traffic.udistance = currentNode->station.ldistance;
+            previousNode->traffic.udistance = distence;
             break;
         case D:
             switch (previousNode->type) {
                 case BRANCH:
                     previousNode->branch.down = currentNode;
-                    previousNode->branch.ddistance = currentNode->station.ldistance;
+                    previousNode->branch.ddistance = distence;
                     break;
                 case TRAFFIC:
                     previousNode->traffic.down = currentNode;
-                    previousNode->traffic.ddistance = currentNode->station.ldistance;
+                    previousNode->traffic.ddistance = distence;
                     break;
                 default:
                     break;
@@ -273,6 +273,11 @@ void build() {
                 case 'B':
                     if (visited) {
                         currentNode = trackNodeList[idInPosition[inputY][inputX]];
+                        if (currentNode->branch.left == previousNode ||
+                            currentNode->branch.right == previousNode ||
+                            currentNode->branch.down == previousNode) {
+                            break;
+                        }
                         int range;
                         printf("请输入监测点的距离:");
                         fscanf(fp, "%d", &range);
@@ -293,7 +298,6 @@ void build() {
                             default:
                                 break;
                         }
-                        
                         break;
                     }
                     buff[inputY][inputX] = branchChar;
@@ -374,7 +378,7 @@ void build() {
                 default:
                     break;
             }
-            trainList[i]->nodeList[trainNodeListIndex++] = global_id;
+            trainList[i]->nodeList[trainNodeListIndex++] = currentNode->id;
             global_id++;
             previousNode = currentNode;
         }
@@ -405,7 +409,8 @@ void input() {
     int trainID, trainSpeed;
     mainQueueNode mainData;
     
-    while ((missionType = fgetc(fp))!=EOF) {
+    while ((fscanf(fp, "%[STCQ]", cmdBuff))!=EOF) {
+        missionType = cmdBuff[0];
         switch (missionType) {
             case 'C':
                 fscanf(fp, "%s", cmdBuff);
