@@ -31,8 +31,8 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
         trainList[id]->distance=trainList[id]->distance-x;
         if(trainList[id]->distance<=0){
             if(trackNodeList[nodeid]->type==STATION){
+                int a = 0;
                 if (trainList[id]->mission->head->next) {
-                    int a=0;
                     if(servicePolicy==BYTHEWAY){
                         traincurrentptr=trainList[id]->mission->head->next;
                         while(traincurrentptr!=NULL){
@@ -46,23 +46,7 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
                             traincurrentptr=traincurrentptr->next;
                         }
                         
-                        if(a==0) {//jijihohogofjf
-                            int i;
-                            for (i=0; nodeid != trainList[id]->nodeList[i]; i++) {
-                                if (trainList[id]->nodeList[i] == -1) {
-                                    i = 0;
-                                }
-                            }
-                            if (trainList[id]->nodeList[++i] == -1) {
-                                i=0;
-                            }
-                            trainList[id]->nextNode = trainList[id]->nodeList[i];
-                            if (trackNodeList[nodeid]->station.left->id == trainList[id]->nextNode) {
-                                trainList[id]->distance += trackNodeList[nodeid]->station.ldistance;
-                            } else {
-                                trainList[id]->distance += trackNodeList[nodeid]->station.rdistance;
-                            }
-                        }
+                        
                     }
                     else{
                         traincurrentptr=trainList[id]->mission->head->next;
@@ -71,25 +55,25 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
                             trackNodeList[nodeid]->station.stop=RUN_TIME+(trainList[id]->distance)/trainList[id]->v*CLOCKS_PER_SEC;
                             trainList[id]->distance=0;
                             a=1;}
-                        if(a==0) {//jijihohogofjf
-                            int i;
-                            for (i=0; nodeid != trainList[id]->nodeList[i]; i++) {
-                                if (trainList[id]->nodeList[i] == -1) {
-                                    i = 0;
-                                }
-                            }
-                            if (trainList[id]->nodeList[++i] == -1) {
-                                i=0;
-                            }
-                            trainList[id]->nextNode = trainList[id]->nodeList[i];
-                            if (trackNodeList[nodeid]->station.left->id == trainList[id]->nextNode) {
-                                trainList[id]->distance += trackNodeList[nodeid]->station.ldistance;
-                            } else {
-                                trainList[id]->distance += trackNodeList[nodeid]->station.rdistance;
+                        }
+                }
+                if(a==0) {//jijihohogofjf
+                        int i;
+                        for (i=0; nodeid != trainList[id]->nodeList[i]; i++) {
+                            if (trainList[id]->nodeList[i] == -1) {
+                                i = 0;
                             }
                         }
+                        if (trainList[id]->nodeList[++i] == -1) {
+                            i=0;
+                        }
+                        trainList[id]->nextNode = trainList[id]->nodeList[i];
+                        if (trackNodeList[nodeid]->station.left->id == trainList[id]->nextNode) {
+                            trainList[id]->distance += trackNodeList[nodeid]->station.ldistance;
+                        } else {
+                            trainList[id]->distance += trackNodeList[nodeid]->station.rdistance;
+                        }
                     }
-                }
             }
             else if(trackNodeList[nodeid]->type==BRANCH){
                 int i;
