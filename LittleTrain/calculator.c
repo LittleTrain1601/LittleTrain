@@ -11,7 +11,7 @@
 #include<time.h>
 #include<stdlib.h>
 #include "train.h"
-extern clock_t inputtime;
+
 extern clock_t minuswhiletime;
 clock_t minusinputtime;
 clock_t RUN_TIME=0;
@@ -117,36 +117,40 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
 }
 
 
-int checkTrack(int branch1, int branch2){
+int checkTrack(int trainID, int branch1, int branch2){
     //检查两个节点之间的轨道是否占用 	两个节点的ID 	占用返回1，无占用返回0
-    int a=0;
+    int occupied=0;
     trackNode trackptr;
     trackptr=trackNodeList[branch1];
-    while(trackptr->branch.down==trackNodeList[branch2]){
+    while (trackptr->id != branch2) {
         switch(trackptr->type){
-            case STATION:{
-                trackptr=trackptr->station.right;break;
-            }
-            case TRAFFIC:{
-                trackptr=trackptr->traffic.down;break;
-            }
-            case BRANCH:{
+            case STATION:
+                trackptr=trackNodeList[nextIndex(trainID)];
+                break;
+            case TRAFFIC:
+                trackptr=trackNodeList[nextIndex(trainID)];
+                break;
+            case BRANCH:
                 if(trackptr->branch.flag==1){
-                    a=1;
-                    break;break;}
-                else{
-                    trackptr=trackptr->branch.down;
-                    break;
+                    occupied=1;
+                } else {
+                    trackptr=trackNodeList[nextIndex(trainID)];
                 }
-            }
+                break;
+            default:
+                break;
+        }
+        if (occupied) {
+            break;
         }
     }
-    return a;
+    return occupied;
     
 }
 
 int judge(int train1, int train2){
     //判定竞争的小火车通过顺序。根据人工干预和交替模式选择不同判定方法.要判定的两个火车的ID允许通过的火车ID
+    clock_t inputtime;
     clock_t inputcurrent;
     if(controlPolicy==MANUAL){
         inputtime=clock();
