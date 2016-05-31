@@ -3,7 +3,7 @@
 //  LittleTrain
 //
 //  Created by 陈曦远 on 16/5/20.
-//  Copyright © 2016年 1601. All rights reserved.
+//  Copyright ? 2016年 1601. All rights reserved.
 //
 
 
@@ -12,11 +12,11 @@
 
 //新建一个通用任务队列 
 queue newQueue(){
-	queueNode newqueueNode;
+	queueNode newqueueNode=NULL;
 	newqueueNode=(queueNode)malloc(sizeof(struct _queueNode));
 	newqueueNode->data=NULL;
 	newqueueNode->next=NULL;
-	queue newqueue;
+	queue newqueue=NULL;
 	newqueue=(queue)malloc(sizeof(struct _queue));
 	newqueue->head=newqueueNode;
 	newqueue->tail=newqueueNode;
@@ -25,7 +25,7 @@ queue newQueue(){
 
 //将新任务追加到队列末尾,返回插入的节点的地址 
 queueNode append(queue waitingqueue, void * data){
-queueNode newqueueNode;
+queueNode newqueueNode=NULL;
 newqueueNode=(queueNode)malloc(sizeof(struct _queueNode));
 newqueueNode->next=NULL;
 newqueueNode->data=data;
@@ -35,9 +35,9 @@ return newqueueNode;}
 
 //删除ptr所指向任务的下一个任务
 void deleteAfter(queue waitingqueue, queueNode ptr){
-    queueNode q;
+    queueNode q=NULL;
     void * r;
-    if(ptr->next==NULL)  //ptr指向队列中的最后一个任务任务队列
+    if(ptr->next==NULL)  //ptr指向队列中的最后一个任务
         return;
     q=ptr->next;
     ptr->next =q->next;
@@ -66,7 +66,7 @@ else
 
 train newTrain(){
    int i;
-   train newtrain;
+   train newtrain=NULL;
    newtrain=(train)malloc(sizeof(struct _train));
    newtrain->id=-1;
    newtrain->v=0;
@@ -84,7 +84,8 @@ train newTrain(){
 }
 
 trackNode newTrackNode(){
-   trackNode newtracknode;
-   newtracknode=(trackNode)calloc(1,sizeof(struct _trackNode));//
+   trackNode newtracknode=NULL;
+   newtracknode=(trackNode)calloc(1,sizeof(struct _trackNode));//初始化内存空间 
     return newtracknode;
 }
+
