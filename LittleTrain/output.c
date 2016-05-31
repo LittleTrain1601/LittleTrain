@@ -29,7 +29,150 @@ void putTrain(int id) {
     double xPosition, yPosition;
     xPosition = x[trainList[id]->nextNode];
     yPosition = y[trainList[id]->nextNode];
-    if (yPosition == y1) {
+    if (xPosition == x1 && yPosition == y1) {
+        if (trainList[id]->direction == clockwise) {
+            yPosition += distance;
+            if (yPosition > y2) {
+                distance -= y2-(yPosition-distance);
+                yPosition = y2;
+                xPosition += distance;
+                if (xPosition > x2) {
+                    distance -= x2-x1;
+                    xPosition = x2;
+                    yPosition -= distance;
+                    if (yPosition < y1) {
+                        distance -= y2-y1;
+                        yPosition = y1;
+                        xPosition -= distance;
+                    }
+                }
+            }
+        } else {
+            xPosition += distance;
+            if (xPosition > x2) {
+                distance -= x2-(xPosition-distance);
+                xPosition = x2;
+                yPosition += distance;
+                if (yPosition > y2) {
+                    distance -= y2-y1;
+                    yPosition = y2;
+                    xPosition -= distance;
+                    if (xPosition<x1) {
+                        distance -= x2-x1;
+                        xPosition = x1;
+                        yPosition -= distance;
+                    }
+                }
+            }
+        }
+    } else if (xPosition == x2 && yPosition == y1) {
+        if (trainList[id]->direction == clockwise) {
+            xPosition = xPosition - distance;
+            if (xPosition < x1) {
+                distance -= xPosition + distance - x1;
+                xPosition = x1;
+                yPosition = yPosition + distance;
+                if (yPosition > y2) {
+                    distance -= y2-y1;
+                    yPosition = y2;
+                    xPosition += distance;
+                    if (xPosition > x2) {
+                        distance -= x2-x1;
+                        xPosition = x2;
+                        yPosition -= distance;
+                    }
+                }
+            }
+        } else {
+            yPosition += distance;
+            if (yPosition > y2) {
+                distance -= y2 - (yPosition - distance);
+                xPosition -= distance;
+                if (xPosition < x1) {
+                    distance -= x2-x1;
+                    xPosition = x1;
+                    yPosition -= distance;
+                    if (yPosition < y1) {
+                        distance -= y2-y1;
+                        yPosition = y1;
+                        xPosition += distance;
+                    }
+                }
+            }
+        }
+    } else if (xPosition == x2 && yPosition == y2) {
+        if (trainList[id]->direction == clockwise) {
+            yPosition -= distance;
+            if (yPosition < y1) {
+                distance -= yPosition + distance - y1;
+                yPosition = y1;
+                xPosition -= distance;
+                if (xPosition < x1) {
+                    distance -= x2-x1;
+                    xPosition = x1;
+                    yPosition += distance;
+                    if (yPosition > y2) {
+                        distance -= y2-y1;
+                        yPosition = y2;
+                        xPosition += distance;
+                    }
+                }
+            }
+        } else {
+            xPosition -= distance;
+            if (xPosition < x1) {
+                distance -= xPosition + distance -x1;
+                xPosition = x1;
+                yPosition -= distance;
+                if (yPosition < y1) {
+                    distance -= y2-y1;
+                    yPosition = y1;
+                    xPosition += distance;
+                    if (xPosition > x2) {
+                        distance -= x2-x1;
+                        xPosition = x2;
+                        yPosition += distance;
+                    }
+                }
+            }
+        }
+    } else if (xPosition == x1 && yPosition == y2) {
+        if (trainList[id]->direction == clockwise) {
+            xPosition += distance;
+            if (xPosition > x2) {
+                distance -= x2-(xPosition-distance);
+                xPosition = x2;
+                yPosition -= distance;
+                if (yPosition < y1) {
+                    distance -= y2-y1;
+                    yPosition = y1;
+                    xPosition -= distance;
+                    if (xPosition<x1) {
+                        distance -= x2-x1;
+                        xPosition = x1;
+                        yPosition += distance;
+                    }
+                }
+            }
+        } else {
+            yPosition -= distance;
+            if (yPosition < y1) {
+                distance -= yPosition + distance - y1;
+                yPosition = y1;
+                xPosition += distance;
+                if (xPosition > x2) {
+                    distance -= x2-x1;
+                    xPosition = x2;
+                    yPosition += distance;
+                    if (yPosition > y2) {
+                        distance -= y2-y1;
+                        yPosition = y2;
+                        xPosition -= distance;
+                    }
+                }
+            }
+        }
+    } else if (yPosition == y1) {
         if (trainList[id]->direction == clockwise) {
             xPosition = xPosition - distance;
             if (xPosition < x1) {
