@@ -141,7 +141,10 @@ void trainStatusSwitcher(int id)
                     {
                         currenttrain->status=RUN;
                         fprintf(outputLog,"at %lums train%d status changes from FREE to RUN.\n",RUN_TIME,id);
-                    }//输出小火车的状态转换情况
+                        //输出小火车的状态转换情况
+                    } else if (currentdata->type == TLOCK) {
+                        currenttrain->status = LOCK;
+                    }
                 }
             
             break;
@@ -196,12 +199,17 @@ void trainStatusSwitcher(int id)
                         }
             break;
         case STA:
+            next=currenttrain->nextNode;	 //小火车下一个节点编号
+            nexttrackNode=trackNodeList[next];
             if(servicePolicy==SEQUENCING)
-              {
-			  currentdata=(trainQueueNode)currenttrain->mission->head->next->data;//小火车当前任务
-                if(currentdata->time<=(RUN_TIME-nexttrackNode->station.stop))   //达到要求的停靠时间
+            {
+                currentdata=(trainQueueNode)currenttrain->mission->head->next->data;//小火车当前任务
+                if(currentdata->time<=(RUN_TIME-nexttrackNode->station.stop)) {   //达到要求的停靠时间
                     pop(currenttrain->mission);//更新小火车任务队列
-				         }
+                    currenttrain->status=RUN;
+                    fprintf(outputLog,"at %lums train%d status changes from STA to RUN.\n",RUN_TIME,id);
+                }
+            }
             else if(servicePolicy==BYTHEWAY)
             {
                 p=currenttrain->mission->head->next;
@@ -217,6 +225,8 @@ void trainStatusSwitcher(int id)
                     if(p==currenttrain->mission->head->next)  //完成的任务是小火车头结点后的首任务
                         q=currenttrain->mission->head;
                     deleteAfter(currenttrain->mission, q);//更新小火车任务队列
+                    currenttrain->status=RUN;
+                    fprintf(outputLog,"at %lums train%d status changes from STA to RUN.\n",RUN_TIME,id);
                 }
             }
             if((currenttrain->mission->head)==(currenttrain->mission->tail)) //且小火车没有未完成的任务
@@ -227,12 +237,11 @@ void trainStatusSwitcher(int id)
             else if((currenttrain->mission->head)!=(currenttrain->mission->tail)) //且小火车有未完成的任务
             {  newcurrentdata=(trainQueueNode)currenttrain->mission->head->next->data;
 			    if(newcurrentdata->type==TLOCK)   //小火车只剩最后的锁闭任务
-                  {currenttrain->status=LOCK;
-                fprintf(outputLog,"at %lums train%d status changes from STA to LOCK.\n",RUN_TIME,id);}
-                else
-				{currenttrain->status=RUN;
-                fprintf(outputLog,"at %lums train%d status changes from STA to RUN.\n",RUN_TIME,id);
-            }}
+                {
+                    currenttrain->status=LOCK;
+                    fprintf(outputLog,"at %lums train%d status changes from STA to LOCK.\n",RUN_TIME,id);
+                }
+            }
             break;
         case PAUSE:
             if((nexttrackNode->type==TRAFFIC)&&(currenttrain->distance<=1))  //等待进入十字路节点
