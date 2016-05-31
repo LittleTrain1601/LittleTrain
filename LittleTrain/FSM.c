@@ -3,7 +3,7 @@
 //  LittleTrain
 //
 //  Created by 陈曦远 on 16/5/16.
-//  Copyright © 2016年 1601. All rights reserved.
+//  Copyright ? 2016年 1601. All rights reserved.
 //
 
 
@@ -22,14 +22,10 @@ int arriveresponddomain(int id)
 {train currenttrain = NULL;
 trackNode nexttrackNode = NULL;
 int lastNode;//小火车走过的上一个节点 
- int i,k,m,n;
+ int m,n;
  int range; //下一分叉节点或十字路节点的响应区间长度 
- for(i=0;i<=(MAXITEM-1);i++) 
-     {if(trainList[i]->id==id)
-        currenttrain=trainList[i];}
- for(k=0;k<=(MAXITEM-1);k++) 
-        {if(trackNodeList[k]->id==currenttrain->nextNode)
-        nexttrackNode=trackNodeList[k];}
+ currenttrain=trainList[id];
+ nexttrackNode=trackNodeList[currenttrain->nextNode];
  for(m=0;m<=(MAXITEM-1)&&(currenttrain->nodeList[m]!=currenttrain->nextNode);m++) 
         {;
         }
@@ -88,16 +84,12 @@ else
   
 //若分叉节点是小火车当前运行方向下进入公共轨道的节点返回1，若分叉节点是小火车当前运行方向下出公共轨道的节点返回0 
 int branchtype(int trainid,int tracknodeid){
-    int i,k,m,n;
+    int m,n;
     train currenttrain = NULL;
     trackNode  tracknode = NULL;
     int lastNode,nextNode;
-    for(i=0;i<=(MAXITEM-1);i++)
-    {if(trainList[i]->id==trainid)
-        currenttrain=trainList[i];}
-    for(k=0;k<=(MAXITEM-1);k++)
-    {if(trackNodeList[k]->id==tracknodeid)
-        tracknode=trackNodeList[k];}
+   currenttrain=trainList[trainid];
+   tracknode=trackNodeList[tracknodeid];
     for(m=0;m<=(MAXITEM-1)&&(currenttrain->nodeList[m]!=tracknodeid);m++)
     {;}
     //顺时针寻找一辆小火车轨道上编号为tracknodeid的节点的前一个和后一个节点
@@ -133,11 +125,11 @@ int branchtype(int trainid,int tracknodeid){
 void trainStatusSwitcher(int id)
 {
     train currenttrain = NULL;
-    trackNode nexttrackNode;
-    trainQueueNode  currentdata;
-    trainQueueNode  newcurrentdata;
-    trainQueueNode  anothercurrentdata;
-    int next,k;
+    trackNode nexttrackNode=NULL;
+    trainQueueNode  currentdata=NULL;
+    trainQueueNode  newcurrentdata=NULL;
+    trainQueueNode  anothercurrentdata=NULL;
+    int next;
     queueNode p,q = NULL;
     currenttrain = trainList[id];
 	   switch(currenttrain->status)
@@ -194,8 +186,8 @@ void trainStatusSwitcher(int id)
                     }
                 }
                 else                                           //小火车出公共轨道，将该段轨道标记为空闲
-                    nexttrackNode->branch.flag=0;
-                nexttrackNode->branch.pair->branch.flag=0;
+                    {nexttrackNode->branch.flag=0;
+                   nexttrackNode->branch.pair->branch.flag=0;}
             }
             else if(nexttrackNode->type==STATION&&currenttrain->distance==0)//到站
 				        {
@@ -205,11 +197,11 @@ void trainStatusSwitcher(int id)
             break;
         case STA:
             if(servicePolicy==SEQUENCING)
-            {
-                currentdata=(trainQueueNode)currenttrain->mission->head->next->data;//小火车当前任务
+              {
+			  currentdata=(trainQueueNode)currenttrain->mission->head->next->data;//小火车当前任务
                 if(currentdata->time<=(RUN_TIME-nexttrackNode->station.stop))   //达到要求的停靠时间
                     pop(currenttrain->mission);//更新小火车任务队列
-				        }
+				         }
             else if(servicePolicy==BYTHEWAY)
             {
                 p=currenttrain->mission->head->next;
@@ -233,14 +225,14 @@ void trainStatusSwitcher(int id)
                 fprintf(outputLog,"at %lums train%d status changes from STA to FREE.\n",RUN_TIME,id);
             }
             else if((currenttrain->mission->head)!=(currenttrain->mission->tail)) //且小火车有未完成的任务
-            {
-                currenttrain->status=RUN;
-                fprintf(outputLog,"at %lums train%d status changes from STA to RUN.\n",RUN_TIME,id);
-            }
-            newcurrentdata=(trainQueueNode)currenttrain->mission->head->next->data;
-            if(newcurrentdata->type==TLOCK)   //小火车只剩最后的锁闭任务
-            {currenttrain->status=LOCK;
+            {  newcurrentdata=(trainQueueNode)currenttrain->mission->head->next->data;
+			    if(newcurrentdata->type==TLOCK)   //小火车只剩最后的锁闭任务
+                  {currenttrain->status=LOCK;
                 fprintf(outputLog,"at %lums train%d status changes from STA to LOCK.\n",RUN_TIME,id);}
+                else
+				{currenttrain->status=RUN;
+                fprintf(outputLog,"at %lums train%d status changes from STA to RUN.\n",RUN_TIME,id);
+            }}
             break;
         case PAUSE:
             if((nexttrackNode->type==TRAFFIC)&&(currenttrain->distance<=1))  //等待进入十字路节点
@@ -263,96 +255,81 @@ void trainStatusSwitcher(int id)
                           
 //十字路节点状态机转换函数					  
 void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID) 
-{int i,k,m;
-trackNode  currenttrackNode = NULL;
-train   currenttrain = NULL,firsttrain = NULL,secondtrain = NULL;
- for(i=0;i<=(MAXITEM-1);i++) 
-     {if(trackNodeList[i]->id==trackNodeID)
-        currenttrackNode=trackNodeList[i];
-		}
-    for(k=0;k<=(MAXITEM-1);k++) 
-        {if(trainList[k]->id==trainID)
-        currenttrain=trainList[k];}
-		switch(currenttrackNode->traffic.status)
-	     {
-		   case 0:
-		       if(req==ENTER)   
-                  {currenttrackNode->traffic.status=1;
-                  fprintf(outputLog,"at %lums trafficNode%d status changes from 0 to 1.\n",RUN_TIME,trackNodeID);//输出十字路节点的状态转换情况 
-                    currenttrain->flag=permitted;
-                  if(currenttrackNode->traffic.train[0]==-1)
+{
+    trackNode currenttrackNode = NULL;
+    train currenttrain = NULL,firsttrain = NULL,secondtrain = NULL;
+    currenttrackNode=trackNodeList[trackNodeID];
+    currenttrain=trainList[trainID];
+    switch(currenttrackNode->traffic.status)
+    {
+        case 0:
+            if(req==ENTER)
+            {currenttrackNode->traffic.status=1;
+                fprintf(outputLog,"at %lums trafficNode%d status changes from 0 to 1.\n",RUN_TIME,trackNodeID);//输出十字路节点的状态转换情况
+                currenttrain->flag=permitted;
+                if(currenttrackNode->traffic.train[0]==-1)
                     currenttrackNode->traffic.train[0]=trainID;
-                   else if(currenttrackNode->traffic.train[1]==-1)
-                    currenttrackNode->traffic.train[1]=trainID;} 
-              if(req==PASS&&trainID!=currenttrackNode->traffic.train[0]&&trainID!=currenttrackNode->traffic.train[1])
-                     ;        //小火车通过十字路节点后仍发出PASS指令的情况 
-               break;
-          case 1:
-               if(req==ENTER)   
-                  {if(trainID!=currenttrackNode->traffic.train[0]&&trainID!=currenttrackNode->traffic.train[1])  //区别出小火车在响应区间内多次发出ENTER指令的情况 
-				   {currenttrackNode->traffic.status=2;
-				   fprintf(outputLog,"at %lums trafficNode%d status changes from 1 to 2.\n",RUN_TIME,trackNodeID);
-                   if(currenttrackNode->traffic.train[0]==-1)
+                else if(currenttrackNode->traffic.train[1]==-1)
+                    currenttrackNode->traffic.train[1]=trainID;}
+            if(req==PASS&&trainID!=currenttrackNode->traffic.train[0]&&trainID!=currenttrackNode->traffic.train[1])
+                ;        //小火车通过十字路节点后仍发出PASS指令的情况
+            break;
+        case 1:
+            if(req==ENTER)
+            {if(trainID!=currenttrackNode->traffic.train[0]&&trainID!=currenttrackNode->traffic.train[1])  //区别出小火车在响应区间内多次发出ENTER指令的情况
+            {currenttrackNode->traffic.status=2;
+                fprintf(outputLog,"at %lums trafficNode%d status changes from 1 to 2.\n",RUN_TIME,trackNodeID);
+                if(currenttrackNode->traffic.train[0]==-1)
                     currenttrackNode->traffic.train[0]=trainID;
-                   else if(currenttrackNode->traffic.train[1]==-1)
+                else if(currenttrackNode->traffic.train[1]==-1)
                     currenttrackNode->traffic.train[1]=trainID;
-                    firstgo=judge(currenttrackNode->traffic.train[0],currenttrackNode->traffic.train[1]); //根据当前策略判断出两辆竞争的小火车谁先走 
-				   for(m=0;m<=(MAXITEM-1);m++) 
-                     {if(trainList[m]->id==currenttrackNode->traffic.train[0])
-                       firsttrain=trainList[m];
-				      else if(trainList[m]->id==currenttrackNode->traffic.train[1])
-					     secondtrain=trainList[m];}
-					if(firstgo==currenttrackNode->traffic.train[0])
-					  {firsttrain->flag=permitted;
-				       secondtrain->flag=forbidden;}
-				   else
-				     {secondtrain->flag=permitted;
-				       firsttrain->flag=forbidden;}
-				     } }
-				else if(req==PASS&&currenttrain->flag==permitted)
-                   {if(trainID==currenttrackNode->traffic.train[0]||trainID==currenttrackNode->traffic.train[1]) //区别小火车通过十字路节点后仍发出PASS指令的情况 
-				     {currenttrackNode->traffic.status=0;
-				     fprintf(outputLog,"at %lums trafficNode%d status changes from 1 to 0.\n",RUN_TIME,trackNodeID);
-                   if(trainID==currenttrackNode->traffic.train[0])//删除十字路节点表示竞争的小火车数组中已通过的小火车id
-				     currenttrackNode->traffic.train[0]=-1;
-				    else
-				      currenttrackNode->traffic.train[1]=-1;}}
-				    break;
-       
-	  case 2:if(req==ENTER) 
-	  	     {if(trainID==currenttrackNode->traffic.train[0]||trainID==currenttrackNode->traffic.train[1])       //区别出小火车在响应区间内多次发出ENTER指令的情况  
-	  	            ;}
-	  	      else if((req==PASS)&&(currenttrain->flag==permitted))
-                  { 
-                    currenttrackNode->traffic.status=1;
-                    fprintf(outputLog,"at %lums trafficNode%d status changes from 2 to 1.\n",RUN_TIME,trackNodeID);
-					if(controlPolicy==AUTO) 
-                      (trainList[trainID]->passTimes)++; //交替策略下先走的小火车先行数加一 
-                   if(trainID==currenttrackNode->traffic.train[0]) //删除十字路节点表示竞争的小火车数组中已通过的小火车id 
-				     {currenttrackNode->traffic.train[0]=-1;
-				     for(m=0;m<=(MAXITEM-1)&&trainList[m]->id!=currenttrackNode->traffic.train[1];m++) 
-                                ;
-				      trainList[m]->flag=permitted;}  //另一辆小火车的flag置为permitted 
-				  else
-				      {currenttrackNode->traffic.train[1]=-1;
-					 for(m=0;m<=(MAXITEM-1)&&trainList[m]->id!=currenttrackNode->traffic.train[0];m++) 
-                                ;
-				      trainList[m]->flag=permitted;}}
-				break;
-        }}
-        
-        
-//分叉点状态机转换函数 
+                firstgo=judge(currenttrackNode->traffic.train[0],currenttrackNode->traffic.train[1]); //根据当前策略判断出两辆竞争的小火车谁先走
+                firsttrain=trainList[currenttrackNode->traffic.train[0]];
+                secondtrain=trainList[currenttrackNode->traffic.train[1]];
+                if(firstgo==currenttrackNode->traffic.train[0])
+                {firsttrain->flag=permitted;
+                    secondtrain->flag=forbidden;}
+                else
+                {secondtrain->flag=permitted;
+                    firsttrain->flag=forbidden;}
+            } }
+            else if(req==PASS&&currenttrain->flag==permitted)
+            {if(trainID==currenttrackNode->traffic.train[0]||trainID==currenttrackNode->traffic.train[1]) //区别小火车通过十字路节点后仍发出PASS指令的情况
+            {currenttrackNode->traffic.status=0;
+                fprintf(outputLog,"at %lums trafficNode%d status changes from 1 to 0.\n",RUN_TIME,trackNodeID);
+                if(trainID==currenttrackNode->traffic.train[0])//删除十字路节点表示竞争的小火车数组中已通过的小火车id
+                    currenttrackNode->traffic.train[0]=-1;
+                else
+                    currenttrackNode->traffic.train[1]=-1;}}
+            break;
+            
+        case 2:if(req==ENTER)
+        {if(trainID==currenttrackNode->traffic.train[0]||trainID==currenttrackNode->traffic.train[1])       //区别出小火车在响应区间内多次发出ENTER指令的情况
+            ;}
+        else if((req==PASS)&&(currenttrain->flag==permitted))
+        {
+            currenttrackNode->traffic.status=1;
+            fprintf(outputLog,"at %lums trafficNode%d status changes from 2 to 1.\n",RUN_TIME,trackNodeID);
+            if(controlPolicy==AUTO)
+                (trainList[trainID]->passTimes)++; //交替策略下先走的小火车先行数加一
+            if(trainID==currenttrackNode->traffic.train[0]) //删除十字路节点表示竞争的小火车数组中已通过的小火车id
+            {currenttrackNode->traffic.train[0]=-1;
+                trainList[currenttrackNode->traffic.train[1]]->flag=permitted;}  //另一辆小火车的flag置为permitted
+            else
+            {currenttrackNode->traffic.train[1]=-1;
+                trainList[currenttrackNode->traffic.train[0]]->flag=permitted;}
+            break;
+        }
+    }
+    
+}
+//分叉点状态机转换函数
 void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID) 
-{ int i,k,m,n;
+{
   trackNode currenttrackNode = NULL;
   train currenttrain = NULL,firsttrain = NULL,secondtrain = NULL;
-  for(i=0;i<=(MAXITEM-1);i++) 
-     {if(trackNodeList[i]->id==trackNodeID)
-        currenttrackNode=trackNodeList[i];}
-  for(k=0;k<=(MAXITEM-1);k++) 
-        {if(trainList[k]->id==trainID)
-        currenttrain=trainList[k];}
+  currenttrackNode=trackNodeList[trackNodeID];
+  currenttrain=trainList[trainID]; 
     switch(currenttrackNode->branch.status){
   	  case 0:
 	   if(req==ENTER)
@@ -377,11 +354,8 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
                    else if(currenttrackNode->branch.train[1]==-1)
                     currenttrackNode->branch.train[1]=trainID;
                     firstgo=judge(currenttrackNode->branch.train[0],currenttrackNode->branch.train[1]);//根据当前策略判断出两辆竞争的小火车谁先进入公共轨道 
-                   for(m=0;m<=(MAXITEM-1);m++) 
-                     {if(trainList[m]->id==currenttrackNode->branch.train[0])
-                       firsttrain=trainList[m];
-				      else if(trainList[m]->id==currenttrackNode->branch.train[1])
-					     secondtrain=trainList[m];}
+                   firsttrain=trainList[currenttrackNode->branch.train[0]];
+				    secondtrain=trainList[currenttrackNode->branch.train[1]];
 					if(firstgo==currenttrackNode->branch.train[0])
 					  {firsttrain->flag=permitted;
 				       secondtrain->flag=forbidden;}
@@ -390,7 +364,7 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 				firsttrain->flag=forbidden;} }}
 		else if(req==PASS&&currenttrain->flag==permitted)   
 		     {if(trainID==currenttrackNode->branch.train[0]||trainID==currenttrackNode->branch.train[1])//区别小火车通过分叉点后仍发出PASS指令的情况
-			   {if(checkTrack(trackNodeID,currenttrackNode->branch.pair->id)==0)  //根据公共轨道的忙和空闲情况判断小火车是否能进入公共轨道 
+			   {if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0)  //根据公共轨道的忙和空闲情况判断小火车是否能进入公共轨道
                    currenttrain->flag=permitted;
 				 else
 				   currenttrain->flag=forbidden;
@@ -408,7 +382,7 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 			{if(trainID==currenttrackNode->branch.train[0]||trainID==currenttrackNode->branch.train[1])
 	  	            ;}
 		    else if((req==PASS)&&(currenttrain->flag==permitted))
-                  { if(checkTrack(trackNodeID,currenttrackNode->branch.pair->id)==0) //根据公共轨道的忙和空闲情况判断小火车是否能进入公共轨道 
+                  { if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0) //根据公共轨道的忙和空闲情况判断小火车是否能进入公共轨道
 				     currenttrain->flag=permitted;
 				   else
 				   currenttrain->flag=forbidden;
@@ -419,14 +393,10 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
                       (trainList[trainID]->passTimes)++;//交替策略下先走的小火车先行数加一 
                     if(trainID==currenttrackNode->branch.train[0])//删除分叉节点表示竞争的小火车数组中已通过的小火车id
 				     {currenttrackNode->branch.train[0]=-1;
-				     for(n=0;n<=(MAXITEM-1)&&trainList[n]->id!=currenttrackNode->branch.train[1];n++) 
-                                ;
-				      trainList[n]->flag=permitted;}//另一辆小火车的flag置为permitted
+				    trainList[currenttrackNode->branch.train[1]]->flag=permitted;}//另一辆小火车的flag置为permitted
 				  else
 				      {currenttrackNode->branch.train[1]=-1;
-					 for(n=0;n<=(MAXITEM-1)&&trainList[n]->id!=currenttrackNode->branch.train[0];n++) 
-                                ;
-				      trainList[n]->flag=permitted;}} 
+					trainList[currenttrackNode->branch.train[0]]->flag=permitted;}} 
 					  }
 		   break;	}}	 
 				 
@@ -441,3 +411,4 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
         
         
         
+
