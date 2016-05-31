@@ -131,7 +131,7 @@ void logWriter();
 
 //calculator模块
 void updateTrain(int id);
-int checkTrack(int branch1, int branch2);
+int checkTrack(int trainID, int branch1, int branch2);
 int judge(int train1, int train2);
 
 //FSM
