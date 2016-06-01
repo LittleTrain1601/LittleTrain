@@ -14,74 +14,81 @@ enum _servicePolicy servicePolicy;
 enum policy controlPolicy;
  
 int firstgo;
-
+int arriveresponddomain(int id);
+int branchtype(int trainid,int tracknodeid);
 
     	
 //判断id号火车是否到达分叉节点或十字路节点的响应区间 ，是返回1，否返回0 
-int arriveresponddomain(int id)
-{train currenttrain = NULL;
-trackNode nexttrackNode = NULL;
-int lastNode;//小火车走过的上一个节点 
- int m,n;
- int range; //下一分叉节点或十字路节点的响应区间长度 
- currenttrain=trainList[id];
- nexttrackNode=trackNodeList[currenttrain->nextNode];
- for(m=0;m<=(MAXITEM-1)&&(currenttrain->nodeList[m]!=currenttrain->nextNode);m++) 
-        {;
-        }
-if(nexttrackNode->type!=BRANCH&&nexttrackNode->type!=TRAFFIC)
-      return 0;
-if(nexttrackNode->type==BRANCH)
-    {{if(currenttrain->direction==clockwise)
-        {if(m!=0)                                 //同一小火车轨道上的节点按顺时针顺序储存 
-		   lastNode=currenttrain->nodeList[m-1]; 
-		 else    //小火车即将到达的节点在小火车轨道数组中的下标为0 
-		   {for(n=0;n<=(MAXITEM-1)&&(currenttrain->nodeList[n]!=-1);n++)
-		       {;}
-		       lastNode=currenttrain->nodeList[n-1];}}
-       else
-          {if(currenttrain->nodeList[m+1]!=-1)
-		   lastNode=currenttrain->nodeList[m+1];
-		   else //小火车即将到达的节点是小火车轨道数组中的最后一个元素 
-		   lastNode=currenttrain->nodeList[0];}}
-        {if(lastNode==nexttrackNode->branch.left->id)
-          range=nexttrackNode->branch.lrange;
-        else if(lastNode==nexttrackNode->branch.right->id)
-          range=nexttrackNode->branch.rrange;
+int arriveresponddomain(int id){
+    train currenttrain = NULL;
+    trackNode nexttrackNode = NULL;
+    int lastNode;//小火车走过的上一个节点
+    int m,n;
+    int range; //下一分叉节点或十字路节点的响应区间长度
+    currenttrain=trainList[id];
+    nexttrackNode=trackNodeList[currenttrain->nextNode];
+    for(m=0;m<=(MAXITEM-1)&&(currenttrain->nodeList[m]!=currenttrain->nextNode);m++);
+    if(nexttrackNode->type!=BRANCH&&nexttrackNode->type!=TRAFFIC)
+        return 0;
+    else if(nexttrackNode->type==BRANCH){
+        if(branchtype(id,currenttrain->nextNode)==0)
+            return 0;
         else
-           return 0;}
-    if(1<currenttrain->distance<=range)   //小火车进入响应区间 
-       return 1;
-     else
-       return 0;}
-if(nexttrackNode->type==TRAFFIC)
-    {{if(currenttrain->direction==clockwise)
-        {if(m!=0)
-		   lastNode=currenttrain->nodeList[m-1];
-		 else
-		   {for(n=0;n<=(MAXITEM-1)&&(currenttrain->nodeList[n]!=-1);n++)
-		       {;}
-		       lastNode=currenttrain->nodeList[n-1];}}
-       else
-          {if(currenttrain->nodeList[m+1]!=-1)
-		   lastNode=currenttrain->nodeList[m+1];
-		   else
-		   lastNode=currenttrain->nodeList[0];}}
-        if(lastNode==nexttrackNode->traffic.down->id)
-          range=nexttrackNode->traffic.drange;
-        else if(lastNode==nexttrackNode->traffic.left->id)
-          range=nexttrackNode->traffic.lrange;
-        else if(lastNode==nexttrackNode->traffic.right->id)
-          range=nexttrackNode->traffic.rrange;
-        else if(lastNode==nexttrackNode->traffic.up->id)
-          range=nexttrackNode->traffic.urange;
-     if(currenttrain->distance<=range)
-       return 1;
-     else
-       return 0;}
-else
-    return 0;}  
-  
+        {if(currenttrain->direction==clockwise)
+        {if(m!=0)                                 //同一小火车轨道上的节点按顺时针顺序储存
+            lastNode=currenttrain->nodeList[m-1];
+        else    //小火车即将到达的节点在小火车轨道数组中的下标为0
+        {for(n=0;n<=(MAXITEM-1)&&(currenttrain->nodeList[n]!=-1);n++)
+        {;}
+            lastNode=currenttrain->nodeList[n-1];}}
+        else
+        {if(currenttrain->nodeList[m+1]!=-1)
+            lastNode=currenttrain->nodeList[m+1];
+        else //小火车即将到达的节点是小火车轨道数组中的最后一个元素
+            lastNode=currenttrain->nodeList[0];}
+            if(lastNode==nexttrackNode->branch.left->id)
+                range=nexttrackNode->branch.lrange;
+            else if(lastNode==nexttrackNode->branch.right->id)
+                range=nexttrackNode->branch.rrange;
+            
+            if(currenttrain->distance<=range&&currenttrain->distance>1)   //小火车进入响应区间
+                return 1;
+            else
+                return 0;
+        }
+    } else {
+        if(currenttrain->direction==clockwise){
+            if(m!=0) {
+                lastNode=currenttrain->nodeList[m-1];
+            } else {
+                for(n=0;n<=(MAXITEM-1)&&(currenttrain->nodeList[n]!=-1);n++);
+                lastNode=currenttrain->nodeList[n-1];
+            }
+        } else {
+            if(currenttrain->nodeList[m+1]!=-1) {
+                lastNode=currenttrain->nodeList[m+1];
+            } else {
+                lastNode=currenttrain->nodeList[0];
+            }
+        }
+        if(lastNode==nexttrackNode->traffic.down->id) {
+            range=nexttrackNode->traffic.drange;
+        } else if(lastNode==nexttrackNode->traffic.left->id) {
+            range=nexttrackNode->traffic.lrange;
+        } else if(lastNode==nexttrackNode->traffic.right->id) {
+            range=nexttrackNode->traffic.rrange;
+        } else if(lastNode==nexttrackNode->traffic.up->id) {
+            range=nexttrackNode->traffic.urange;
+        }
+        if(currenttrain->distance<=range&&currenttrain->distance>1) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+}
+
+
 //若分叉节点是小火车当前运行方向下进入公共轨道的节点返回1，若分叉节点是小火车当前运行方向下出公共轨道的节点返回0 
 int branchtype(int trainid,int tracknodeid){
     int m,n;
@@ -190,7 +197,8 @@ void trainStatusSwitcher(int id)
                 }
                 else                                           //小火车出公共轨道，将该段轨道标记为空闲
                     {nexttrackNode->branch.flag=0;
-                   nexttrackNode->branch.pair->branch.flag=0;}
+                   nexttrackNode->branch.pair->branch.flag=0;
+                    }
             }
             else if(nexttrackNode->type==STATION&&currenttrain->distance==0)//到站
 				        {
@@ -204,7 +212,7 @@ void trainStatusSwitcher(int id)
             if(servicePolicy==SEQUENCING)
             {
                 currentdata=(trainQueueNode)currenttrain->mission->head->next->data;//小火车当前任务
-                if(currentdata->time<=(RUN_TIME-nexttrackNode->station.stop)) {   //达到要求的停靠时间
+                if((currentdata->time)*CLOCKS_PER_SEC<=(RUN_TIME-nexttrackNode->station.stop)) {   //达到要求的停靠时间
                     pop(currenttrain->mission);//更新小火车任务队列
                     currenttrain->status=RUN;
                     fprintf(outputLog,"at %lums train%d status changes from STA to RUN.\n",RUN_TIME,id);
@@ -220,7 +228,7 @@ void trainStatusSwitcher(int id)
                     p=p->next;
                     anothercurrentdata=(trainQueueNode)(p->data);
                 }
-                if(anothercurrentdata->time<=(RUN_TIME-nexttrackNode->station.stop))   //达到要求的停靠时间
+                if((currentdata->time)*CLOCKS_PER_SEC<=(RUN_TIME-nexttrackNode->station.stop))   //达到要求的停靠时间
                 {
                     if(p==currenttrain->mission->head->next)  //完成的任务是小火车头结点后的首任务
                         q=currenttrain->mission->head;
@@ -244,6 +252,8 @@ void trainStatusSwitcher(int id)
             }
             break;
         case PAUSE:
+                next=currenttrain->nextNode;	 //小火车下一个节点编号
+                nexttrackNode=trackNodeList[next];
             if((nexttrackNode->type==TRAFFIC)&&(currenttrain->distance<=1))  //等待进入十字路节点
             {
                 trafficNodeStatusSwitcher(PASS, id, currenttrain->nextNode);
@@ -377,14 +387,17 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
                    currenttrain->flag=permitted;
 				 else
 				   currenttrain->flag=forbidden;
-				 if((currenttrain->flag=permitted))
+				 if((currenttrain->flag==permitted))
 				  {currenttrackNode->branch.status=0;
 				  fprintf(outputLog,"at %lums branchNode%d status changes from 1 to 0.\n",RUN_TIME,trackNodeID);
                     if(trainID==currenttrackNode->branch.train[0])//删除分叉节点表示竞争的小火车数组中已通过的小火车id
                     currenttrackNode->branch.train[0]=-1;
                    else if(trainID==currenttrackNode->branch.train[1])
-                    currenttrackNode->branch.train[1]=-1;}}}
-				break;
+                    currenttrackNode->branch.train[1]=-1;}
+               }
+             }
+            
+            break;
 		
 		case 2:
 			if(req==ENTER) //区别出小火车在响应区间内多次发出ENTER指令的情况
