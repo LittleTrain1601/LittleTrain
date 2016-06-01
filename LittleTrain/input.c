@@ -345,7 +345,7 @@ void build() {
                     fprintf(conf, "%d\n", range);
                     if (visited) {
                         currentNode = trackNodeList[idInPosition[inputY][inputX]];
-                        if (inputY == y1 || inputY == y2) {
+                        if (inputX == x1 || inputX == x2) {
                             currentNode->traffic.up = previousNode;
                             currentNode->traffic.udistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
                             distence = currentNode->traffic.udistance;
@@ -387,7 +387,7 @@ void build() {
         currentNode->station.ldistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
         connectPreviousBranch(previousNode, currentNode, currentNode->station.ldistance);
         
-        printf("请指定第%d辆小火车的位置。小火车默认为顺时针，指定它前方节点的ID和距离:", i);
+        printf("请指定第%d辆小火车的位置。火车不可初始化在公共轨道上。小火车默认为顺时针，指定它前方节点的ID和距离:", i);
         fscanf(fp, "%d%d", &inputId, &inputDistence);
         fprintf(conf, "%d %d\n", inputId, inputDistence);
         trainList[i]->nextNode = inputId;
@@ -397,15 +397,17 @@ void build() {
     }
     servicePolicy = SEQUENCING;
     controlPolicy = AUTO;
-    input(fp);
+    //input(fp);
     fclose(fp);
     fclose(conf);
 }
 
 void input(FILE *fp) {
+    int configFile = 1;
     if (!fp) {
         fclose(fp);
         fp = fopen("input.txt", "r");
+        configFile = 0;
     }
     char missionType;//S代表站点的停靠请求，T表示设置火车参数，Q表示退出程序，C表示切换服务策略
     char cmdBuff[20], trainDirection[20];
@@ -431,7 +433,8 @@ void input(FILE *fp) {
                 }
                 break;
             case 'S':
-                fscanf(fp, "%d%d%d", &nodeID, &stopTime, &serverTrain);
+                fscanf(fp, "%d%d", &nodeID, &serverTrain);
+                stopTime = (rand() % 9)+ 2;//(rand() % (10-2+1))+ a;
                 mainData = calloc(1, sizeof(struct _mainQueueNode));
                 mainData->type = MSTATION;
                 mainData->station.id = nodeID;
@@ -463,6 +466,8 @@ void input(FILE *fp) {
         }
     }
     fclose(fp);
-    fp = fopen("input.txt", "w");
-    fclose(fp);
+    if (!configFile) {
+        fp = fopen("input.txt", "w");
+        fclose(fp);
+    }
 }
