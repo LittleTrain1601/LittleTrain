@@ -87,6 +87,7 @@ void putTrain(int id) {
             yPosition += distance;
             if (yPosition > y2) {
                 distance -= y2 - (yPosition - distance);
+                yPosition = y2;
                 xPosition -= distance;
                 if (xPosition < x1) {
                     distance -= x2-x1;
@@ -230,6 +231,7 @@ void putTrain(int id) {
             yPosition += distance;
             if (yPosition > y2) {
                 distance -= y2 - (yPosition - distance);
+                yPosition = y2;
                 xPosition -= distance;
                 if (xPosition < x1) {
                     distance -= x2-x1;
@@ -335,5 +337,26 @@ void viewer() {
             putchar(screenBuff[i][j]);
         }
         putchar('\n');
+    }
+    FILE * output = fopen("outputdetail.txt", "a");
+    for (int i=0; i<MAXITEM; i++) {
+        if (trainList[i]) {
+            switch (trainList[i]->status) {
+                case RUN:
+                    fprintf(output, "at %lu ms, train%d is running at speed %d, %lf meters to tracknode%d, next stop is station%d.\n", RUN_TIME, i, trainList[i]->v, trainList[i]->distance, trainList[i]->nextNode, ((trainQueueNode)(trainList[i]->mission->head->next->data))->station);
+                    break;
+                case FREE:
+                    fprintf(output, "at %lu ms, train%d is free.\n", RUN_TIME);
+                    break;
+                case STA:
+                    fprintf(output, "at %lu ms, train%d is stopping at station%d.\n", RUN_TIME, i, ((trainQueueNode)(trainList[i]->mission->head->next->data))->station);
+                    break;
+                case PAUSE:
+                    fprintf(output, "at %lu ms, train%d is paused.\n", RUN_TIME);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
