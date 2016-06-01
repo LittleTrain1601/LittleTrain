@@ -353,12 +353,21 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
   	  case 0:
 	   if(req==ENTER)
 	  	   {currenttrackNode->branch.status=1;
-	  	   fprintf(outputLog,"at %lums branchNode%d status changes from 0 to 1.\n",RUN_TIME,trackNodeID);//输出分叉节点的状态转换情况 
+               currenttrackNode->branch.pair->branch.status=1;
+	  	   fprintf(outputLog,"at %lums branchNode%d and its pair status changes from 0 to 1.\n",RUN_TIME,trackNodeID);//输出分叉节点的状态转换情况
 	  	    currenttrain->flag=permitted;
-            if(currenttrackNode->branch.train[0]==-1)   //将小火车加入分叉点的竞争数组 
-                    currenttrackNode->branch.train[0]=trainID;
-             else if(currenttrackNode->branch.train[1]==-1)
-                    currenttrackNode->branch.train[1]=trainID;}
+            if(currenttrackNode->branch.train[0]==-1&&currenttrackNode->branch.pair->branch.train[0]==-1)   //将小火车加入分叉点的竞争数组
+              {currenttrackNode->branch.train[0]=trainID;
+                  currenttrackNode->branch.pair->branch.train[0]=trainID;}
+            else if(currenttrackNode->branch.train[1]==-1&&currenttrackNode->branch.pair->branch.train[0]==-1)
+            {currenttrackNode->branch.train[1]=trainID;
+                currenttrackNode->branch.pair->branch.train[0]=trainID;}
+            else if(currenttrackNode->branch.train[0]==-1&&currenttrackNode->branch.pair->branch.train[1]==-1)
+            {currenttrackNode->branch.train[0]=trainID;
+                currenttrackNode->branch.pair->branch.train[1]=trainID;}
+            else if(currenttrackNode->branch.train[1]==-1&&currenttrackNode->branch.pair->branch.train[1]==-1)
+            {currenttrackNode->branch.train[1]=trainID;
+                currenttrackNode->branch.pair->branch.train[1]=trainID;}     }
        else if(req==PASS&&trainID!=currenttrackNode->branch.train[0]&&trainID!=currenttrackNode->branch.train[1])
                      ;  //区别小火车通过分叉点后仍发出PASS指令的情况 
          break;
@@ -367,12 +376,21 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 	  	if(req==ENTER)   //区别出小火车在响应区间内多次发出ENTER指令的情况 
 			{if(trainID!=currenttrackNode->branch.train[0]&&trainID!=currenttrackNode->branch.train[1])
 			   {currenttrackNode->branch.status=2;
-			   fprintf(outputLog,"at %lums branchNode%d status changes from 1 to 2.\n",RUN_TIME,trackNodeID);
-			      if(currenttrackNode->branch.train[0]==-1)
-                    currenttrackNode->branch.train[0]=trainID;
-                   else if(currenttrackNode->branch.train[1]==-1)
-                    currenttrackNode->branch.train[1]=trainID;
-                    firstgo=judge(currenttrackNode->branch.train[0],currenttrackNode->branch.train[1]);//根据当前策略判断出两辆竞争的小火车谁先进入公共轨道 
+                   currenttrackNode->branch.pair->branch.status=2;
+			   fprintf(outputLog,"at %lums branchNode%d and its pair status changes from 1 to 2.\n",RUN_TIME,trackNodeID);
+			      if(currenttrackNode->branch.train[0]==-1&&currenttrackNode->branch.pair->branch.train[0]==-1)
+                    {currenttrackNode->branch.train[0]=trainID;
+                        currenttrackNode->branch.pair->branch.train[0]=trainID;}
+                   else if(currenttrackNode->branch.train[0]==-1&&currenttrackNode->branch.pair->branch.train[1]==-1)
+                   {currenttrackNode->branch.train[0]=trainID;
+                       currenttrackNode->branch.pair->branch.train[1]=trainID;}
+                   else if(currenttrackNode->branch.train[1]==-1&&currenttrackNode->branch.pair->branch.train[0]==-1)
+                   {currenttrackNode->branch.train[1]=trainID;
+                       currenttrackNode->branch.pair->branch.train[0]=trainID;}
+                   else if(currenttrackNode->branch.train[1]==-1&&currenttrackNode->branch.pair->branch.train[1]==-1)
+                   {currenttrackNode->branch.train[1]=trainID;
+                       currenttrackNode->branch.pair->branch.train[1]=trainID;}
+                   firstgo=judge(currenttrackNode->branch.train[0],currenttrackNode->branch.train[1]);//根据当前策略判断出两辆竞争的小火车谁先进入公共轨道
                    firsttrain=trainList[currenttrackNode->branch.train[0]];
 				    secondtrain=trainList[currenttrackNode->branch.train[1]];
 					if(firstgo==currenttrackNode->branch.train[0])
@@ -387,15 +405,30 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
                    currenttrain->flag=permitted;
 				 else
 				   currenttrain->flag=forbidden;
-				 if((currenttrain->flag==permitted))
+				 if(currenttrain->flag==permitted)
 				  {currenttrackNode->branch.status=0;
-				  fprintf(outputLog,"at %lums branchNode%d status changes from 1 to 0.\n",RUN_TIME,trackNodeID);
-                    if(trainID==currenttrackNode->branch.train[0])//删除分叉节点表示竞争的小火车数组中已通过的小火车id
-                    currenttrackNode->branch.train[0]=-1;
-                   else if(trainID==currenttrackNode->branch.train[1])
-                    currenttrackNode->branch.train[1]=-1;}
+                      currenttrackNode->branch.pair->branch.status=0;
+				  fprintf(outputLog,"at %lums branchNode%d and its pair status changes from 1 to 0.\n",RUN_TIME,trackNodeID);
+                    if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[0])//删除分叉节点表示竞争的小火车数组中已通过的小火车id
+                    {currenttrackNode->branch.train[0]=-1;
+                        currenttrackNode->branch.pair->branch.train[0]=-1;}
+                     else if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[1])//删除分叉节点表示竞争的小火车数组中已通过的小火车id
+                      {currenttrackNode->branch.train[0]=-1;
+                          currenttrackNode->branch.pair->branch.train[1]=-1;}
+                     else if(trainID==currenttrackNode->branch.train[1]&&trainID==currenttrackNode->branch.pair->branch.train[0])//删除分叉节点表示竞争的小火车数组中已通过的小火车id
+                      {currenttrackNode->branch.train[1]=-1;
+                          currenttrackNode->branch.pair->branch.train[0]=-1;}
+                      if(trainID==currenttrackNode->branch.train[1]&&trainID==currenttrackNode->branch.pair->branch.train[1])//删除分叉节点表示竞争的小火车数组中已通过的小火车id
+                      {currenttrackNode->branch.train[1]=-1;
+                          currenttrackNode->branch.pair->branch.train[1]=-1;}
+                  }
                }
              }
+        else if (req==PASS&&currenttrain->flag==forbidden) {
+            if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0)  //根据公共轨道的忙和空闲情况判断小火车是否能进入公共轨道
+            {currenttrain->flag=permitted;}
+            else
+                ;}
             
             break;
 		
@@ -410,17 +443,38 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 				   currenttrain->flag=forbidden;
 				   if(currenttrain->flag==permitted)
 				   {currenttrackNode->branch.status=1;
-				   fprintf(outputLog,"at %lums branchNode%d status changes from 2 to 1.\n",RUN_TIME,trackNodeID);
+                       currenttrackNode->branch.pair->branch.status=1;
+				   fprintf(outputLog,"at %lums branchNode%d and its pair status changes from 2 to 1.\n",RUN_TIME,trackNodeID);
                       if(controlPolicy==AUTO) 
                       (trainList[trainID]->passTimes)++;//交替策略下先走的小火车先行数加一 
-                    if(trainID==currenttrackNode->branch.train[0])//删除分叉节点表示竞争的小火车数组中已通过的小火车id
+                    if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[0])//删除分叉节点表示竞争的小火车数组中已通过的小火车id
 				     {currenttrackNode->branch.train[0]=-1;
+                         currenttrackNode->branch.pair->branch.train[0]=-1;
 				    trainList[currenttrackNode->branch.train[1]]->flag=permitted;}//另一辆小火车的flag置为permitted
-				  else
-				      {currenttrackNode->branch.train[1]=-1;
-					trainList[currenttrackNode->branch.train[0]]->flag=permitted;}} 
-					  }
-		   break;	}}	 
+				  else if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[1])
+                  {currenttrackNode->branch.train[0]=-1;
+                      currenttrackNode->branch.pair->branch.train[1]=-1;
+                      trainList[currenttrackNode->branch.train[1]]->flag=permitted;}
+                       
+                  else if(trainID==currenttrackNode->branch.train[1]&&trainID==currenttrackNode->branch.pair->branch.train[0])
+                  {currenttrackNode->branch.train[1]=-1;
+                      currenttrackNode->branch.pair->branch.train[0]=-1;
+                      trainList[currenttrackNode->branch.train[0]]->flag=permitted;}
+                       
+                  else if(trainID==currenttrackNode->branch.train[1]&&trainID==currenttrackNode->branch.pair->branch.train[1])
+                  {currenttrackNode->branch.train[1]=-1;
+                      currenttrackNode->branch.pair->branch.train[1]=-1;
+                      trainList[currenttrackNode->branch.train[0]]->flag=permitted;}
+                   }
+                  }
+            else if((req==PASS)&&(currenttrain->flag==forbidden)){
+                if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0)  //根据公共轨道的忙和空闲情况判断小火车是否能进入公共轨道
+                {currenttrain->flag=permitted;}
+                else
+                    ;
+            }
+		   break;	}
+}
 				 
 				   
               
