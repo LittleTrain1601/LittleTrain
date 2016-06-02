@@ -25,13 +25,14 @@ queue newQueue(){
 
 //将新任务追加到队列末尾,返回插入的节点的地址 
 queueNode append(queue waitingqueue, void * data){
-queueNode newqueueNode=NULL;
-newqueueNode=(queueNode)malloc(sizeof(struct _queueNode));
-newqueueNode->next=NULL;
-newqueueNode->data=data;
-waitingqueue->tail->next=newqueueNode;
-waitingqueue->tail=newqueueNode;
-return newqueueNode;}
+    queueNode newqueueNode=NULL;
+    newqueueNode=(queueNode)malloc(sizeof(struct _queueNode));
+    newqueueNode->next=NULL;
+    newqueueNode->data=data;
+    waitingqueue->tail->next=newqueueNode;
+    waitingqueue->tail=newqueueNode;
+    return newqueueNode;
+}
 
 //删除ptr所指向任务的下一个任务
 void deleteAfter(queue waitingqueue, queueNode ptr){

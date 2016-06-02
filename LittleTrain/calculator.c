@@ -17,9 +17,9 @@ clock_t minusinputtime;
 clock_t RUN_TIME=0;
 clock_t dt;
 
-int nextIndex(int trainID){
+int nextIndex(int trainID, int currentID){
     int i;
-    int nodeid = trainList[trainID]->nextNode;
+    int nodeid = currentID;
     for (i=0; nodeid != trainList[trainID]->nodeList[i]; i++) {
         if (trainList[trainID]->nodeList[i] == -1) {
             i = 0;
@@ -44,10 +44,8 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
     double x;
     x=((double)dt)*(trainList[id]->v)/CLOCKS_PER_SEC;
     int nodeid=trainList[id]->nextNode;
-    queueNode traincurrentptr;
-    traincurrentptr=(struct _queueNode*)malloc(sizeof(queueNode));//小火车链表当前指针1
+    queueNode traincurrentptr;//小火车链表当前指针1
     trainQueueNode traindata;
-    traindata=(struct _trainQueueNode*)malloc(sizeof(trainQueueNode));
     if(trainList[id]->status==RUN){
         //if(trainList[id]->direction==)   
         //else{
@@ -81,7 +79,7 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
                     }
                 }
                 if(stopped==0) {
-                    trainList[id]->nextNode = trainList[id]->nodeList[nextIndex(id)];
+                    trainList[id]->nextNode = trainList[id]->nodeList[nextIndex(id, trainList[id]->nextNode)];
                     if (trackNodeList[nodeid]->station.left->id == trainList[id]->nextNode) {
                         trainList[id]->distance += trackNodeList[nodeid]->station.ldistance;
                     } else {
@@ -89,7 +87,7 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
                     }
                 }
             } else if(trackNodeList[nodeid]->type==BRANCH){
-                trainList[id]->nextNode = trainList[id]->nodeList[nextIndex(id)];
+                trainList[id]->nextNode = trainList[id]->nodeList[nextIndex(id, trainList[id]->nextNode)];
                 if (trackNodeList[nodeid]->branch.left->id == trainList[id]->nextNode) {
                     trainList[id]->distance += trackNodeList[nodeid]->branch.ldistance;
                 } else if (trackNodeList[nodeid]->branch.right->id == trainList[id]->nextNode) {
@@ -98,7 +96,7 @@ void updateTrain(int id){//循环里计算一辆小火车的位置并更新。 	
                     trainList[id]->distance += trackNodeList[nodeid]->branch.ddistance;
                 }
             } else {
-                trainList[id]->nextNode = trainList[id]->nodeList[nextIndex(id)];
+                trainList[id]->nextNode = trainList[id]->nodeList[nextIndex(id, trainList[id]->nextNode)];
                 if (trackNodeList[nodeid]->traffic.left->id == trainList[id]->nextNode) {
                     trainList[id]->distance += trackNodeList[nodeid]->traffic.ldistance;
                 } else if (trackNodeList[nodeid]->traffic.right->id == trainList[id]->nextNode) {
@@ -125,16 +123,16 @@ int checkTrack(int trainID, int branch1, int branch2){
     while (trackptr->id != branch2) {
         switch(trackptr->type){
             case STATION:
-                trackptr=trackNodeList[nextIndex(trainID)];
+                trackptr=trackNodeList[trainList[trainID]->nodeList[nextIndex(trainID, trackptr->id)]];
                 break;
             case TRAFFIC:
-                trackptr=trackNodeList[nextIndex(trainID)];
+                trackptr=trackNodeList[trainList[trainID]->nodeList[nextIndex(trainID, trackptr->id)]];
                 break;
             case BRANCH:
                 if(trackptr->branch.flag==1){
                     occupied=1;
                 } else {
-                    trackptr=trackNodeList[nextIndex(trainID)];
+                    trackptr=trackNodeList[trainList[trainID]->nodeList[nextIndex(trainID, trackptr->id)]];
                 }
                 break;
             default:
