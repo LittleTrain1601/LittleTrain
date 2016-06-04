@@ -2,9 +2,9 @@
 //  main.c
 //  LittleTrain
 //
-//  Created by å·¦æ˜Šä¸œ on 16/5/11.
-//  modifyied by æ¨æ—é’ on 16/5/29
-//  Copyright Â© 2016å¹´ 1601. All rights reserved.
+//  Created by ×óê»¶« on 16/5/11.
+//  modifyied by ÑîÁÖÇà on 16/5/29
+//  Copyright ? 2016Äê 1601. All rights reserved.
 //
 
 #include <stdio.h>
@@ -12,8 +12,8 @@
 #include "train.h"
 #include <time.h>
 
-trackNode trackNodeList[MAXITEM];//ä»¥èŠ‚ç‚¹IDä¸ºä¸‹æ ‡
-train trainList[MAXITEM]; //ä»¥å°ç«è½¦IDä¸ºä¸‹æ ‡
+trackNode trackNodeList[MAXITEM];//ÒÔ½ÚµãIDÎªÏÂ±ê
+train trainList[MAXITEM]; //ÒÔĞ¡»ğ³µIDÎªÏÂ±ê
 
 clock_t minuswhiletime;
 clock_t minussystemtime;
@@ -24,142 +24,151 @@ queue mainMission;
 int trainid;
 
 int secure() {
-    //æ£€æŸ¥å°ç«è½¦æ˜¯å¦éƒ½å¤„äºLOCkçŠ¶æ€ã€‚è‹¥æ˜¯ï¼Œåˆ™è¿”å›1ï¼Œç¨‹åºå°†ç»“æŸè¿è¡Œ
-    for (int i=0; i<MAXITEM; i++) {
-        if (trainList[i]) {
-            if (trainList[i]->status != LOCK) {
-                return 0;
-            }
-        }
-    }
-    return 1;
+	//¼ì²éĞ¡»ğ³µÊÇ·ñ¶¼´¦ÓÚLOCk×´Ì¬¡£ÈôÊÇ£¬Ôò·µ»Ø1£¬³ÌĞò½«½áÊøÔËĞĞ
+	for (int i = 0; i < MAXITEM; i++) {
+		if (trainList[i]) {
+			if (trainList[i]->status != LOCK) {
+				return 0;
+			}
+		}
+	}
+	return 1;
 }
-int prevIndex(int trainID){
-    int i;
-    int nodeid = trainList[trainID]->nextNode;
-    for (i=0; nodeid != trainList[trainID]->nodeList[i]; i++) {}
-    if(trainList[trainID]->direction == anticlockwise){
-        if (trainList[trainID]->nodeList[++i] == -1) {
-            i=0;
-        }
-    } else {
-        if(i==0){
-            for(;trainList[trainID]->nodeList[i]!=-1;i++) {}
-            i--;
-        }else{
-            i--;
-        }
-    }
-    return i;
+int prevIndex(int trainID) {
+	int i;
+	int nodeid = trainList[trainID]->nextNode;
+	for (i = 0; nodeid != trainList[trainID]->nodeList[i]; i++) {}
+	if (trainList[trainID]->direction == anticlockwise) {
+		if (trainList[trainID]->nodeList[++i] == -1) {
+			i = 0;
+		}
+	}
+	else {
+		if (i == 0) {
+			for (; trainList[trainID]->nodeList[i] != -1; i++) {}
+			i--;
+		}
+		else {
+			i--;
+		}
+	}
+	return i;
 }
 void changeDirection() {
-    //ä¸åŸæ¥æ–¹å‘ç›¸åçš„æƒ…å†µï¼šæ‰¾ä¸Šä¸€ä¸ªèŠ‚ç‚¹idè®°ä¸ºâ€œiâ€ï¼Œæ ¹æ®ä¸Šä¸€èŠ‚ç‚¹ç±»å‹æ›´æ”¹å°ç«è½¦diatance
-    int i = trainList[trainid]->nodeList[prevIndex(trainid)];
-    if(trackNodeList[i]->type==STATION){
-        if (trackNodeList[i]->station.left->id == trainList[trainid]->nextNode) {
-            trainList[trainid]->distance = trackNodeList[i]->station.ldistance-trainList[trainid]->distance;
-        } else {
-            trainList[trainid]->distance = trackNodeList[i]->station.rdistance-trainList[trainid]->distance;
-        }
-        
-    }else if(trackNodeList[i]->type==BRANCH){
-        if (trackNodeList[i]->branch.left->id == trainList[trainid]->nextNode) {
-            trainList[trainid]->distance = trackNodeList[i]->branch.ldistance-trainList[trainid]->distance;
-        } else if (trackNodeList[i]->branch.right->id == trainList[trainid]->nextNode){
-            trainList[trainid]->distance = trackNodeList[i]->branch.rdistance-trainList[trainid]->distance;
-        }
-        else
-            trainList[trainid]->distance = trackNodeList[i]->branch.ddistance-trainList[trainid]->distance;
-        
-    }else{
-        if (trackNodeList[i]->traffic.left->id == trainList[trainid]->nextNode) {
-            trainList[trainid]->distance = trackNodeList[i]->branch.ldistance-trainList[trainid]->distance;
-        } else if (trackNodeList[i]->traffic.right->id == trainList[trainid]->nextNode){
-            trainList[trainid]->distance = trackNodeList[i]->traffic.rdistance-trainList[trainid]->distance;
-        }else if (trackNodeList[i]->traffic.down->id == trainList[trainid]->nextNode){
-            trainList[trainid]->distance = trackNodeList[i]->traffic.ddistance-trainList[trainid]->distance;
-        } else {
-            trainList[trainid]->distance = trackNodeList[i]->traffic.udistance-trainList[trainid]->distance;
-        }
-    }
-    trainList[trainid]->nextNode=i;
+	//ÓëÔ­À´·½ÏòÏà·´µÄÇé¿ö£ºÕÒÉÏÒ»¸ö½Úµãid¼ÇÎª¡°i¡±£¬¸ù¾İÉÏÒ»½ÚµãÀàĞÍ¸ü¸ÄĞ¡»ğ³µdiatance
+	int i = trainList[trainid]->nodeList[prevIndex(trainid)];
+	if (trackNodeList[i]->type == STATION) {
+		if (trackNodeList[i]->station.left->id == trainList[trainid]->nextNode) {
+			trainList[trainid]->distance = trackNodeList[i]->station.ldistance - trainList[trainid]->distance;
+		}
+		else {
+			trainList[trainid]->distance = trackNodeList[i]->station.rdistance - trainList[trainid]->distance;
+		}
+
+	}
+	else if (trackNodeList[i]->type == BRANCH) {
+		if (trackNodeList[i]->branch.left->id == trainList[trainid]->nextNode) {
+			trainList[trainid]->distance = trackNodeList[i]->branch.ldistance - trainList[trainid]->distance;
+		}
+		else if (trackNodeList[i]->branch.right->id == trainList[trainid]->nextNode) {
+			trainList[trainid]->distance = trackNodeList[i]->branch.rdistance - trainList[trainid]->distance;
+		}
+		else
+			trainList[trainid]->distance = trackNodeList[i]->branch.ddistance - trainList[trainid]->distance;
+
+	}
+	else {
+		if (trackNodeList[i]->traffic.left->id == trainList[trainid]->nextNode) {
+			trainList[trainid]->distance = trackNodeList[i]->branch.ldistance - trainList[trainid]->distance;
+		}
+		else if (trackNodeList[i]->traffic.right->id == trainList[trainid]->nextNode) {
+			trainList[trainid]->distance = trackNodeList[i]->traffic.rdistance - trainList[trainid]->distance;
+		}
+		else if (trackNodeList[i]->traffic.down->id == trainList[trainid]->nextNode) {
+			trainList[trainid]->distance = trackNodeList[i]->traffic.ddistance - trainList[trainid]->distance;
+		}
+		else {
+			trainList[trainid]->distance = trackNodeList[i]->traffic.udistance - trainList[trainid]->distance;
+		}
+	}
+	trainList[trainid]->nextNode = i;
 }
 
-int main(){
-    mainMission = newQueue();
-    logWriter();
-    build();
-    clock_t whiletime;clock_t whilecurrent=0;
-    RUN_TIME = clock();
-    clock_t Rtime = RUN_TIME;
-    trainQueueNode trainptr;//å°ç«è½¦æ–°æ•°æ®åŸŸæŒ‡é’ˆ
-    mainQueueNode mainptr;
-    //queueNode traincurrent;// å°ç«è½¦ä»»åŠ¡é˜Ÿåˆ—å½“å‰æŒ‡é’ˆ
-    while(!secure()){
-        whiletime=clock();
-        minuswhiletime=whiletime-whilecurrent;
-        dt = minuswhiletime - minusinputtime;
-        RUN_TIME += dt;
-        minusinputtime = 0;
-        whilecurrent=whiletime;//while å¾ªç¯æ—¶é—´è®°å½•
-        if(RUN_TIME-Rtime>=CLOCKS_PER_SEC){
-            input(NULL);
-        }
-        while ((mainptr = (mainQueueNode)pop(mainMission)) != NULL) {
-            switch (mainptr->type) {
-                case MSTATION:
-                    trainid = mainptr->station.train;
-                    trainptr = calloc(1, sizeof(struct _trainQueueNode));
-                    trainptr->station=mainptr->station.id;
-                    trainptr->time=mainptr->station.time;
-                    append(trainList[trainid]->mission,(void *)trainptr);
-                    fprintf(outputLog,"at %lums station%d requires train%d to stop for %d s.\n",RUN_TIME,mainptr->station.id, trainid,mainptr->station.time);
-                    break;
-                case MTRAIN:
-                    trainid = mainptr->train.id;
-                    trainList[trainid]->v=mainptr->train.speed;
-                    if (mainptr->train.direction == MCLOCLWISE&&trainList[trainid]->direction==clockwise) {
-                        fprintf(outputLog,"at %lums train%d change speed to %d.\n",RUN_TIME,trainid,mainptr->train.speed);
-                    }
-                    else if(mainptr->train.direction == MCLOCLWISE&&trainList[trainid]->direction==anticlockwise){
-                        changeDirection();
-                        trainList[trainid]->direction = clockwise;
-                        fprintf(outputLog,"at %lums train%d change speed to %d change direction to clockwise.\n",RUN_TIME,trainid,mainptr->train.speed);
-                    }
-                    else if(mainptr->train.direction == MANTICLOCKWISE&&trainList[trainid]->direction==anticlockwise){
-                        fprintf(outputLog,"at %lums train%d change speed to %d.\n",RUN_TIME,trainid,mainptr->train.speed);
-                    }
-                    else{
-                        changeDirection();
-                        trainList[trainid]->direction = anticlockwise;
-                        fprintf(outputLog,"at %lums train%d change speed to %d change direction to anticlockwise.\n",RUN_TIME,trainid,mainptr->train.speed);
-                    }
-                    
-                    break;
-                case MLOCK:
-                    for(int k=0;k<MAXITEM;k++){
-                        if (trainList[k]) {
-                            trainptr = calloc(1, sizeof(struct _trainQueueNode));
-                            trainptr->type=TLOCK;
-                            append(trainList[k]->mission,(void *)trainptr);
-                        }
-                    }
-                    fprintf(outputLog, "at %lums receive lock command.\n", RUN_TIME);
-                    break;
-                default:
-                    break;
-            }
-            
-        }
+int main() {
+	mainMission = newQueue();
+	logWriter();
+	build();
+	clock_t whiletime; clock_t whilecurrent = 0;
+	RUN_TIME = clock();
+	clock_t Rtime = RUN_TIME;
+	trainQueueNode trainptr;//Ğ¡»ğ³µĞÂÊı¾İÓòÖ¸Õë
+	mainQueueNode mainptr;
+	//queueNode traincurrent;// Ğ¡»ğ³µÈÎÎñ¶ÓÁĞµ±Ç°Ö¸Õë
+	while (!secure()) {
+		whiletime = clock();
+		minuswhiletime = whiletime - whilecurrent;
+		dt = minuswhiletime - minusinputtime;
+		RUN_TIME += dt;
+		minusinputtime = 0;
+		whilecurrent = whiletime;//while Ñ­»·Ê±¼ä¼ÇÂ¼
+		if (RUN_TIME - Rtime >= CLOCKS_PER_SEC) {
+			input(NULL);
+		}
+		while ((mainptr = (mainQueueNode)pop(mainMission)) != NULL) {
+			switch (mainptr->type) {
+			case MSTATION:
+				trainid = mainptr->station.train;
+				trainptr = calloc(1, sizeof(struct _trainQueueNode));
+				trainptr->station = mainptr->station.id;
+				trainptr->time = mainptr->station.time;
+				append(trainList[trainid]->mission, (void *)trainptr);
+				fprintf(outputLog, "at %lums station%d requires train%d to stop for %d s.\n", RUN_TIME, mainptr->station.id, trainid, mainptr->station.time);
+				break;
+			case MTRAIN:
+				trainid = mainptr->train.id;
+				trainList[trainid]->v = mainptr->train.speed;
+				if (mainptr->train.direction == MCLOCLWISE&&trainList[trainid]->direction == clockwise) {
+					fprintf(outputLog, "at %lums train%d change speed to %d.\n", RUN_TIME, trainid, mainptr->train.speed);
+				}
+				else if (mainptr->train.direction == MCLOCLWISE&&trainList[trainid]->direction == anticlockwise) {
+					changeDirection();
+					trainList[trainid]->direction = clockwise;
+					fprintf(outputLog, "at %lums train%d change speed to %d change direction to clockwise.\n", RUN_TIME, trainid, mainptr->train.speed);
+				}
+				else if (mainptr->train.direction == MANTICLOCKWISE&&trainList[trainid]->direction == anticlockwise) {
+					fprintf(outputLog, "at %lums train%d change speed to %d.\n", RUN_TIME, trainid, mainptr->train.speed);
+				}
+				else {
+					changeDirection();
+					trainList[trainid]->direction = anticlockwise;
+					fprintf(outputLog, "at %lums train%d change speed to %d change direction to anticlockwise.\n", RUN_TIME, trainid, mainptr->train.speed);
+				}
 
-        for (int i=0; i<MAXITEM; i++) {
-            if (trainList[i] != NULL) {
-                updateTrain(trainList[i]->id);
-            }
-        }
-        if(RUN_TIME-Rtime>=CLOCKS_PER_SEC){
-            viewer();
-            Rtime = RUN_TIME;
-        }
-    }
+				break;
+			case MLOCK:
+				for (int k = 0; k < MAXITEM; k++) {
+					if (trainList[k]) {
+						trainptr = calloc(1, sizeof(struct _trainQueueNode));
+						trainptr->type = TLOCK;
+						append(trainList[k]->mission, (void *)trainptr);
+					}
+				}
+				fprintf(outputLog, "at %lums receive lock command.\n", RUN_TIME);
+				break;
+			default:
+				break;
+			}
+
+		}
+
+		for (int i = 0; i < MAXITEM; i++) {
+			if (trainList[i] != NULL) {
+				updateTrain(trainList[i]->id);
+			}
+		}
+		if (RUN_TIME - Rtime >= CLOCKS_PER_SEC) {
+			viewer();
+			Rtime = RUN_TIME;
+		}
+	}
 }
