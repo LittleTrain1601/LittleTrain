@@ -2,8 +2,8 @@
 //  train.h
 //  LittleTrain
 //
-//  Created by æ¨æ—é’ on 16/5/11.
-//  Copyright Â© 2016å¹´ 1601. All rights reserved.
+//  Created by ÑîÁÖÇà on 16/5/11.
+//  Copyright ? 2016Äê 1601. All rights reserved.
 //
 
 #ifndef train_h
@@ -14,15 +14,15 @@
 #define MAXITEM 20
 
 typedef enum {FREE,RUN,PAUSE,LOCK,STA}trainState;
-typedef int branchState;/*æ ¹æ®æ¥æ”¶åˆ°çš„è¿›å…¥å…¬å…±è½¨é“çš„è¯·æ±‚æ•°ï¼Œåˆ†å‰èŠ‚ç‚¹çŠ¶æ€ä¸º012ï¼Œæ‰€ä»¥ç›´æ¥ç”¨intç±»å‹*/
-typedef int trafficState;/*æ ¹æ®æ¥æ”¶åˆ°çš„é€šè¿‡åå­—è·¯èŠ‚ç‚¹è¯·æ±‚æ•°ï¼Œçº¢ç»¿ç¯èŠ‚ç‚¹çŠ¶æ€ä¸º012ï¼Œæ‰€ä»¥ç›´æ¥ç”¨intç±»å‹*/
-//ä¸€äº›å¿…è¦çš„æ—¶é—´å˜é‡ï¼ˆå‡è®¾æ—¶é—´ç±»å‹æ˜¯TIMEï¼‰åœ¨calculatoré‡Œå®šä¹‰
-extern clock_t RUN_TIME;//å°ç«è½¦å¼€å§‹è¿è¡Œçš„æ—¶é—´ï¼Œå¿½ç•¥ç”¨æˆ·è¾“å…¥æ‰“æ–­çš„æ—¶é—´
-//flags åœ¨FSMé‡Œå®šä¹‰
+typedef int branchState;/*¸ù¾İ½ÓÊÕµ½µÄ½øÈë¹«¹²¹ìµÀµÄÇëÇóÊı£¬·Ö²æ½Úµã×´Ì¬Îª012£¬ËùÒÔÖ±½ÓÓÃintÀàĞÍ*/
+typedef int trafficState;/*¸ù¾İ½ÓÊÕµ½µÄÍ¨¹ıÊ®×ÖÂ·½ÚµãÇëÇóÊı£¬ºìÂÌµÆ½Úµã×´Ì¬Îª012£¬ËùÒÔÖ±½ÓÓÃintÀàĞÍ*/
+//Ò»Ğ©±ØÒªµÄÊ±¼ä±äÁ¿£¨¼ÙÉèÊ±¼äÀàĞÍÊÇTIME£©ÔÚcalculatorÀï¶¨Òå
+extern clock_t RUN_TIME;//Ğ¡»ğ³µ¿ªÊ¼ÔËĞĞµÄÊ±¼ä£¬ºöÂÔÓÃ»§ÊäÈë´ò¶ÏµÄÊ±¼ä
+//flags ÔÚFSMÀï¶¨Òå
 extern enum _servicePolicy{SEQUENCING, BYTHEWAY} servicePolicy;
 extern enum policy {AUTO, MANUAL} controlPolicy;
 
-//é€šç”¨ä»»åŠ¡é˜Ÿåˆ—
+//Í¨ÓÃÈÎÎñ¶ÓÁĞ
 typedef struct _queueNode {
     void * data;
     struct _queueNode * next;
@@ -31,9 +31,9 @@ typedef struct _queue{
     queueNode head;
     queueNode tail;
 }* queue;
-//ä¸»ä»»åŠ¡é˜Ÿåˆ—ï¼ˆè¾“å…¥æ–‡ä»¶ä¸­æ‰€æœ‰çš„å‘½ä»¤ï¼‰çš„æ•°æ®ç»“æ„ä½“
+//Ö÷ÈÎÎñ¶ÓÁĞ£¨ÊäÈëÎÄ¼şÖĞËùÓĞµÄÃüÁî£©µÄÊı¾İ½á¹¹Ìå
 typedef struct _mainQueueNode{
-    enum {MSTATION,MTRAIN,MLOCK} type;    //HEADä¸ºå¤´ç»“ç‚¹
+    enum {MSTATION,MTRAIN,MLOCK} type;    //HEADÎªÍ·½áµã
     union{
         struct {
             int id;
@@ -47,23 +47,23 @@ typedef struct _mainQueueNode{
         }train;
     };
 }* mainQueueNode;
-//æ­¤é˜Ÿåˆ—èŠ‚ç‚¹ä¸­çš„dataå‡å¼ºåˆ¶è½¬æ¢ä¸ºmainQueueNode
-extern queue mainMission;                      //åœ¨mainé‡Œå®šä¹‰
+//´Ë¶ÓÁĞ½ÚµãÖĞµÄdata¾ùÇ¿ÖÆ×ª»»ÎªmainQueueNode
+extern queue mainMission;                      //ÔÚmainÀï¶¨Òå
 
-//å°ç«è½¦ä»»åŠ¡é˜Ÿåˆ—çš„æ•°æ®ç»“æ„ä½“
+//Ğ¡»ğ³µÈÎÎñ¶ÓÁĞµÄÊı¾İ½á¹¹Ìå
 typedef struct _trainQueueNode{
-    enum {TSTATION,TLOCK}type;             //HEADä¸ºå¤´ç»“ç‚¹
+    enum {TSTATION,TLOCK}type;             //HEADÎªÍ·½áµã
     int station;
     int time;
 }* trainQueueNode;
 
-//ç«™ç‚¹èŠ‚ç‚¹ã€åˆ†å²”èŠ‚ç‚¹ã€åå­—è·¯èŠ‚ç‚¹
+//Õ¾µã½Úµã¡¢·Ö²í½Úµã¡¢Ê®×ÖÂ·½Úµã
 typedef struct _trackNode{
-    int id;                                 //idï¼ï¼1è¡¨ç¤ºæ–°å»ºç«‹çš„ç©ºèŠ‚ç‚¹
+    int id;                                 //id£½£­1±íÊ¾ĞÂ½¨Á¢µÄ¿Õ½Úµã
     enum{STATION, BRANCH, TRAFFIC}type;
     union{
         struct {
-            clock_t stop;//ç«è½¦åœé çš„æ—¶åˆ»
+            clock_t stop;//»ğ³µÍ£¿¿µÄÊ±¿Ì
             struct _trackNode * left;
             int ldistance;
             struct _trackNode * right;
@@ -71,15 +71,15 @@ typedef struct _trackNode{
         } station;
         struct {
             branchState status;
-            int train[2];//å‘å‡ºè¯·æ±‚çš„ç«è½¦ID
-            int flag;//flag==1åˆ™è¿™ä¸€æ®µè½¨é“å¿™ flag==0åˆ™è¿™ä¸€æ®µè½¨é“ç©ºé—²
+            int train[2];//·¢³öÇëÇóµÄ»ğ³µID
+            int flag;//flag==1ÔòÕâÒ»¶Î¹ìµÀÃ¦ flag==0ÔòÕâÒ»¶Î¹ìµÀ¿ÕÏĞ
             struct _trackNode * left;
             int ldistance;
             int lrange;
             struct _trackNode * right;
             int rdistance;
             int rrange;
-            struct _trackNode * down;//downæŒ‡å‘å…¬å…±è½¨é“é‡Œçš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
+            struct _trackNode * down;//downÖ¸Ïò¹«¹²¹ìµÀÀïµÄÏÂÒ»¸ö½Úµã
             int ddistance;
             struct _trackNode * pair;
         } branch;
@@ -102,25 +102,25 @@ typedef struct _trackNode{
     };
 } * trackNode;
 
-//å°ç«è½¦çš„å±æ€§
+//Ğ¡»ğ³µµÄÊôĞÔ
 typedef struct _train{
-    int id;                                 //idï¼ï¼1è¡¨ç¤ºæ–°å»ºç«‹çš„ç©ºèŠ‚ç‚¹
-    int v;//é€Ÿåº¦ï¼Œå•ä½æ˜¯m/s
+    int id;                                 //id£½£­1±íÊ¾ĞÂ½¨Á¢µÄ¿Õ½Úµã
+    int v;//ËÙ¶È£¬µ¥Î»ÊÇm/s
     enum {clockwise, anticlockwise} direction;
-    int nextNode;//ä¸‹ä¸€ä¸ªèŠ‚ç‚¹çš„ç¼–å·
-    double distance;//è·ç¦»ä¸‹ä¸€ä¸ªèŠ‚ç‚¹çš„è·ç¦»
+    int nextNode;//ÏÂÒ»¸ö½ÚµãµÄ±àºÅ
+    double distance;//¾àÀëÏÂÒ»¸ö½ÚµãµÄ¾àÀë
     enum {permitted, forbidden} flag;
     trainState status;
     int passTimes;
-    int nodeList[MAXITEM];//å­˜å‚¨å°ç«è½¦æ‰€åœ¨è½¨é“ç»è¿‡çš„æ‰€æœ‰èŠ‚ç‚¹ID
-    queue mission;//æ­¤é˜Ÿåˆ—ä¸­çš„dataå‡å¼ºåˆ¶è½¬æ¢ä¸ºtrainQueueNode
-    int x1, y1, x2, y2;//å·å·ç”¨æ¥è®°å½•è½¨é“çš„åæ ‡
+    int nodeList[MAXITEM];//´æ´¢Ğ¡»ğ³µËùÔÚ¹ìµÀ¾­¹ıµÄËùÓĞ½ÚµãID
+    queue mission;//´Ë¶ÓÁĞÖĞµÄdata¾ùÇ¿ÖÆ×ª»»ÎªtrainQueueNode
+    int x1, y1, x2, y2;//ÍµÍµÓÃÀ´¼ÇÂ¼¹ìµÀµÄ×ø±ê
 } * train;
-//æ¥ä¸‹æ¥ä¸¤ä¸ªæ•°ç»„å­˜å‚¨æ‰€æœ‰çš„è½¨é“ä¸Šçš„èŠ‚ç‚¹å’Œå°ç«è½¦ï¼ŒæŒ‰IDé¡ºåºã€‚åœ¨mainé‡Œå®šä¹‰å¹¶åˆ†é…ç©ºé—´
-extern trackNode trackNodeList[];//ä»¥èŠ‚ç‚¹IDä¸ºä¸‹æ ‡
-extern train trainList[]; //ä»¥å°ç«è½¦IDä¸ºä¸‹æ ‡
+//½ÓÏÂÀ´Á½¸öÊı×é´æ´¢ËùÓĞµÄ¹ìµÀÉÏµÄ½ÚµãºÍĞ¡»ğ³µ£¬°´IDË³Ğò¡£ÔÚmainÀï¶¨Òå²¢·ÖÅä¿Õ¼ä
+extern trackNode trackNodeList[];//ÒÔ½ÚµãIDÎªÏÂ±ê
+extern train trainList[]; //ÒÔĞ¡»ğ³µIDÎªÏÂ±ê
 
-//inputæ¨¡å—
+//inputÄ£¿é
 void build();
 void input();
 
@@ -129,7 +129,7 @@ extern FILE *outputLog;
 void viewer();
 void logWriter();
 
-//calculatoræ¨¡å—
+//calculatorÄ£¿é
 void updateTrain(int id);
 int checkTrack(int trainID, int branch1, int branch2);
 int judge(int train1, int train2);
@@ -142,9 +142,9 @@ void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID);
 
 //coreDataAPI
 queue newQueue();
-queueNode append(queue, void * data);//è¿½åŠ åˆ°é˜Ÿåˆ—æœ«å°¾,è¿”å›æ’å…¥çš„èŠ‚ç‚¹çš„åœ°å€
-void deleteAfter(queue, queueNode ptr);//åˆ é™¤ptråé¢çš„å…ƒç´ 
-void * pop(queue);//ä»é˜Ÿåˆ—ä¸­è¯»å‡ºä¸€ä¸ªä»»åŠ¡å¹¶å°†å…¶åˆ é™¤ã€‚è¿”å›dataæŒ‡é’ˆ
+queueNode append(queue, void * data);//×·¼Óµ½¶ÓÁĞÄ©Î²,·µ»Ø²åÈëµÄ½ÚµãµÄµØÖ·
+void deleteAfter(queue, queueNode ptr);//É¾³ıptrºóÃæµÄÔªËØ
+void * pop(queue);//´Ó¶ÓÁĞÖĞ¶Á³öÒ»¸öÈÎÎñ²¢½«ÆäÉ¾³ı¡£·µ»ØdataÖ¸Õë
 train newTrain();
 trackNode newTrackNode();
 

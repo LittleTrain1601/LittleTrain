@@ -2,8 +2,8 @@
 //  output.c
 //  LittleTrain
 //
-//  Created by æ¨æ—é’ on 16/5/28.
-//  Copyright Â© 2016å¹´ 1601. All rights reserved.
+//  Created by ÑîÁÖÇà on 16/5/28.
+//  Copyright ? 2016Äê 1601. All rights reserved.
 //
 
 #include "train.h"

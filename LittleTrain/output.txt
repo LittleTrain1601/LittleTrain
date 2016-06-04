@@ -1,0 +1,20 @@
+at 59903ms train0 change speed to 1.
+at 59903ms train0 change speed to 1.
+at 59903ms station1 requires train0 to stop for 7 s.
+at 59903ms station1 requires train0 to stop for 10 s.
+at 59903ms station2 requires train0 to stop for 9 s.
+at 59903ms station2 requires train0 to stop for 6 s.
+at 59903ms station1 requires train0 to stop for 10 s.
+at 59903ms train0 status changes from FREE to RUN.
+at 79904ms train0 status changes from RUN to STA.
+at 86903ms train0 status changes from STA to RUN.
+at 86903ms train0 status changes from RUN to STA.
+at 96903ms train0 status changes from STA to RUN.
+at 136904ms train0 status changes from RUN to STA.
+at 145903ms train0 status changes from STA to RUN.
+at 145903ms train0 status changes from RUN to STA.
+at 152170ms train0 status changes from STA to RUN.
+at 157798ms receive lock command.
+at 192170ms train0 status changes from RUN to STA.
+at 202169ms train0 status changes from STA to RUN.
+at 202169ms train0 status changes from STA to LOCK.

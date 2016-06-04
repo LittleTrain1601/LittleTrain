@@ -2,8 +2,8 @@
 //  FSM.c
 //  LittleTrain
 //
-//  Created by é™ˆæ›¦è¿œ on 16/5/16.
-//  Copyright ? 2016å¹´ 1601. All rights reserved.
+//  Created by ³ÂêØÔ¶ on 16/5/16.
+//  Copyright ? 2016Äê 1601. All rights reserved.
 //
 
 
@@ -18,13 +18,13 @@ int arriveresponddomain(int id);
 int branchtype(int trainid,int tracknodeid);
 
     	
-//åˆ¤æ–­idå·ç«è½¦æ˜¯å¦åˆ°è¾¾åˆ†å‰èŠ‚ç‚¹æˆ–åå­—è·¯èŠ‚ç‚¹çš„å“åº”åŒºé—´ ï¼Œæ˜¯è¿”å›1ï¼Œå¦è¿”å›0 
+//ÅĞ¶ÏidºÅ»ğ³µÊÇ·ñµ½´ï·Ö²æ½Úµã»òÊ®×ÖÂ·½ÚµãµÄÏìÓ¦Çø¼ä £¬ÊÇ·µ»Ø1£¬·ñ·µ»Ø0 
 int arriveresponddomain(int id){
     train currenttrain = NULL;
     trackNode nexttrackNode = NULL;
-    int lastNode;//å°ç«è½¦èµ°è¿‡çš„ä¸Šä¸€ä¸ªèŠ‚ç‚¹
+    int lastNode;//Ğ¡»ğ³µ×ß¹ıµÄÉÏÒ»¸ö½Úµã
     int m,n;
-    int range; //ä¸‹ä¸€åˆ†å‰èŠ‚ç‚¹æˆ–åå­—è·¯èŠ‚ç‚¹çš„å“åº”åŒºé—´é•¿åº¦
+    int range; //ÏÂÒ»·Ö²æ½Úµã»òÊ®×ÖÂ·½ÚµãµÄÏìÓ¦Çø¼ä³¤¶È
     currenttrain=trainList[id];
     nexttrackNode=trackNodeList[currenttrain->nextNode];
     for(m=0;m<=(MAXITEM-1)&&(currenttrain->nodeList[m]!=currenttrain->nextNode);m++);
@@ -35,23 +35,23 @@ int arriveresponddomain(int id){
             return 0;
         else
         {if(currenttrain->direction==clockwise)
-        {if(m!=0)                                 //åŒä¸€å°ç«è½¦è½¨é“ä¸Šçš„èŠ‚ç‚¹æŒ‰é¡ºæ—¶é’ˆé¡ºåºå‚¨å­˜
+        {if(m!=0)                                 //Í¬Ò»Ğ¡»ğ³µ¹ìµÀÉÏµÄ½Úµã°´Ë³Ê±ÕëË³Ğò´¢´æ
             lastNode=currenttrain->nodeList[m-1];
-        else    //å°ç«è½¦å³å°†åˆ°è¾¾çš„èŠ‚ç‚¹åœ¨å°ç«è½¦è½¨é“æ•°ç»„ä¸­çš„ä¸‹æ ‡ä¸º0
+        else    //Ğ¡»ğ³µ¼´½«µ½´ïµÄ½ÚµãÔÚĞ¡»ğ³µ¹ìµÀÊı×éÖĞµÄÏÂ±êÎª0
         {for(n=0;n<=(MAXITEM-1)&&(currenttrain->nodeList[n]!=-1);n++)
         {;}
             lastNode=currenttrain->nodeList[n-1];}}
         else
         {if(currenttrain->nodeList[m+1]!=-1)
             lastNode=currenttrain->nodeList[m+1];
-        else //å°ç«è½¦å³å°†åˆ°è¾¾çš„èŠ‚ç‚¹æ˜¯å°ç«è½¦è½¨é“æ•°ç»„ä¸­çš„æœ€åä¸€ä¸ªå…ƒç´ 
+        else //Ğ¡»ğ³µ¼´½«µ½´ïµÄ½ÚµãÊÇĞ¡»ğ³µ¹ìµÀÊı×éÖĞµÄ×îºóÒ»¸öÔªËØ
             lastNode=currenttrain->nodeList[0];}
             if(lastNode==nexttrackNode->branch.left->id)
                 range=nexttrackNode->branch.lrange;
             else if(lastNode==nexttrackNode->branch.right->id)
                 range=nexttrackNode->branch.rrange;
             
-            if(currenttrain->distance<=range&&currenttrain->distance>1)   //å°ç«è½¦è¿›å…¥å“åº”åŒºé—´
+            if(currenttrain->distance<=range&&currenttrain->distance>1)   //Ğ¡»ğ³µ½øÈëÏìÓ¦Çø¼ä
                 return 1;
             else
                 return 0;
@@ -89,7 +89,7 @@ int arriveresponddomain(int id){
 }
 
 
-//è‹¥åˆ†å‰èŠ‚ç‚¹æ˜¯å°ç«è½¦å½“å‰è¿è¡Œæ–¹å‘ä¸‹è¿›å…¥å…¬å…±è½¨é“çš„èŠ‚ç‚¹è¿”å›1ï¼Œè‹¥åˆ†å‰èŠ‚ç‚¹æ˜¯å°ç«è½¦å½“å‰è¿è¡Œæ–¹å‘ä¸‹å‡ºå…¬å…±è½¨é“çš„èŠ‚ç‚¹è¿”å›0 
+//Èô·Ö²æ½ÚµãÊÇĞ¡»ğ³µµ±Ç°ÔËĞĞ·½ÏòÏÂ½øÈë¹«¹²¹ìµÀµÄ½Úµã·µ»Ø1£¬Èô·Ö²æ½ÚµãÊÇĞ¡»ğ³µµ±Ç°ÔËĞĞ·½ÏòÏÂ³ö¹«¹²¹ìµÀµÄ½Úµã·µ»Ø0 
 int branchtype(int trainid,int tracknodeid){
     int m,n;
     train currenttrain = NULL;
@@ -99,7 +99,7 @@ int branchtype(int trainid,int tracknodeid){
    tracknode=trackNodeList[tracknodeid];
     for(m=0;m<=(MAXITEM-1)&&(currenttrain->nodeList[m]!=tracknodeid);m++)
     {;}
-    //é¡ºæ—¶é’ˆå¯»æ‰¾ä¸€è¾†å°ç«è½¦è½¨é“ä¸Šç¼–å·ä¸ºtracknodeidçš„èŠ‚ç‚¹çš„å‰ä¸€ä¸ªå’Œåä¸€ä¸ªèŠ‚ç‚¹
+    //Ë³Ê±ÕëÑ°ÕÒÒ»Á¾Ğ¡»ğ³µ¹ìµÀÉÏ±àºÅÎªtracknodeidµÄ½ÚµãµÄÇ°Ò»¸öºÍºóÒ»¸ö½Úµã
     if(m!=0)
         lastNode=currenttrain->nodeList[m-1];
     else
@@ -128,7 +128,7 @@ int branchtype(int trainid,int tracknodeid){
        }
 } 
 
-//å°ç«è½¦çŠ¶æ€è½¬æ¢å‡½æ•° 
+//Ğ¡»ğ³µ×´Ì¬×ª»»º¯Êı 
 void trainStatusSwitcher(int id)
 {
     train currenttrain = NULL;
@@ -144,11 +144,11 @@ void trainStatusSwitcher(int id)
         case FREE:
                 if (currenttrain->mission->head->next) {
                     currentdata=(trainQueueNode)currenttrain->mission->head->next->data;
-                    if(currentdata->type==TSTATION)   //å°ç«è½¦æ¥åˆ°æ–°ä»»åŠ¡
+                    if(currentdata->type==TSTATION)   //Ğ¡»ğ³µ½Óµ½ĞÂÈÎÎñ
                     {
                         currenttrain->status=RUN;
                         fprintf(outputLog,"at %lums train%d status changes from FREE to RUN.\n",RUN_TIME,id);
-                        //è¾“å‡ºå°ç«è½¦çš„çŠ¶æ€è½¬æ¢æƒ…å†µ
+                        //Êä³öĞ¡»ğ³µµÄ×´Ì¬×ª»»Çé¿ö
                     } else if (currentdata->type == TLOCK) {
                         currenttrain->status = LOCK;
                     }
@@ -156,19 +156,19 @@ void trainStatusSwitcher(int id)
             
             break;
         case RUN:
-            next=currenttrain->nextNode;	 //å°ç«è½¦ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ç¼–å·
+            next=currenttrain->nextNode;	 //Ğ¡»ğ³µÏÂÒ»¸ö½Úµã±àºÅ
             nexttrackNode=trackNodeList[next];
-            if(nexttrackNode->type==BRANCH&&arriveresponddomain(id)==1)  //åˆ°è¾¾åˆ†å‰èŠ‚ç‚¹çš„å“åº”åŒºé—´
+            if(nexttrackNode->type==BRANCH&&arriveresponddomain(id)==1)  //µ½´ï·Ö²æ½ÚµãµÄÏìÓ¦Çø¼ä
             {
                 branchNodeStatusSwitcher(ENTER,id,next);
                 currenttrain->status=RUN;
             }
-            else if (nexttrackNode->type==TRAFFIC&&arriveresponddomain(id)==1)//åˆ°è¾¾åå­—è·¯èŠ‚ç‚¹çš„å“åº”åŒºé—´
+            else if (nexttrackNode->type==TRAFFIC&&arriveresponddomain(id)==1)//µ½´ïÊ®×ÖÂ·½ÚµãµÄÏìÓ¦Çø¼ä
             {
                 trafficNodeStatusSwitcher(ENTER,id,next);
                 currenttrain->status=RUN;
             }
-            else if((nexttrackNode->type==TRAFFIC)&&(currenttrain->distance<=1))//å°ç«è½¦é€¼è¿‘åå­—è·¯èŠ‚ç‚¹
+            else if((nexttrackNode->type==TRAFFIC)&&(currenttrain->distance<=1))//Ğ¡»ğ³µ±Æ½üÊ®×ÖÂ·½Úµã
             {
                 trafficNodeStatusSwitcher(PASS,id,next);
                 if(currenttrain->flag==forbidden)
@@ -179,9 +179,9 @@ void trainStatusSwitcher(int id)
                 else
                     currenttrain->status=RUN;
             }
-            else if((nexttrackNode->type==BRANCH)&&currenttrain->distance<=1)//å°ç«è½¦é€¼è¿‘å…¬å…±è½¨é“
+            else if((nexttrackNode->type==BRANCH)&&currenttrain->distance<=1)//Ğ¡»ğ³µ±Æ½ü¹«¹²¹ìµÀ
             {
-                if(branchtype(id,next)==1)  //å°ç«è½¦å³å°†è¿›å…¥å…¬å…±è½¨é“
+                if(branchtype(id,next)==1)  //Ğ¡»ğ³µ¼´½«½øÈë¹«¹²¹ìµÀ
                 {
                     branchNodeStatusSwitcher(PASS,id,next);
                     if(currenttrain->flag==forbidden)
@@ -191,29 +191,29 @@ void trainStatusSwitcher(int id)
                     else
                     {
                         currenttrain->status=RUN;
-                        nexttrackNode->branch.flag=1;   //å°ç«è½¦è¿›å…¥å…¬å…±è½¨é“åï¼Œå°†è¯¥æ®µè½¨é“æ ‡è®°ä¸ºâ€œå¿™â€
+                        nexttrackNode->branch.flag=1;   //Ğ¡»ğ³µ½øÈë¹«¹²¹ìµÀºó£¬½«¸Ã¶Î¹ìµÀ±ê¼ÇÎª¡°Ã¦¡±
                         nexttrackNode->branch.pair->branch.flag=1;
                     }
                 }
-                else                                           //å°ç«è½¦å‡ºå…¬å…±è½¨é“ï¼Œå°†è¯¥æ®µè½¨é“æ ‡è®°ä¸ºç©ºé—²
+                else                                           //Ğ¡»ğ³µ³ö¹«¹²¹ìµÀ£¬½«¸Ã¶Î¹ìµÀ±ê¼ÇÎª¿ÕÏĞ
                     {nexttrackNode->branch.flag=0;
                    nexttrackNode->branch.pair->branch.flag=0;
                     }
             }
-            else if(nexttrackNode->type==STATION&&currenttrain->distance==0)//åˆ°ç«™
+            else if(nexttrackNode->type==STATION&&currenttrain->distance==0)//µ½Õ¾
 				        {
                             currenttrain->status=STA;
                             fprintf(outputLog,"at %lums train%d status changes from RUN to STA.\n",RUN_TIME,id);
                         }
             break;
         case STA:
-            next=currenttrain->nextNode;	 //å°ç«è½¦ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ç¼–å·
+            next=currenttrain->nextNode;	 //Ğ¡»ğ³µÏÂÒ»¸ö½Úµã±àºÅ
             nexttrackNode=trackNodeList[next];
             if(servicePolicy==SEQUENCING)
             {
-                currentdata=(trainQueueNode)currenttrain->mission->head->next->data;//å°ç«è½¦å½“å‰ä»»åŠ¡
-                if((currentdata->time)*CLOCKS_PER_SEC<=(RUN_TIME-nexttrackNode->station.stop)) {   //è¾¾åˆ°è¦æ±‚çš„åœé æ—¶é—´
-                    pop(currenttrain->mission);//æ›´æ–°å°ç«è½¦ä»»åŠ¡é˜Ÿåˆ—
+                currentdata=(trainQueueNode)currenttrain->mission->head->next->data;//Ğ¡»ğ³µµ±Ç°ÈÎÎñ
+                if((currentdata->time)*CLOCKS_PER_SEC<=(RUN_TIME-nexttrackNode->station.stop)) {   //´ïµ½ÒªÇóµÄÍ£¿¿Ê±¼ä
+                    pop(currenttrain->mission);//¸üĞÂĞ¡»ğ³µÈÎÎñ¶ÓÁĞ
                     currenttrain->status=RUN;
                     fprintf(outputLog,"at %lums train%d status changes from STA to RUN.\n",RUN_TIME,id);
                 }
@@ -222,29 +222,29 @@ void trainStatusSwitcher(int id)
             {
                 p=currenttrain->mission->head->next;
                 anothercurrentdata=(trainQueueNode)(p->data);
-                for(;(anothercurrentdata->station)!=currenttrain->nextNode;)//æ‰¾åˆ°å‰æ–¹æœ‰ä»»åŠ¡è½¦ç«™å¯¹åº”çš„å°ç«è½¦çš„ä»»åŠ¡èŠ‚ç‚¹
+                for(;(anothercurrentdata->station)!=currenttrain->nextNode;)//ÕÒµ½Ç°·½ÓĞÈÎÎñ³µÕ¾¶ÔÓ¦µÄĞ¡»ğ³µµÄÈÎÎñ½Úµã
                 {
                     q=p;
                     p=p->next;
                     anothercurrentdata=(trainQueueNode)(p->data);
                 }
-                if((currentdata->time)*CLOCKS_PER_SEC<=(RUN_TIME-nexttrackNode->station.stop))   //è¾¾åˆ°è¦æ±‚çš„åœé æ—¶é—´
+                if((currentdata->time)*CLOCKS_PER_SEC<=(RUN_TIME-nexttrackNode->station.stop))   //´ïµ½ÒªÇóµÄÍ£¿¿Ê±¼ä
                 {
-                    if(p==currenttrain->mission->head->next)  //å®Œæˆçš„ä»»åŠ¡æ˜¯å°ç«è½¦å¤´ç»“ç‚¹åçš„é¦–ä»»åŠ¡
+                    if(p==currenttrain->mission->head->next)  //Íê³ÉµÄÈÎÎñÊÇĞ¡»ğ³µÍ·½áµãºóµÄÊ×ÈÎÎñ
                         q=currenttrain->mission->head;
-                    deleteAfter(currenttrain->mission, q);//æ›´æ–°å°ç«è½¦ä»»åŠ¡é˜Ÿåˆ—
+                    deleteAfter(currenttrain->mission, q);//¸üĞÂĞ¡»ğ³µÈÎÎñ¶ÓÁĞ
                     currenttrain->status=RUN;
                     fprintf(outputLog,"at %lums train%d status changes from STA to RUN.\n",RUN_TIME,id);
                 }
             }
-            if((currenttrain->mission->head)==(currenttrain->mission->tail)) //ä¸”å°ç«è½¦æ²¡æœ‰æœªå®Œæˆçš„ä»»åŠ¡
+            if((currenttrain->mission->head)==(currenttrain->mission->tail)) //ÇÒĞ¡»ğ³µÃ»ÓĞÎ´Íê³ÉµÄÈÎÎñ
             {
                 currenttrain->status=FREE;
                 fprintf(outputLog,"at %lums train%d status changes from STA to FREE.\n",RUN_TIME,id);
             }
-            else if((currenttrain->mission->head)!=(currenttrain->mission->tail)) //ä¸”å°ç«è½¦æœ‰æœªå®Œæˆçš„ä»»åŠ¡
+            else if((currenttrain->mission->head)!=(currenttrain->mission->tail)) //ÇÒĞ¡»ğ³µÓĞÎ´Íê³ÉµÄÈÎÎñ
             {  newcurrentdata=(trainQueueNode)currenttrain->mission->head->next->data;
-			    if(newcurrentdata->type==TLOCK)   //å°ç«è½¦åªå‰©æœ€åçš„é”é—­ä»»åŠ¡
+			    if(newcurrentdata->type==TLOCK)   //Ğ¡»ğ³µÖ»Ê£×îºóµÄËø±ÕÈÎÎñ
                 {
                     currenttrain->status=LOCK;
                     fprintf(outputLog,"at %lums train%d status changes from STA to LOCK.\n",RUN_TIME,id);
@@ -252,16 +252,16 @@ void trainStatusSwitcher(int id)
             }
             break;
         case PAUSE:
-                next=currenttrain->nextNode;	 //å°ç«è½¦ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ç¼–å·
+                next=currenttrain->nextNode;	 //Ğ¡»ğ³µÏÂÒ»¸ö½Úµã±àºÅ
                 nexttrackNode=trackNodeList[next];
-            if((nexttrackNode->type==TRAFFIC)&&(currenttrain->distance<=1))  //ç­‰å¾…è¿›å…¥åå­—è·¯èŠ‚ç‚¹
+            if((nexttrackNode->type==TRAFFIC)&&(currenttrain->distance<=1))  //µÈ´ı½øÈëÊ®×ÖÂ·½Úµã
             {
                 trafficNodeStatusSwitcher(PASS, id, currenttrain->nextNode);
                 if(currenttrain->flag==permitted)
                 {currenttrain->status=RUN;
                     fprintf(outputLog,"at %lums train%d status changes from PAUSE to RUN.\n",RUN_TIME,id);}
             }
-            else if((nexttrackNode->type==BRANCH)&&(branchtype(id,nexttrackNode->id)==1)&&(currenttrain->distance<=1)) //ç­‰å¾…è¿›å…¥å…¬å…±è½¨é“
+            else if((nexttrackNode->type==BRANCH)&&(branchtype(id,nexttrackNode->id)==1)&&(currenttrain->distance<=1)) //µÈ´ı½øÈë¹«¹²¹ìµÀ
             {
                 branchNodeStatusSwitcher(PASS, id, currenttrain->nextNode);
                 if(currenttrain->flag==permitted)
@@ -272,7 +272,7 @@ void trainStatusSwitcher(int id)
     }
 }
                           
-//åå­—è·¯èŠ‚ç‚¹çŠ¶æ€æœºè½¬æ¢å‡½æ•°					  
+//Ê®×ÖÂ·½Úµã×´Ì¬»ú×ª»»º¯Êı					  
 void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID) 
 {
     trackNode currenttrackNode = NULL;
@@ -284,25 +284,25 @@ void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID)
         case 0:
             if(req==ENTER)
             {currenttrackNode->traffic.status=1;
-                fprintf(outputLog,"at %lums trafficNode%d status changes from 0 to 1.\n",RUN_TIME,trackNodeID);//è¾“å‡ºåå­—è·¯èŠ‚ç‚¹çš„çŠ¶æ€è½¬æ¢æƒ…å†µ
+                fprintf(outputLog,"at %lums trafficNode%d status changes from 0 to 1.\n",RUN_TIME,trackNodeID);//Êä³öÊ®×ÖÂ·½ÚµãµÄ×´Ì¬×ª»»Çé¿ö
                 currenttrain->flag=permitted;
                 if(currenttrackNode->traffic.train[0]==-1)
                     currenttrackNode->traffic.train[0]=trainID;
                 else if(currenttrackNode->traffic.train[1]==-1)
                     currenttrackNode->traffic.train[1]=trainID;}
             if(req==PASS&&trainID!=currenttrackNode->traffic.train[0]&&trainID!=currenttrackNode->traffic.train[1])
-                ;        //å°ç«è½¦é€šè¿‡åå­—è·¯èŠ‚ç‚¹åä»å‘å‡ºPASSæŒ‡ä»¤çš„æƒ…å†µ
+                ;        //Ğ¡»ğ³µÍ¨¹ıÊ®×ÖÂ·½ÚµãºóÈÔ·¢³öPASSÖ¸ÁîµÄÇé¿ö
             break;
         case 1:
             if(req==ENTER)
-            {if(trainID!=currenttrackNode->traffic.train[0]&&trainID!=currenttrackNode->traffic.train[1])  //åŒºåˆ«å‡ºå°ç«è½¦åœ¨å“åº”åŒºé—´å†…å¤šæ¬¡å‘å‡ºENTERæŒ‡ä»¤çš„æƒ…å†µ
+            {if(trainID!=currenttrackNode->traffic.train[0]&&trainID!=currenttrackNode->traffic.train[1])  //Çø±ğ³öĞ¡»ğ³µÔÚÏìÓ¦Çø¼äÄÚ¶à´Î·¢³öENTERÖ¸ÁîµÄÇé¿ö
             {currenttrackNode->traffic.status=2;
                 fprintf(outputLog,"at %lums trafficNode%d status changes from 1 to 2.\n",RUN_TIME,trackNodeID);
                 if(currenttrackNode->traffic.train[0]==-1)
                     currenttrackNode->traffic.train[0]=trainID;
                 else if(currenttrackNode->traffic.train[1]==-1)
                     currenttrackNode->traffic.train[1]=trainID;
-                firstgo=judge(currenttrackNode->traffic.train[0],currenttrackNode->traffic.train[1]); //æ ¹æ®å½“å‰ç­–ç•¥åˆ¤æ–­å‡ºä¸¤è¾†ç«äº‰çš„å°ç«è½¦è°å…ˆèµ°
+                firstgo=judge(currenttrackNode->traffic.train[0],currenttrackNode->traffic.train[1]); //¸ù¾İµ±Ç°²ßÂÔÅĞ¶Ï³öÁ½Á¾¾ºÕùµÄĞ¡»ğ³µË­ÏÈ×ß
                 firsttrain=trainList[currenttrackNode->traffic.train[0]];
                 secondtrain=trainList[currenttrackNode->traffic.train[1]];
                 if(firstgo==currenttrackNode->traffic.train[0])
@@ -313,27 +313,27 @@ void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID)
                     firsttrain->flag=forbidden;}
             } }
             else if(req==PASS&&currenttrain->flag==permitted)
-            {if(trainID==currenttrackNode->traffic.train[0]||trainID==currenttrackNode->traffic.train[1]) //åŒºåˆ«å°ç«è½¦é€šè¿‡åå­—è·¯èŠ‚ç‚¹åä»å‘å‡ºPASSæŒ‡ä»¤çš„æƒ…å†µ
+            {if(trainID==currenttrackNode->traffic.train[0]||trainID==currenttrackNode->traffic.train[1]) //Çø±ğĞ¡»ğ³µÍ¨¹ıÊ®×ÖÂ·½ÚµãºóÈÔ·¢³öPASSÖ¸ÁîµÄÇé¿ö
             {currenttrackNode->traffic.status=0;
                 fprintf(outputLog,"at %lums trafficNode%d status changes from 1 to 0.\n",RUN_TIME,trackNodeID);
-                if(trainID==currenttrackNode->traffic.train[0])//åˆ é™¤åå­—è·¯èŠ‚ç‚¹è¡¨ç¤ºç«äº‰çš„å°ç«è½¦æ•°ç»„ä¸­å·²é€šè¿‡çš„å°ç«è½¦id
+                if(trainID==currenttrackNode->traffic.train[0])//É¾³ıÊ®×ÖÂ·½Úµã±íÊ¾¾ºÕùµÄĞ¡»ğ³µÊı×éÖĞÒÑÍ¨¹ıµÄĞ¡»ğ³µid
                     currenttrackNode->traffic.train[0]=-1;
                 else
                     currenttrackNode->traffic.train[1]=-1;}}
             break;
             
         case 2:if(req==ENTER)
-        {if(trainID==currenttrackNode->traffic.train[0]||trainID==currenttrackNode->traffic.train[1])       //åŒºåˆ«å‡ºå°ç«è½¦åœ¨å“åº”åŒºé—´å†…å¤šæ¬¡å‘å‡ºENTERæŒ‡ä»¤çš„æƒ…å†µ
+        {if(trainID==currenttrackNode->traffic.train[0]||trainID==currenttrackNode->traffic.train[1])       //Çø±ğ³öĞ¡»ğ³µÔÚÏìÓ¦Çø¼äÄÚ¶à´Î·¢³öENTERÖ¸ÁîµÄÇé¿ö
             ;}
         else if((req==PASS)&&(currenttrain->flag==permitted))
         {
             currenttrackNode->traffic.status=1;
             fprintf(outputLog,"at %lums trafficNode%d status changes from 2 to 1.\n",RUN_TIME,trackNodeID);
             if(controlPolicy==AUTO)
-                (trainList[trainID]->passTimes)++; //äº¤æ›¿ç­–ç•¥ä¸‹å…ˆèµ°çš„å°ç«è½¦å…ˆè¡Œæ•°åŠ ä¸€
-            if(trainID==currenttrackNode->traffic.train[0]) //åˆ é™¤åå­—è·¯èŠ‚ç‚¹è¡¨ç¤ºç«äº‰çš„å°ç«è½¦æ•°ç»„ä¸­å·²é€šè¿‡çš„å°ç«è½¦id
+                (trainList[trainID]->passTimes)++; //½»Ìæ²ßÂÔÏÂÏÈ×ßµÄĞ¡»ğ³µÏÈĞĞÊı¼ÓÒ»
+            if(trainID==currenttrackNode->traffic.train[0]) //É¾³ıÊ®×ÖÂ·½Úµã±íÊ¾¾ºÕùµÄĞ¡»ğ³µÊı×éÖĞÒÑÍ¨¹ıµÄĞ¡»ğ³µid
             {currenttrackNode->traffic.train[0]=-1;
-                trainList[currenttrackNode->traffic.train[1]]->flag=permitted;}  //å¦ä¸€è¾†å°ç«è½¦çš„flagç½®ä¸ºpermitted
+                trainList[currenttrackNode->traffic.train[1]]->flag=permitted;}  //ÁíÒ»Á¾Ğ¡»ğ³µµÄflagÖÃÎªpermitted
             else
             {currenttrackNode->traffic.train[1]=-1;
                 trainList[currenttrackNode->traffic.train[0]]->flag=permitted;}
@@ -342,7 +342,7 @@ void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID)
     }
     
 }
-//åˆ†å‰ç‚¹çŠ¶æ€æœºè½¬æ¢å‡½æ•°
+//·Ö²æµã×´Ì¬»ú×ª»»º¯Êı
 void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID) 
 {
   trackNode currenttrackNode = NULL;
@@ -354,9 +354,9 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 	   if(req==ENTER)
 	  	   {currenttrackNode->branch.status=1;
                currenttrackNode->branch.pair->branch.status=1;
-	  	   fprintf(outputLog,"at %lums branchNode%d and its pair status changes from 0 to 1.\n",RUN_TIME,trackNodeID);//è¾“å‡ºåˆ†å‰èŠ‚ç‚¹çš„çŠ¶æ€è½¬æ¢æƒ…å†µ
+	  	   fprintf(outputLog,"at %lums branchNode%d and its pair status changes from 0 to 1.\n",RUN_TIME,trackNodeID);//Êä³ö·Ö²æ½ÚµãµÄ×´Ì¬×ª»»Çé¿ö
 	  	    currenttrain->flag=permitted;
-            if(currenttrackNode->branch.train[0]==-1&&currenttrackNode->branch.pair->branch.train[0]==-1)   //å°†å°ç«è½¦åŠ å…¥åˆ†å‰ç‚¹çš„ç«äº‰æ•°ç»„
+            if(currenttrackNode->branch.train[0]==-1&&currenttrackNode->branch.pair->branch.train[0]==-1)   //½«Ğ¡»ğ³µ¼ÓÈë·Ö²æµãµÄ¾ºÕùÊı×é
               {currenttrackNode->branch.train[0]=trainID;
                   currenttrackNode->branch.pair->branch.train[0]=trainID;}
             else if(currenttrackNode->branch.train[1]==-1&&currenttrackNode->branch.pair->branch.train[0]==-1)
@@ -369,11 +369,11 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
             {currenttrackNode->branch.train[1]=trainID;
                 currenttrackNode->branch.pair->branch.train[1]=trainID;}     }
        else if(req==PASS&&trainID!=currenttrackNode->branch.train[0]&&trainID!=currenttrackNode->branch.train[1])
-                     ;  //åŒºåˆ«å°ç«è½¦é€šè¿‡åˆ†å‰ç‚¹åä»å‘å‡ºPASSæŒ‡ä»¤çš„æƒ…å†µ 
+                     ;  //Çø±ğĞ¡»ğ³µÍ¨¹ı·Ö²æµãºóÈÔ·¢³öPASSÖ¸ÁîµÄÇé¿ö 
          break;
 	  	
 	case  1:
-	  	if(req==ENTER)   //åŒºåˆ«å‡ºå°ç«è½¦åœ¨å“åº”åŒºé—´å†…å¤šæ¬¡å‘å‡ºENTERæŒ‡ä»¤çš„æƒ…å†µ 
+	  	if(req==ENTER)   //Çø±ğ³öĞ¡»ğ³µÔÚÏìÓ¦Çø¼äÄÚ¶à´Î·¢³öENTERÖ¸ÁîµÄÇé¿ö 
 			{if(trainID!=currenttrackNode->branch.train[0]&&trainID!=currenttrackNode->branch.train[1])
 			   {currenttrackNode->branch.status=2;
                    currenttrackNode->branch.pair->branch.status=2;
@@ -390,7 +390,7 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
                    else if(currenttrackNode->branch.train[1]==-1&&currenttrackNode->branch.pair->branch.train[1]==-1)
                    {currenttrackNode->branch.train[1]=trainID;
                        currenttrackNode->branch.pair->branch.train[1]=trainID;}
-                   firstgo=judge(currenttrackNode->branch.train[0],currenttrackNode->branch.train[1]);//æ ¹æ®å½“å‰ç­–ç•¥åˆ¤æ–­å‡ºä¸¤è¾†ç«äº‰çš„å°ç«è½¦è°å…ˆè¿›å…¥å…¬å…±è½¨é“
+                   firstgo=judge(currenttrackNode->branch.train[0],currenttrackNode->branch.train[1]);//¸ù¾İµ±Ç°²ßÂÔÅĞ¶Ï³öÁ½Á¾¾ºÕùµÄĞ¡»ğ³µË­ÏÈ½øÈë¹«¹²¹ìµÀ
                    firsttrain=trainList[currenttrackNode->branch.train[0]];
 				    secondtrain=trainList[currenttrackNode->branch.train[1]];
 					if(firstgo==currenttrackNode->branch.train[0])
@@ -400,8 +400,8 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 				{secondtrain->flag=permitted;
 				firsttrain->flag=forbidden;} }}
 		else if(req==PASS&&currenttrain->flag==permitted)   
-		     {if(trainID==currenttrackNode->branch.train[0]||trainID==currenttrackNode->branch.train[1])//åŒºåˆ«å°ç«è½¦é€šè¿‡åˆ†å‰ç‚¹åä»å‘å‡ºPASSæŒ‡ä»¤çš„æƒ…å†µ
-			   {if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0)  //æ ¹æ®å…¬å…±è½¨é“çš„å¿™å’Œç©ºé—²æƒ…å†µåˆ¤æ–­å°ç«è½¦æ˜¯å¦èƒ½è¿›å…¥å…¬å…±è½¨é“
+		     {if(trainID==currenttrackNode->branch.train[0]||trainID==currenttrackNode->branch.train[1])//Çø±ğĞ¡»ğ³µÍ¨¹ı·Ö²æµãºóÈÔ·¢³öPASSÖ¸ÁîµÄÇé¿ö
+			   {if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0)  //¸ù¾İ¹«¹²¹ìµÀµÄÃ¦ºÍ¿ÕÏĞÇé¿öÅĞ¶ÏĞ¡»ğ³µÊÇ·ñÄÜ½øÈë¹«¹²¹ìµÀ
                    currenttrain->flag=permitted;
 				 else
 				   currenttrain->flag=forbidden;
@@ -409,23 +409,23 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 				  {currenttrackNode->branch.status=0;
                       currenttrackNode->branch.pair->branch.status=0;
 				  fprintf(outputLog,"at %lums branchNode%d and its pair status changes from 1 to 0.\n",RUN_TIME,trackNodeID);
-                    if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[0])//åˆ é™¤åˆ†å‰èŠ‚ç‚¹è¡¨ç¤ºç«äº‰çš„å°ç«è½¦æ•°ç»„ä¸­å·²é€šè¿‡çš„å°ç«è½¦id
+                    if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[0])//É¾³ı·Ö²æ½Úµã±íÊ¾¾ºÕùµÄĞ¡»ğ³µÊı×éÖĞÒÑÍ¨¹ıµÄĞ¡»ğ³µid
                     {currenttrackNode->branch.train[0]=-1;
                         currenttrackNode->branch.pair->branch.train[0]=-1;}
-                     else if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[1])//åˆ é™¤åˆ†å‰èŠ‚ç‚¹è¡¨ç¤ºç«äº‰çš„å°ç«è½¦æ•°ç»„ä¸­å·²é€šè¿‡çš„å°ç«è½¦id
+                     else if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[1])//É¾³ı·Ö²æ½Úµã±íÊ¾¾ºÕùµÄĞ¡»ğ³µÊı×éÖĞÒÑÍ¨¹ıµÄĞ¡»ğ³µid
                       {currenttrackNode->branch.train[0]=-1;
                           currenttrackNode->branch.pair->branch.train[1]=-1;}
-                     else if(trainID==currenttrackNode->branch.train[1]&&trainID==currenttrackNode->branch.pair->branch.train[0])//åˆ é™¤åˆ†å‰èŠ‚ç‚¹è¡¨ç¤ºç«äº‰çš„å°ç«è½¦æ•°ç»„ä¸­å·²é€šè¿‡çš„å°ç«è½¦id
+                     else if(trainID==currenttrackNode->branch.train[1]&&trainID==currenttrackNode->branch.pair->branch.train[0])//É¾³ı·Ö²æ½Úµã±íÊ¾¾ºÕùµÄĞ¡»ğ³µÊı×éÖĞÒÑÍ¨¹ıµÄĞ¡»ğ³µid
                       {currenttrackNode->branch.train[1]=-1;
                           currenttrackNode->branch.pair->branch.train[0]=-1;}
-                      if(trainID==currenttrackNode->branch.train[1]&&trainID==currenttrackNode->branch.pair->branch.train[1])//åˆ é™¤åˆ†å‰èŠ‚ç‚¹è¡¨ç¤ºç«äº‰çš„å°ç«è½¦æ•°ç»„ä¸­å·²é€šè¿‡çš„å°ç«è½¦id
+                      if(trainID==currenttrackNode->branch.train[1]&&trainID==currenttrackNode->branch.pair->branch.train[1])//É¾³ı·Ö²æ½Úµã±íÊ¾¾ºÕùµÄĞ¡»ğ³µÊı×éÖĞÒÑÍ¨¹ıµÄĞ¡»ğ³µid
                       {currenttrackNode->branch.train[1]=-1;
                           currenttrackNode->branch.pair->branch.train[1]=-1;}
                   }
                }
              }
         else if (req==PASS&&currenttrain->flag==forbidden) {
-            if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0)  //æ ¹æ®å…¬å…±è½¨é“çš„å¿™å’Œç©ºé—²æƒ…å†µåˆ¤æ–­å°ç«è½¦æ˜¯å¦èƒ½è¿›å…¥å…¬å…±è½¨é“
+            if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0)  //¸ù¾İ¹«¹²¹ìµÀµÄÃ¦ºÍ¿ÕÏĞÇé¿öÅĞ¶ÏĞ¡»ğ³µÊÇ·ñÄÜ½øÈë¹«¹²¹ìµÀ
             {currenttrain->flag=permitted;}
             else
                 ;}
@@ -433,11 +433,11 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
             break;
 		
 		case 2:
-			if(req==ENTER) //åŒºåˆ«å‡ºå°ç«è½¦åœ¨å“åº”åŒºé—´å†…å¤šæ¬¡å‘å‡ºENTERæŒ‡ä»¤çš„æƒ…å†µ
+			if(req==ENTER) //Çø±ğ³öĞ¡»ğ³µÔÚÏìÓ¦Çø¼äÄÚ¶à´Î·¢³öENTERÖ¸ÁîµÄÇé¿ö
 			{if(trainID==currenttrackNode->branch.train[0]||trainID==currenttrackNode->branch.train[1])
 	  	            ;}
 		    else if((req==PASS)&&(currenttrain->flag==permitted))
-                  { if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0) //æ ¹æ®å…¬å…±è½¨é“çš„å¿™å’Œç©ºé—²æƒ…å†µåˆ¤æ–­å°ç«è½¦æ˜¯å¦èƒ½è¿›å…¥å…¬å…±è½¨é“
+                  { if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0) //¸ù¾İ¹«¹²¹ìµÀµÄÃ¦ºÍ¿ÕÏĞÇé¿öÅĞ¶ÏĞ¡»ğ³µÊÇ·ñÄÜ½øÈë¹«¹²¹ìµÀ
 				     currenttrain->flag=permitted;
 				   else
 				   currenttrain->flag=forbidden;
@@ -446,11 +446,11 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
                        currenttrackNode->branch.pair->branch.status=1;
 				   fprintf(outputLog,"at %lums branchNode%d and its pair status changes from 2 to 1.\n",RUN_TIME,trackNodeID);
                       if(controlPolicy==AUTO) 
-                      (trainList[trainID]->passTimes)++;//äº¤æ›¿ç­–ç•¥ä¸‹å…ˆèµ°çš„å°ç«è½¦å…ˆè¡Œæ•°åŠ ä¸€ 
-                    if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[0])//åˆ é™¤åˆ†å‰èŠ‚ç‚¹è¡¨ç¤ºç«äº‰çš„å°ç«è½¦æ•°ç»„ä¸­å·²é€šè¿‡çš„å°ç«è½¦id
+                      (trainList[trainID]->passTimes)++;//½»Ìæ²ßÂÔÏÂÏÈ×ßµÄĞ¡»ğ³µÏÈĞĞÊı¼ÓÒ» 
+                    if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[0])//É¾³ı·Ö²æ½Úµã±íÊ¾¾ºÕùµÄĞ¡»ğ³µÊı×éÖĞÒÑÍ¨¹ıµÄĞ¡»ğ³µid
 				     {currenttrackNode->branch.train[0]=-1;
                          currenttrackNode->branch.pair->branch.train[0]=-1;
-				    trainList[currenttrackNode->branch.train[1]]->flag=permitted;}//å¦ä¸€è¾†å°ç«è½¦çš„flagç½®ä¸ºpermitted
+				    trainList[currenttrackNode->branch.train[1]]->flag=permitted;}//ÁíÒ»Á¾Ğ¡»ğ³µµÄflagÖÃÎªpermitted
 				  else if(trainID==currenttrackNode->branch.train[0]&&trainID==currenttrackNode->branch.pair->branch.train[1])
                   {currenttrackNode->branch.train[0]=-1;
                       currenttrackNode->branch.pair->branch.train[1]=-1;
@@ -468,7 +468,7 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
                    }
                   }
             else if((req==PASS)&&(currenttrain->flag==forbidden)){
-                if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0)  //æ ¹æ®å…¬å…±è½¨é“çš„å¿™å’Œç©ºé—²æƒ…å†µåˆ¤æ–­å°ç«è½¦æ˜¯å¦èƒ½è¿›å…¥å…¬å…±è½¨é“
+                if(checkTrack(trainID, trackNodeID,currenttrackNode->branch.pair->id)==0)  //¸ù¾İ¹«¹²¹ìµÀµÄÃ¦ºÍ¿ÕÏĞÇé¿öÅĞ¶ÏĞ¡»ğ³µÊÇ·ñÄÜ½øÈë¹«¹²¹ìµÀ
                 {currenttrain->flag=permitted;}
                 else
                     ;

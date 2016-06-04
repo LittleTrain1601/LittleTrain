@@ -2,9 +2,9 @@
 //  calculator.c
 //  LittleTrain
 //
-//  Created by å·¦æ˜Šä¸œ on 16/5/20.
-//  modifyied by æ¨æ—é’ on 16/5/29
-//  Copyright Â© 2016å¹´ 1601. All rights reserved.
+//  Created by ×óê»¶« on 16/5/20.
+//  modifyied by ÑîÁÖÇà on 16/5/29
+//  Copyright ? 2016Äê 1601. All rights reserved.
 //
 
 #include<stdio.h>
@@ -39,12 +39,12 @@ int nextIndex(int trainID, int currentID){
     }
     return i;
 }
-void updateTrain(int id){//å¾ªç¯é‡Œè®¡ç®—ä¸€è¾†å°ç«è½¦çš„ä½ç½®å¹¶æ›´æ–°ã€‚ 	Int id å°ç«è½¦çš„IDï¼Œå³trainListçš„ä¸‹æ ‡ã€‚
+void updateTrain(int id){//Ñ­»·Àï¼ÆËãÒ»Á¾Ğ¡»ğ³µµÄÎ»ÖÃ²¢¸üĞÂ¡£ 	Int id Ğ¡»ğ³µµÄID£¬¼´trainListµÄÏÂ±ê¡£
     //enum{station, branch, traffic}type;
     double x;
     x=((double)dt)*(trainList[id]->v)/CLOCKS_PER_SEC;
     int nodeid=trainList[id]->nextNode;
-    queueNode traincurrentptr;//å°ç«è½¦é“¾è¡¨å½“å‰æŒ‡é’ˆ1
+    queueNode traincurrentptr;//Ğ¡»ğ³µÁ´±íµ±Ç°Ö¸Õë1
     trainQueueNode traindata;
     if(trainList[id]->status==RUN){
         //if(trainList[id]->direction==)   
@@ -116,7 +116,7 @@ void updateTrain(int id){//å¾ªç¯é‡Œè®¡ç®—ä¸€è¾†å°ç«è½¦çš„ä½ç½®å¹¶æ›´æ–°ã€‚ 	
 
 
 int checkTrack(int trainID, int branch1, int branch2){
-    //æ£€æŸ¥ä¸¤ä¸ªèŠ‚ç‚¹ä¹‹é—´çš„è½¨é“æ˜¯å¦å ç”¨ 	ä¸¤ä¸ªèŠ‚ç‚¹çš„ID 	å ç”¨è¿”å›1ï¼Œæ— å ç”¨è¿”å›0
+    //¼ì²éÁ½¸ö½ÚµãÖ®¼äµÄ¹ìµÀÊÇ·ñÕ¼ÓÃ 	Á½¸ö½ÚµãµÄID 	Õ¼ÓÃ·µ»Ø1£¬ÎŞÕ¼ÓÃ·µ»Ø0
     int occupied=0;
     trackNode trackptr;
     trackptr=trackNodeList[branch1];
@@ -147,7 +147,7 @@ int checkTrack(int trainID, int branch1, int branch2){
 }
 
 int judge(int train1, int train2){
-    //åˆ¤å®šç«äº‰çš„å°ç«è½¦é€šè¿‡é¡ºåºã€‚æ ¹æ®äººå·¥å¹²é¢„å’Œäº¤æ›¿æ¨¡å¼é€‰æ‹©ä¸åŒåˆ¤å®šæ–¹æ³•.è¦åˆ¤å®šçš„ä¸¤ä¸ªç«è½¦çš„IDå…è®¸é€šè¿‡çš„ç«è½¦ID
+    //ÅĞ¶¨¾ºÕùµÄĞ¡»ğ³µÍ¨¹ıË³Ğò¡£¸ù¾İÈË¹¤¸ÉÔ¤ºÍ½»ÌæÄ£Ê½Ñ¡Ôñ²»Í¬ÅĞ¶¨·½·¨.ÒªÅĞ¶¨µÄÁ½¸ö»ğ³µµÄIDÔÊĞíÍ¨¹ıµÄ»ğ³µID
     clock_t inputtime;
     clock_t inputcurrent;
     if(controlPolicy==MANUAL){
