@@ -176,7 +176,7 @@ void build() {
             buff[i][j] = ' ';
         }
     }
-    FILE *fp = fopen("track.txt", "r");
+    FILE *fp = fopen("init.txt", "r");
     FILE *conf = fopen("configure.dat", "w");
     int x1,x2,y1,y2;
     
@@ -405,7 +405,6 @@ void build() {
 void input(FILE *fp) {
     int configFile = 1;
     if (!fp) {
-        fclose(fp);
         fp = fopen("input.txt", "r");
         configFile = 0;
     }
@@ -415,7 +414,7 @@ void input(FILE *fp) {
     int trainID, trainSpeed;
     mainQueueNode mainData;
     
-    while ((fscanf(fp, "%[STCQ]", cmdBuff))!=EOF) {
+    while (fp && (fscanf(fp, "%[STCQ]", cmdBuff))!=EOF) {
         missionType = cmdBuff[0];
         switch (missionType) {
             case 'C':
@@ -465,7 +464,10 @@ void input(FILE *fp) {
                 break;
         }
     }
-    fclose(fp);
+	if (fp)
+	{
+		fclose(fp);
+	}
     if (!configFile) {
         fp = fopen("input.txt", "w");
         fclose(fp);
