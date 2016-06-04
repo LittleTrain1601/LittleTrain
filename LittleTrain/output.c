@@ -346,13 +346,13 @@ void viewer() {
                     fprintf(output, "at %lu ms, train%d is running at speed %d, %lf meters to tracknode%d, next stop is station%d.\n", RUN_TIME, i, trainList[i]->v, trainList[i]->distance, trainList[i]->nextNode, ((trainQueueNode)(trainList[i]->mission->head->next->data))->station);
                     break;
                 case FREE:
-                    fprintf(output, "at %lu ms, train%d is free.\n", RUN_TIME);
+                    fprintf(output, "at %lu ms, train%d is free.\n", RUN_TIME, i);
                     break;
                 case STA:
                     fprintf(output, "at %lu ms, train%d is stopping at station%d.\n", RUN_TIME, i, ((trainQueueNode)(trainList[i]->mission->head->next->data))->station);
                     break;
                 case PAUSE:
-                    fprintf(output, "at %lu ms, train%d is paused.\n", RUN_TIME);
+                    fprintf(output, "at %lu ms, train%d is paused.\n", RUN_TIME, i);
                     break;
                 default:
                     break;

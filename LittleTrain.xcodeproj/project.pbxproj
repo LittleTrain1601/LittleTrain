@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7A690B7E1CE30A1100CA673F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A690B7D1CE30A1100CA673F /* main.c */; };
-		7A7595AE1CE8ADD1009F0E74 /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A7595AD1CE8ADD1009F0E74 /* input.c */; };
+		7A4D9E7D1CF87E01006688B4 /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9E7C1CF87E01006688B4 /* input.c */; };
+		7A4D9E811CF9D767006688B4 /* output.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9E801CF9D767006688B4 /* output.c */; };
+		7A4D9E861CFA8D78006688B4 /* calculator.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9E821CFA8D78006688B4 /* calculator.c */; };
+		7A4D9E871CFA8D78006688B4 /* coreDataAPI.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9E831CFA8D78006688B4 /* coreDataAPI.c */; };
+		7A4D9E881CFA8D78006688B4 /* FSM.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9E841CFA8D78006688B4 /* FSM.c */; };
+		7A4D9E891CFA8D78006688B4 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9E851CFA8D78006688B4 /* main.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,10 +28,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7A4D9E7C1CF87E01006688B4 /* input.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = input.c; sourceTree = "<group>"; };
+		7A4D9E801CF9D767006688B4 /* output.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = output.c; sourceTree = "<group>"; };
+		7A4D9E821CFA8D78006688B4 /* calculator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calculator.c; sourceTree = "<group>"; };
+		7A4D9E831CFA8D78006688B4 /* coreDataAPI.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coreDataAPI.c; sourceTree = "<group>"; };
+		7A4D9E841CFA8D78006688B4 /* FSM.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = FSM.c; sourceTree = "<group>"; };
+		7A4D9E851CFA8D78006688B4 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		7A690B7A1CE30A1100CA673F /* LittleTrain */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LittleTrain; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A690B7D1CE30A1100CA673F /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		7A690B841CE30A6C00CA673F /* train.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = train.h; sourceTree = "<group>"; };
-		7A7595AD1CE8ADD1009F0E74 /* input.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = input.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,9 +68,13 @@
 		7A690B7C1CE30A1100CA673F /* LittleTrain */ = {
 			isa = PBXGroup;
 			children = (
+				7A4D9E821CFA8D78006688B4 /* calculator.c */,
+				7A4D9E831CFA8D78006688B4 /* coreDataAPI.c */,
+				7A4D9E841CFA8D78006688B4 /* FSM.c */,
+				7A4D9E851CFA8D78006688B4 /* main.c */,
 				7A690B841CE30A6C00CA673F /* train.h */,
-				7A7595AD1CE8ADD1009F0E74 /* input.c */,
-				7A690B7D1CE30A1100CA673F /* main.c */,
+				7A4D9E801CF9D767006688B4 /* output.c */,
+				7A4D9E7C1CF87E01006688B4 /* input.c */,
 			);
 			path = LittleTrain;
 			sourceTree = "<group>";
@@ -123,8 +135,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A7595AE1CE8ADD1009F0E74 /* input.c in Sources */,
-				7A690B7E1CE30A1100CA673F /* main.c in Sources */,
+				7A4D9E7D1CF87E01006688B4 /* input.c in Sources */,
+				7A4D9E811CF9D767006688B4 /* output.c in Sources */,
+				7A4D9E891CFA8D78006688B4 /* main.c in Sources */,
+				7A4D9E861CFA8D78006688B4 /* calculator.c in Sources */,
+				7A4D9E871CFA8D78006688B4 /* coreDataAPI.c in Sources */,
+				7A4D9E881CFA8D78006688B4 /* FSM.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
