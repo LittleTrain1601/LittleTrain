@@ -449,7 +449,7 @@ void input(FILE *fp) {
                 mainData->type = MTRAIN;
                 mainData->train.id = trainID;
                 mainData->train.speed = trainSpeed;
-                if (!strcmp(trainDirection, "CLOCLWISE")) {
+                if (!strcmp(trainDirection, "CLOCKWISE")) {
                     mainData->train.direction = MCLOCLWISE;
                 } else {
                     mainData->train.direction = MANTICLOCKWISE;
