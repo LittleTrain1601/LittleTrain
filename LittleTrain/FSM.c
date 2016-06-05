@@ -262,7 +262,7 @@ void trainStatusSwitcher(int id)
 				{
 					anothercurrentdata = (trainQueueNode)(s->data);
 				}
-				for (; (s != currenttrain->mission->tail) && (anothercurrentdata->station) != currenttrain->nextNode;)//找到前方有任务车站对应的小火车的任务节点
+				for (; (s && s != currenttrain->mission->tail) && (anothercurrentdata->station) != currenttrain->nextNode;)//找到前方有任务车站对应的小火车的任务节点
 				{
 					t = s;
 					s = s->next;

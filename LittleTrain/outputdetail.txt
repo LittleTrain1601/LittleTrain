@@ -173,3 +173,75 @@ at 198799 ms, train0 is stopping at station1.
 at 199799 ms, train0 is stopping at station1.
 at 200799 ms, train0 is stopping at station1.
 at 201799 ms, train0 is stopping at station1.
+at 1964 ms, train0 is free.
+at 2964 ms, train0 is free.
+at 4026 ms, train0 is free.
+at 5026 ms, train0 is free.
+at 6029 ms, train0 is free.
+at 8545 ms, train0 is running at speed 3, 20.000000 meters to tracknode1, next stop is station1.
+at 9545 ms, train0 is running at speed 3, 17.000000 meters to tracknode1, next stop is station1.
+at 10545 ms, train0 is running at speed 3, 14.000000 meters to tracknode1, next stop is station1.
+at 11545 ms, train0 is running at speed 3, 11.000000 meters to tracknode1, next stop is station1.
+at 12545 ms, train0 is running at speed 3, 8.000000 meters to tracknode1, next stop is station1.
+at 13545 ms, train0 is running at speed 3, 5.000000 meters to tracknode1, next stop is station1.
+at 14545 ms, train0 is running at speed 3, 2.000000 meters to tracknode1, next stop is station1.
+at 15545 ms, train0 is stopping at station1.
+at 16545 ms, train0 is stopping at station1.
+at 17545 ms, train0 is stopping at station1.
+at 18545 ms, train0 is stopping at station1.
+at 19545 ms, train0 is stopping at station1.
+at 20545 ms, train0 is stopping at station1.
+at 21545 ms, train0 is stopping at station1.
+at 22545 ms, train0 is stopping at station2.
+at 23545 ms, train0 is stopping at station2.
+at 24545 ms, train0 is stopping at station2.
+at 25545 ms, train0 is stopping at station2.
+at 26545 ms, train0 is stopping at station2.
+at 27545 ms, train0 is stopping at station2.
+at 28545 ms, train0 is stopping at station2.
+at 29545 ms, train0 is stopping at station2.
+at 30545 ms, train0 is stopping at station2.
+at 31545 ms, train0 is running at speed 3, 38.998000 meters to tracknode2, next stop is station2.
+at 32545 ms, train0 is running at speed 3, 35.998000 meters to tracknode2, next stop is station2.
+at 33545 ms, train0 is running at speed 3, 32.998000 meters to tracknode2, next stop is station2.
+at 34545 ms, train0 is running at speed 3, 29.998000 meters to tracknode2, next stop is station2.
+at 35545 ms, train0 is running at speed 3, 26.998000 meters to tracknode2, next stop is station2.
+at 36545 ms, train0 is running at speed 3, 23.998000 meters to tracknode2, next stop is station2.
+at 37545 ms, train0 is running at speed 3, 20.998000 meters to tracknode2, next stop is station2.
+at 38545 ms, train0 is running at speed 3, 17.998000 meters to tracknode2, next stop is station2.
+at 39545 ms, train0 is running at speed 3, 14.998000 meters to tracknode2, next stop is station2.
+at 40545 ms, train0 is running at speed 3, 11.998000 meters to tracknode2, next stop is station2.
+at 41545 ms, train0 is running at speed 3, 8.998000 meters to tracknode2, next stop is station2.
+at 42545 ms, train0 is running at speed 3, 5.998000 meters to tracknode2, next stop is station2.
+at 43545 ms, train0 is running at speed 3, 2.998000 meters to tracknode2, next stop is station2.
+at 44545 ms, train0 is stopping at station2.
+at 45545 ms, train0 is stopping at station2.
+at 46545 ms, train0 is stopping at station2.
+at 47545 ms, train0 is stopping at station2.
+at 48545 ms, train0 is stopping at station2.
+at 49545 ms, train0 is stopping at station2.
+at 50545 ms, train0 is stopping at station2.
+at 51545 ms, train0 is stopping at station2.
+at 52545 ms, train0 is stopping at station2.
+at 53545 ms, train0 is stopping at station2.
+at 54545 ms, train0 is free.
+at 55545 ms, train0 is free.
+at 56545 ms, train0 is free.
+at 57545 ms, train0 is free.
+at 58545 ms, train0 is free.
+at 59545 ms, train0 is free.
+at 60545 ms, train0 is free.
+at 61545 ms, train0 is free.
+at 62545 ms, train0 is free.
+at 63545 ms, train0 is free.
+at 64545 ms, train0 is free.
+at 65545 ms, train0 is free.
+at 66545 ms, train0 is free.
+at 67545 ms, train0 is free.
+at 68545 ms, train0 is free.
+at 69545 ms, train0 is free.
+at 70545 ms, train0 is free.
+at 71545 ms, train0 is free.
+at 72545 ms, train0 is free.
+at 73545 ms, train0 is free.
+at 74545 ms, train0 is free.
