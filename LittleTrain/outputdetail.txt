@@ -1,0 +1,175 @@
+at 1645 ms, train0 is free.
+at 22820 ms, train0 is free.
+at 26437 ms, train0 is free.
+at 27437 ms, train0 is free.
+at 28437 ms, train0 is free.
+at 29437 ms, train0 is free.
+at 30437 ms, train0 is free.
+at 31437 ms, train0 is free.
+at 32437 ms, train0 is free.
+at 33437 ms, train0 is free.
+at 34437 ms, train0 is free.
+at 35437 ms, train0 is free.
+at 36437 ms, train0 is free.
+at 37437 ms, train0 is free.
+at 38451 ms, train0 is free.
+at 41321 ms, train0 is free.
+at 42321 ms, train0 is free.
+at 43321 ms, train0 is free.
+at 44321 ms, train0 is free.
+at 45321 ms, train0 is free.
+at 46321 ms, train0 is free.
+at 47394 ms, train0 is free.
+at 48394 ms, train0 is free.
+at 49394 ms, train0 is free.
+at 50395 ms, train0 is free.
+at 51895 ms, train0 is free.
+at 52895 ms, train0 is free.
+at 53895 ms, train0 is free.
+at 54896 ms, train0 is free.
+at 55896 ms, train0 is free.
+at 56896 ms, train0 is free.
+at 57896 ms, train0 is free.
+at 58896 ms, train0 is free.
+at 59903 ms, train0 is running at speed 1, 20.000000 meters to tracknode1, next stop is station1.
+at 60903 ms, train0 is running at speed 1, 19.000000 meters to tracknode1, next stop is station1.
+at 61903 ms, train0 is running at speed 1, 18.000000 meters to tracknode1, next stop is station1.
+at 62903 ms, train0 is running at speed 1, 17.000000 meters to tracknode1, next stop is station1.
+at 63903 ms, train0 is running at speed 1, 16.000000 meters to tracknode1, next stop is station1.
+at 64903 ms, train0 is running at speed 1, 15.000000 meters to tracknode1, next stop is station1.
+at 65903 ms, train0 is running at speed 1, 14.000000 meters to tracknode1, next stop is station1.
+at 66903 ms, train0 is running at speed 1, 13.000000 meters to tracknode1, next stop is station1.
+at 67905 ms, train0 is running at speed 1, 11.998000 meters to tracknode1, next stop is station1.
+at 68905 ms, train0 is running at speed 1, 10.998000 meters to tracknode1, next stop is station1.
+at 69905 ms, train0 is running at speed 1, 9.998000 meters to tracknode1, next stop is station1.
+at 70905 ms, train0 is running at speed 1, 8.998000 meters to tracknode1, next stop is station1.
+at 71905 ms, train0 is running at speed 1, 7.998000 meters to tracknode1, next stop is station1.
+at 72905 ms, train0 is running at speed 1, 6.998000 meters to tracknode1, next stop is station1.
+at 73905 ms, train0 is running at speed 1, 5.998000 meters to tracknode1, next stop is station1.
+at 74905 ms, train0 is running at speed 1, 4.998000 meters to tracknode1, next stop is station1.
+at 75905 ms, train0 is running at speed 1, 3.998000 meters to tracknode1, next stop is station1.
+at 76905 ms, train0 is running at speed 1, 2.998000 meters to tracknode1, next stop is station1.
+at 77905 ms, train0 is running at speed 1, 1.998000 meters to tracknode1, next stop is station1.
+at 78905 ms, train0 is running at speed 1, 0.998000 meters to tracknode1, next stop is station1.
+at 79905 ms, train0 is stopping at station1.
+at 80905 ms, train0 is stopping at station1.
+at 81905 ms, train0 is stopping at station1.
+at 82905 ms, train0 is stopping at station1.
+at 83905 ms, train0 is stopping at station1.
+at 84905 ms, train0 is stopping at station1.
+at 85905 ms, train0 is stopping at station1.
+at 86905 ms, train0 is stopping at station1.
+at 87905 ms, train0 is stopping at station1.
+at 88905 ms, train0 is stopping at station1.
+at 89905 ms, train0 is stopping at station1.
+at 90905 ms, train0 is stopping at station1.
+at 91905 ms, train0 is stopping at station1.
+at 92905 ms, train0 is stopping at station1.
+at 93905 ms, train0 is stopping at station1.
+at 94905 ms, train0 is stopping at station1.
+at 95905 ms, train0 is stopping at station1.
+at 96905 ms, train0 is running at speed 1, 39.998000 meters to tracknode2, next stop is station2.
+at 97905 ms, train0 is running at speed 1, 38.998000 meters to tracknode2, next stop is station2.
+at 98905 ms, train0 is running at speed 1, 37.998000 meters to tracknode2, next stop is station2.
+at 99905 ms, train0 is running at speed 1, 36.998000 meters to tracknode2, next stop is station2.
+at 100905 ms, train0 is running at speed 1, 35.998000 meters to tracknode2, next stop is station2.
+at 101905 ms, train0 is running at speed 1, 34.998000 meters to tracknode2, next stop is station2.
+at 102905 ms, train0 is running at speed 1, 33.998000 meters to tracknode2, next stop is station2.
+at 103905 ms, train0 is running at speed 1, 32.998000 meters to tracknode2, next stop is station2.
+at 104905 ms, train0 is running at speed 1, 31.998000 meters to tracknode2, next stop is station2.
+at 105905 ms, train0 is running at speed 1, 30.998000 meters to tracknode2, next stop is station2.
+at 106905 ms, train0 is running at speed 1, 29.998000 meters to tracknode2, next stop is station2.
+at 107905 ms, train0 is running at speed 1, 28.998000 meters to tracknode2, next stop is station2.
+at 108905 ms, train0 is running at speed 1, 27.998000 meters to tracknode2, next stop is station2.
+at 109905 ms, train0 is running at speed 1, 26.998000 meters to tracknode2, next stop is station2.
+at 110905 ms, train0 is running at speed 1, 25.998000 meters to tracknode2, next stop is station2.
+at 111905 ms, train0 is running at speed 1, 24.998000 meters to tracknode2, next stop is station2.
+at 112905 ms, train0 is running at speed 1, 23.998000 meters to tracknode2, next stop is station2.
+at 113905 ms, train0 is running at speed 1, 22.998000 meters to tracknode2, next stop is station2.
+at 114905 ms, train0 is running at speed 1, 21.998000 meters to tracknode2, next stop is station2.
+at 115905 ms, train0 is running at speed 1, 20.998000 meters to tracknode2, next stop is station2.
+at 116905 ms, train0 is running at speed 1, 19.998000 meters to tracknode2, next stop is station2.
+at 117905 ms, train0 is running at speed 1, 18.998000 meters to tracknode2, next stop is station2.
+at 118905 ms, train0 is running at speed 1, 17.998000 meters to tracknode2, next stop is station2.
+at 119905 ms, train0 is running at speed 1, 16.998000 meters to tracknode2, next stop is station2.
+at 120905 ms, train0 is running at speed 1, 15.998000 meters to tracknode2, next stop is station2.
+at 121905 ms, train0 is running at speed 1, 14.998000 meters to tracknode2, next stop is station2.
+at 122905 ms, train0 is running at speed 1, 13.998000 meters to tracknode2, next stop is station2.
+at 123905 ms, train0 is running at speed 1, 12.998000 meters to tracknode2, next stop is station2.
+at 124905 ms, train0 is running at speed 1, 11.998000 meters to tracknode2, next stop is station2.
+at 125905 ms, train0 is running at speed 1, 10.998000 meters to tracknode2, next stop is station2.
+at 126905 ms, train0 is running at speed 1, 9.998000 meters to tracknode2, next stop is station2.
+at 127905 ms, train0 is running at speed 1, 8.998000 meters to tracknode2, next stop is station2.
+at 128905 ms, train0 is running at speed 1, 7.998000 meters to tracknode2, next stop is station2.
+at 129905 ms, train0 is running at speed 1, 6.998000 meters to tracknode2, next stop is station2.
+at 130905 ms, train0 is running at speed 1, 5.998000 meters to tracknode2, next stop is station2.
+at 131905 ms, train0 is running at speed 1, 4.998000 meters to tracknode2, next stop is station2.
+at 132905 ms, train0 is running at speed 1, 3.998000 meters to tracknode2, next stop is station2.
+at 133905 ms, train0 is running at speed 1, 2.998000 meters to tracknode2, next stop is station2.
+at 134905 ms, train0 is running at speed 1, 1.998000 meters to tracknode2, next stop is station2.
+at 135905 ms, train0 is running at speed 1, 0.998000 meters to tracknode2, next stop is station2.
+at 136905 ms, train0 is stopping at station2.
+at 137905 ms, train0 is stopping at station2.
+at 138905 ms, train0 is stopping at station2.
+at 139905 ms, train0 is stopping at station2.
+at 140905 ms, train0 is stopping at station2.
+at 141905 ms, train0 is stopping at station2.
+at 142905 ms, train0 is stopping at station2.
+at 143905 ms, train0 is stopping at station2.
+at 144905 ms, train0 is stopping at station2.
+at 145905 ms, train0 is stopping at station2.
+at 146905 ms, train0 is stopping at station2.
+at 147905 ms, train0 is stopping at station2.
+at 148905 ms, train0 is stopping at station2.
+at 149905 ms, train0 is stopping at station2.
+at 150905 ms, train0 is stopping at station2.
+at 152170 ms, train0 is running at speed 1, 0.000000 meters to tracknode2, next stop is station1.
+at 153170 ms, train0 is running at speed 1, 39.000000 meters to tracknode1, next stop is station1.
+at 154170 ms, train0 is running at speed 1, 38.000000 meters to tracknode1, next stop is station1.
+at 155170 ms, train0 is running at speed 1, 37.000000 meters to tracknode1, next stop is station1.
+at 156797 ms, train0 is running at speed 1, 35.373000 meters to tracknode1, next stop is station1.
+at 157798 ms, train0 is running at speed 1, 34.372000 meters to tracknode1, next stop is station1.
+at 158798 ms, train0 is running at speed 1, 33.372000 meters to tracknode1, next stop is station1.
+at 159798 ms, train0 is running at speed 1, 32.372000 meters to tracknode1, next stop is station1.
+at 160798 ms, train0 is running at speed 1, 31.372000 meters to tracknode1, next stop is station1.
+at 161798 ms, train0 is running at speed 1, 30.372000 meters to tracknode1, next stop is station1.
+at 162798 ms, train0 is running at speed 1, 29.372000 meters to tracknode1, next stop is station1.
+at 163798 ms, train0 is running at speed 1, 28.372000 meters to tracknode1, next stop is station1.
+at 164798 ms, train0 is running at speed 1, 27.372000 meters to tracknode1, next stop is station1.
+at 165798 ms, train0 is running at speed 1, 26.372000 meters to tracknode1, next stop is station1.
+at 166798 ms, train0 is running at speed 1, 25.372000 meters to tracknode1, next stop is station1.
+at 167798 ms, train0 is running at speed 1, 24.372000 meters to tracknode1, next stop is station1.
+at 168798 ms, train0 is running at speed 1, 23.372000 meters to tracknode1, next stop is station1.
+at 169798 ms, train0 is running at speed 1, 22.372000 meters to tracknode1, next stop is station1.
+at 170798 ms, train0 is running at speed 1, 21.372000 meters to tracknode1, next stop is station1.
+at 171798 ms, train0 is running at speed 1, 20.372000 meters to tracknode1, next stop is station1.
+at 172798 ms, train0 is running at speed 1, 19.372000 meters to tracknode1, next stop is station1.
+at 173798 ms, train0 is running at speed 1, 18.372000 meters to tracknode1, next stop is station1.
+at 174798 ms, train0 is running at speed 1, 17.372000 meters to tracknode1, next stop is station1.
+at 175798 ms, train0 is running at speed 1, 16.372000 meters to tracknode1, next stop is station1.
+at 176798 ms, train0 is running at speed 1, 15.372000 meters to tracknode1, next stop is station1.
+at 177798 ms, train0 is running at speed 1, 14.372000 meters to tracknode1, next stop is station1.
+at 178798 ms, train0 is running at speed 1, 13.372000 meters to tracknode1, next stop is station1.
+at 179798 ms, train0 is running at speed 1, 12.372000 meters to tracknode1, next stop is station1.
+at 180798 ms, train0 is running at speed 1, 11.372000 meters to tracknode1, next stop is station1.
+at 181798 ms, train0 is running at speed 1, 10.372000 meters to tracknode1, next stop is station1.
+at 182798 ms, train0 is running at speed 1, 9.372000 meters to tracknode1, next stop is station1.
+at 183798 ms, train0 is running at speed 1, 8.372000 meters to tracknode1, next stop is station1.
+at 184798 ms, train0 is running at speed 1, 7.372000 meters to tracknode1, next stop is station1.
+at 185799 ms, train0 is running at speed 1, 6.371000 meters to tracknode1, next stop is station1.
+at 186799 ms, train0 is running at speed 1, 5.371000 meters to tracknode1, next stop is station1.
+at 187799 ms, train0 is running at speed 1, 4.371000 meters to tracknode1, next stop is station1.
+at 188799 ms, train0 is running at speed 1, 3.371000 meters to tracknode1, next stop is station1.
+at 189799 ms, train0 is running at speed 1, 2.371000 meters to tracknode1, next stop is station1.
+at 190799 ms, train0 is running at speed 1, 1.371000 meters to tracknode1, next stop is station1.
+at 191799 ms, train0 is running at speed 1, 0.371000 meters to tracknode1, next stop is station1.
+at 192799 ms, train0 is stopping at station1.
+at 193799 ms, train0 is stopping at station1.
+at 194799 ms, train0 is stopping at station1.
+at 195799 ms, train0 is stopping at station1.
+at 196799 ms, train0 is stopping at station1.
+at 197799 ms, train0 is stopping at station1.
+at 198799 ms, train0 is stopping at station1.
+at 199799 ms, train0 is stopping at station1.
+at 200799 ms, train0 is stopping at station1.
+at 201799 ms, train0 is stopping at station1.
