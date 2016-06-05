@@ -238,8 +238,15 @@ void trainStatusSwitcher(int id)
 			currentdata = (trainQueueNode)currenttrain->mission->head->next->data;//小火车当前任务
 			if ((currentdata->time)*CLOCKS_PER_SEC <= (RUN_TIME - nexttrackNode->station.stop)) {   //达到要求的停靠时间
 				pop(currenttrain->mission);//更新小火车任务队列
-				currenttrain->status = RUN;
-				fprintf(outputLog, "at %lums train%d status changes from STA to RUN.\n", RUN_TIME, id);
+				if (currenttrain->mission->head->next && ((trainQueueNode)(currenttrain->mission->head->next->data))->station == next)    //在当前站点没有其他任务 
+				{
+					fprintf(outputLog, "another mission at the station.\n");
+				}
+				else  //在当前站点没有其他任务 
+				{
+					currenttrain->status = RUN;
+					fprintf(outputLog, "at %lums train%d status changes from STA to RUN.\n", RUN_TIME, id);
+				}
 			}
 		}
 		else if (servicePolicy == BYTHEWAY)
@@ -278,8 +285,7 @@ void trainStatusSwitcher(int id)
 				}
 				else  //在当前站点还有其他任务 
 				{
-					fprintf(outputLog, "another mission at the station.\n")
-						;
+					fprintf(outputLog, "another mission at the station.\n");
 				}
 			}
 		}
