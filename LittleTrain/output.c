@@ -321,7 +321,7 @@ void putTrain(int id) {
     screenBuff[(int)yPosition][(int)xPosition] = id + '0';
 }
 void viewer() {
-    system("clear");
+    system("cls");
     for (int i=0; i<24; i++) {
         for (int j=0; j<80; j++) {
             screenBuff[i][j] = buff[i][j];
