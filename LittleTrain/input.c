@@ -414,7 +414,7 @@ void input(FILE *fp) {
     int trainID, trainSpeed;
     mainQueueNode mainData;
     
-    while (fp && (fscanf(fp, "%[STCQ]", cmdBuff))!=EOF) {
+    while (fp && (fscanf(fp, "%[STCQ]", cmdBuff))==1) {
         missionType = cmdBuff[0];
         switch (missionType) {
             case 'C':

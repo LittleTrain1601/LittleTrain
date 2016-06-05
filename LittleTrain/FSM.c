@@ -258,12 +258,18 @@ void trainStatusSwitcher(int id)
 					q = currenttrain->mission->head;
 				deleteAfter(currenttrain->mission, q);//更新小火车任务队列
 				s = currenttrain->mission->head->next;    //更新小火车任务队列后遍历链表 
-				anothercurrentdata = (trainQueueNode)(s->data);
+				if (s)
+				{
+					anothercurrentdata = (trainQueueNode)(s->data);
+				}
 				for (; (s != currenttrain->mission->tail) && (anothercurrentdata->station) != currenttrain->nextNode;)//找到前方有任务车站对应的小火车的任务节点
 				{
 					t = s;
 					s = s->next;
-					anothercurrentdata = (trainQueueNode)(s->data);
+					if (s)
+					{
+						anothercurrentdata = (trainQueueNode)(s->data);
+					}
 				}
 				if (s == currenttrain->mission->tail)    //在当前站点没有其他任务 
 				{
