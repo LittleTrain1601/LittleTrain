@@ -250,7 +250,14 @@ void build() {
                 x[global_id] = inputX;
                 y[global_id] = inputY;
             }
-            currentNode = trackNodeList[global_id];
+			if (!visited)
+			{
+				currentNode = trackNodeList[global_id];
+			}
+			else
+			{
+				currentNode = trackNodeList[idInPosition[inputY][inputX]];
+			}
             if (currentNode == NULL) {
                 currentNode = newTrackNode();
                 trackNodeList[global_id] = currentNode;

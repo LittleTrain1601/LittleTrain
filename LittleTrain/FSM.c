@@ -158,7 +158,7 @@ void trainStatusSwitcher(int id)
 	trainQueueNode  newcurrentdata = NULL;
 	trainQueueNode  anothercurrentdata = NULL;
 	int next;
-	queueNode p, q, s, t = NULL;
+	queueNode p, q = NULL;
 	currenttrain = trainList[id];
 	switch (currenttrain->status)
 	{
@@ -257,30 +257,10 @@ void trainStatusSwitcher(int id)
 				if (p == currenttrain->mission->head->next)  //完成的任务是小火车头结点后的首任务
 					q = currenttrain->mission->head;
 				deleteAfter(currenttrain->mission, q);//更新小火车任务队列
-				s = currenttrain->mission->head->next;    //更新小火车任务队列后遍历链表 
-				if (s)
-				{
-					anothercurrentdata = (trainQueueNode)(s->data);
-				}
-				for (; (s && s != currenttrain->mission->tail) && (anothercurrentdata->station) != currenttrain->nextNode;)//找到前方有任务车站对应的小火车的任务节点
-				{
-					t = s;
-					s = s->next;
-					if (s)
-					{
-						anothercurrentdata = (trainQueueNode)(s->data);
-					}
-				}
-				if (s == currenttrain->mission->tail)    //在当前站点没有其他任务 
-				{
+		
 					currenttrain->status = RUN;
 					fprintf(outputLog, "at %lums train%d status changes from STA to RUN.\n", RUN_TIME, id);
-				}
-				else  //在当前站点还有其他任务 
-				{
-					fprintf(outputLog, "another mission at the station.\n")
-						;
-				}
+			
 			}
 		}
 		if ((currenttrain->mission->head) == (currenttrain->mission->tail)) //且小火车没有未完成的任务
