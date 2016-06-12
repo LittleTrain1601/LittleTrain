@@ -153,9 +153,10 @@ int judge(int train1, int train2){
     if(controlPolicy==MANUAL){
         inputtime=clock();
         int a;
-        printf("please choose the train");
-        printf("%d %d",train1,train2);
+        printf("please choose the train\n");
+        printf("%d %d\n",train1,train2);
         scanf("%d",&a);
+		getchar();
         trainList[a]->flag=permitted;
         if(a==train1)
             trainList[train2]->flag=forbidden;
@@ -164,15 +165,25 @@ int judge(int train1, int train2){
         inputcurrent=clock();
         minusinputtime+=inputtime-inputcurrent;
         return a;
+       
     }
     else{
         if(trainList[train1]-> passTimes>trainList[train2]->passTimes){
             trainList[train2]->flag=permitted; trainList[train1]->flag=forbidden;
           		return train2;
         }
-        else{
+        else if(trainList[train1]-> passTimes<trainList[train2]->passTimes){
             trainList[train1]->flag=permitted;  trainList[train2]->flag=forbidden;
             return train1;
         }
+        else
+             {if(train1>train2)
+                 {trainList[train1]->flag=permitted;  trainList[train2]->flag=forbidden;
+                   return train1;}
+              else
+                 {trainList[train2]->flag=permitted;  trainList[train1]->flag=forbidden;
+                   return train2;}
+                
+			 }
     }
 }
