@@ -30,30 +30,18 @@
     <ClInclude Include="TrainGUI.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="train.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EasyXPng.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyEasyX.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="TrainGUI.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="calculator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="coreDataAPI.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="FSM.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="output.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
