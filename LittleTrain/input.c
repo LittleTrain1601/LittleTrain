@@ -2,8 +2,8 @@
 //  input.c
 //  LittleTrain
 //
-//  Created by æ¨æ—é’ on 16/5/27.
-//  Copyright Â© 2016å¹´ 1601. All rights reserved.
+//  Created by ÑîÁÖÇà on 16/5/27.
+//  Copyright ? 2016Äê 1601. All rights reserved.
 //
 
 #include "train.h"
@@ -11,11 +11,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-//å°ºåº¦è¯´æ˜ï¼šï¼ƒï¼ï¼ï¼ƒè¡¨ç¤ºä¸¤ä¸ªç«™å°ç›¸è·3m
-//å°ç«è½¦é»˜è®¤é¡ºæ—¶é’ˆè¿è¡Œã€‚
-//åæ ‡ä»¥å·¦ä¸Šè§’ä¸ºåŸç‚¹
+//³ß¶ÈËµÃ÷£º£££­£­££±íÊ¾Á½¸öÕ¾Ì¨Ïà¾à3m
+//Ğ¡»ğ³µÄ¬ÈÏË³Ê±ÕëÔËĞĞ¡£
+//×ø±êÒÔ×óÉÏ½ÇÎªÔ­µã
 
-//IDä¸åæ ‡æ˜ å°„æ•°ç»„ã€‚è®°å½•ç«è½¦åˆå§‹åæ ‡å’Œå„ä¸ªèŠ‚ç‚¹åæ ‡
+//IDÓë×ø±êÓ³ÉäÊı×é¡£¼ÇÂ¼»ğ³µ³õÊ¼×ø±êºÍ¸÷¸ö½Úµã×ø±ê
 int trainNumber;
 int global_id = 0;
 int x[MAXITEM];
@@ -40,7 +40,7 @@ void printTrack() {
 
 
 int absDistence(int id1, int x1, int y1, int x2, int y2) {
-    //çŸ©å½¢å·¦ä¸Šè§’åˆ°æŸä¸€ç‚¹çš„è·ç¦»
+    //¾ØĞÎ×óÉÏ½Çµ½Ä³Ò»µãµÄ¾àÀë
     if (y[id1] == y1) {
         return x[id1] - x1;
     } else if (x[id1] == x2) {
@@ -52,7 +52,7 @@ int absDistence(int id1, int x1, int y1, int x2, int y2) {
     }
 }
 int getDistence(int id1, int id2, int x1, int y1, int x2, int y2) {
-    //ä»¥é¡ºæ—¶é’ˆçš„é¡ºåºè®¡ç®—id1åˆ°id2ä¸¤ä¸ªèŠ‚ç‚¹é—´çš„è·ç¦»
+    //ÒÔË³Ê±ÕëµÄË³Ğò¼ÆËãid1µ½id2Á½¸ö½Úµã¼äµÄ¾àÀë
     int d1 = absDistence(id2, x1, y1, x2, y2);
     int d2 = absDistence(id1, x1, y1, x2, y2);
     int result = d1 - d2;
@@ -165,7 +165,7 @@ void connectPreviousBranch(trackNode previousNode, trackNode currentNode, int di
 }
 
 void build() {
-    //åˆå§‹åŒ–trainListå’ŒtrackNodeList
+    //³õÊ¼»¯trainListºÍtrackNodeList
     for (int i=0; i<MAXITEM; i++) {
         trainList[i] = NULL;
         trackNodeList[i] = NULL;
@@ -176,16 +176,16 @@ void build() {
             buff[i][j] = ' ';
         }
     }
-    FILE *fp = fopen("track.txt", "r");
+    FILE *fp = fopen("init.txt", "r");
     FILE *conf = fopen("configure.dat", "w");
     int x1,x2,y1,y2;
     
     if (!fp) {
         fp = stdin;
     }
-    printf("=============1601 å°ç«è½¦===========\n");
-    printf("=============è½¨é“é…ç½®å‘å¯¼===========\n");
-    printf("æ¯è¾†å°ç«è½¦æœ‰ä¸”ä»…æœ‰ä¸€æ¡è‡ªå·±çš„è½¨é“ã€‚è¯·è¾“å…¥å°ç«è½¦çš„æ•°é‡ï¼š");
+    printf("=============1601 Ğ¡»ğ³µ===========\n");
+    printf("=============¹ìµÀÅäÖÃÏòµ¼===========\n");
+    printf("Ã¿Á¾Ğ¡»ğ³µÓĞÇÒ½öÓĞÒ»Ìõ×Ô¼ºµÄ¹ìµÀ¡£ÇëÊäÈëĞ¡»ğ³µµÄÊıÁ¿£º");
     fscanf(fp, "%d", &trainNumber);
     fprintf(conf, "%d\n", trainNumber);
     global_id = trainNumber;
@@ -198,7 +198,7 @@ void build() {
     for (int i=0; i<trainNumber; i++) {
         trainList[i] = newTrain();
         int trainNodeListIndex=0;
-        printf("è¯·æŒ‡å®šç¬¬%dè¾†å°ç«è½¦çš„è½¨é“ä½ç½®(å·¦ä¸Šè§’åæ ‡å’Œå³ä¸‹è§’åæ ‡):\næ³¨æ„ï¼Œåæ ‡åŸç‚¹åœ¨å±å¹•å·¦ä¸Šè§’ã€‚\n", i);
+        printf("ÇëÖ¸¶¨µÚ%dÁ¾Ğ¡»ğ³µµÄ¹ìµÀÎ»ÖÃ(×óÉÏ½Ç×ø±êºÍÓÒÏÂ½Ç×ø±ê):\n×¢Òâ£¬×ø±êÔ­µãÔÚÆÁÄ»×óÉÏ½Ç¡£\n", i);
         fscanf(fp, "%d%d%d%d", &x1, &y1, &x2, &y2);
         fprintf(conf, "%d %d %d %d\n", x1, y1, x2, y2);
         for (int j=x1; j<=x2; j++) {
@@ -214,11 +214,11 @@ void build() {
         trainList[i]->y1 = y1;
         trainList[i]->x2 = x2;
         trainList[i]->y2 = y2;
-        printf("è¯·è¾“å…¥è½¨é“ä¸Šç«™ç‚¹æ•°é‡ã€åˆ†å²”ç‚¹æ•°é‡ä»¥åŠåå­—äº¤å‰ç‚¹çš„æ•°é‡å’Œï¼š");
+        printf("ÇëÊäÈë¹ìµÀÉÏÕ¾µãÊıÁ¿¡¢·Ö²íµãÊıÁ¿ÒÔ¼°Ê®×Ö½»²æµãµÄÊıÁ¿ºÍ£º");
         fscanf(fp, "%d", &nodeNumber);
         fprintf(conf, "%d\n", nodeNumber);
-        printf("èŠ‚ç‚¹ç¼–å·æ’åœ¨ç«è½¦ç¼–å·åé¢ã€‚è¯·æŒ‰é¡ºæ—¶é’ˆçš„é¡ºåºè¾“å…¥èŠ‚ç‚¹çš„ç±»å‹å’Œåæ ‡ã€‚åŠ¡å¿…ä»éå…¬å…±è½¨é“ä¸Šçš„ç«™ç‚¹å¼€å§‹ã€‚ç«™ç‚¹ä¸ºSï¼Œåˆ†å‰ç‚¹ä¸ºBï¼Œåå­—äº¤å‰ç‚¹ä¸ºTï¼š\n");
-        printf("è¯·è¾“å…¥ç¬¬%dä¸ªèŠ‚ç‚¹çš„ç±»å‹å’Œåæ ‡ï¼š", global_id);
+        printf("½Úµã±àºÅÅÅÔÚ»ğ³µ±àºÅºóÃæ¡£Çë°´Ë³Ê±ÕëµÄË³ĞòÊäÈë½ÚµãµÄÀàĞÍºÍ×ø±ê¡£Îñ±Ø´Ó·Ç¹«¹²¹ìµÀÉÏµÄÕ¾µã¿ªÊ¼¡£Õ¾µãÎªS£¬·Ö²æµãÎªB£¬Ê®×Ö½»²æµãÎªT£º\n");
+        printf("ÇëÊäÈëµÚ%d¸ö½ÚµãµÄÀàĞÍºÍ×ø±ê£º", global_id);
         fgetc(fp);
         fscanf(fp, "%c %d %d", &nodeType, &inputX, &inputY);
         fprintf(conf, "%c %d %d\n", nodeType, inputX, inputY);
@@ -237,7 +237,7 @@ void build() {
         global_id++;
         int visited;
         for (int j=1; j<nodeNumber; j++) {
-            printf("è¯·è¾“å…¥ç¬¬%dä¸ªèŠ‚ç‚¹çš„ç±»å‹å’Œåæ ‡ï¼š", global_id);
+            printf("ÇëÊäÈëµÚ%d¸ö½ÚµãµÄÀàĞÍºÍ×ø±ê£º", global_id);
             fgetc(fp);
             fscanf(fp, "%c %d %d", &nodeType, &inputX, &inputY);
             fprintf(conf, "%c %d %d\n", nodeType, inputX, inputY);
@@ -250,7 +250,14 @@ void build() {
                 x[global_id] = inputX;
                 y[global_id] = inputY;
             }
-            currentNode = trackNodeList[global_id];
+			if (!visited)
+			{
+				currentNode = trackNodeList[global_id];
+			}
+			else
+			{
+				currentNode = trackNodeList[idInPosition[inputY][inputX]];
+			}
             if (currentNode == NULL) {
                 currentNode = newTrackNode();
                 trackNodeList[global_id] = currentNode;
@@ -279,7 +286,7 @@ void build() {
                             break;
                         }
                         int range;
-                        printf("è¯·è¾“å…¥ç›‘æµ‹ç‚¹çš„è·ç¦»:");
+                        printf("ÇëÊäÈë¼à²âµãµÄ¾àÀë:");
                         fscanf(fp, "%d", &range);
                         fprintf(conf, "%d\n", range);
                         switch (getFreeBranch(currentNode)) {
@@ -306,7 +313,7 @@ void build() {
                     currentNode->id = global_id;
                     char branchIO;
                     int range = 0;
-                    printf("è¯·è¾“å…¥è¿™å¯¹åˆ†å‰ç‚¹ä¸­ï¼Œå¦ä¸€ä¸ªåˆ†å‰ç‚¹çš„ID,é¡ºæ—¶é’ˆæ˜¯è¿›å…¥(I)å…¬å…±è½¨é“è¿˜æ˜¯å‡º(O)å…¬å…±è½¨é“,ä»¥åŠåˆ°ç›‘æµ‹ç‚¹çš„è·ç¦»:");
+                    printf("ÇëÊäÈëÕâ¶Ô·Ö²æµãÖĞ£¬ÁíÒ»¸ö·Ö²æµãµÄID,Ë³Ê±ÕëÊÇ½øÈë(I)¹«¹²¹ìµÀ»¹ÊÇ³ö(O)¹«¹²¹ìµÀ,ÒÔ¼°µ½¼à²âµãµÄ¾àÀë:");
                     fscanf(fp, "%d %c %d", &inputId, &branchIO, &range);
                     fprintf(conf, "%d %c %d\n", inputId, branchIO, range);
                     if (trackNodeList[inputId] == NULL) {
@@ -340,7 +347,7 @@ void build() {
                     connectPreviousBranch(previousNode, currentNode, distence);
                     break;
                 case 'T':
-                    printf("è¯·è¾“å…¥ç›‘æµ‹ç‚¹çš„è·ç¦»:");
+                    printf("ÇëÊäÈë¼à²âµãµÄ¾àÀë:");
                     fscanf(fp, "%d", &range);
                     fprintf(conf, "%d\n", range);
                     if (visited) {
@@ -387,7 +394,7 @@ void build() {
         currentNode->station.ldistance = getDistence(previousNode->id, currentNode->id, x1, y1, x2, y2);
         connectPreviousBranch(previousNode, currentNode, currentNode->station.ldistance);
         
-        printf("è¯·æŒ‡å®šç¬¬%dè¾†å°ç«è½¦çš„ä½ç½®ã€‚ç«è½¦ä¸å¯åˆå§‹åŒ–åœ¨å…¬å…±è½¨é“ä¸Šã€‚å°ç«è½¦é»˜è®¤ä¸ºé¡ºæ—¶é’ˆï¼ŒæŒ‡å®šå®ƒå‰æ–¹èŠ‚ç‚¹çš„IDå’Œè·ç¦»:", i);
+        printf("ÇëÖ¸¶¨µÚ%dÁ¾Ğ¡»ğ³µµÄÎ»ÖÃ¡£»ğ³µ²»¿É³õÊ¼»¯ÔÚ¹«¹²¹ìµÀÉÏ¡£Ğ¡»ğ³µÄ¬ÈÏÎªË³Ê±Õë£¬Ö¸¶¨ËüÇ°·½½ÚµãµÄIDºÍ¾àÀë:", i);
         fscanf(fp, "%d%d", &inputId, &inputDistence);
         fprintf(conf, "%d %d\n", inputId, inputDistence);
         trainList[i]->nextNode = inputId;
@@ -405,17 +412,16 @@ void build() {
 void input(FILE *fp) {
     int configFile = 1;
     if (!fp) {
-        fclose(fp);
         fp = fopen("input.txt", "r");
         configFile = 0;
     }
-    char missionType;//Sä»£è¡¨ç«™ç‚¹çš„åœé è¯·æ±‚ï¼ŒTè¡¨ç¤ºè®¾ç½®ç«è½¦å‚æ•°ï¼ŒQè¡¨ç¤ºé€€å‡ºç¨‹åºï¼ŒCè¡¨ç¤ºåˆ‡æ¢æœåŠ¡ç­–ç•¥
+    char missionType;//S´ú±íÕ¾µãµÄÍ£¿¿ÇëÇó£¬T±íÊ¾ÉèÖÃ»ğ³µ²ÎÊı£¬Q±íÊ¾ÍË³ö³ÌĞò£¬C±íÊ¾ÇĞ»»·şÎñ²ßÂÔ
     char cmdBuff[20], trainDirection[20];
     int nodeID, stopTime, serverTrain;
     int trainID, trainSpeed;
     mainQueueNode mainData;
     
-    while ((fscanf(fp, "%[STCQ]", cmdBuff))!=EOF) {
+    while (fp && (fscanf(fp, "%s", cmdBuff))==1) {
         missionType = cmdBuff[0];
         switch (missionType) {
             case 'C':
@@ -465,7 +471,10 @@ void input(FILE *fp) {
                 break;
         }
     }
-    fclose(fp);
+	if (fp)
+	{
+		fclose(fp);
+	}
     if (!configFile) {
         fp = fopen("input.txt", "w");
         fclose(fp);

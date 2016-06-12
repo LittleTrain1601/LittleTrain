@@ -2,15 +2,15 @@
 //  coreDataAPI.c
 //  LittleTrain
 //
-//  Created by é™ˆæ›¦è¿œ on 16/5/20.
-//  Copyright ? 2016å¹´ 1601. All rights reserved.
+//  Created by ³ÂêØÔ¶ on 16/5/20.
+//  Copyright ? 2016Äê 1601. All rights reserved.
 //
 
 
 #include "train.h"
 #include <stdlib.h>
 
-//æ–°å»ºä¸€ä¸ªé€šç”¨ä»»åŠ¡é˜Ÿåˆ— 
+//ĞÂ½¨Ò»¸öÍ¨ÓÃÈÎÎñ¶ÓÁĞ 
 queue newQueue(){
 	queueNode newqueueNode=NULL;
 	newqueueNode=(queueNode)malloc(sizeof(struct _queueNode));
@@ -23,7 +23,7 @@ queue newQueue(){
 	return newqueue;
 }
 
-//å°†æ–°ä»»åŠ¡è¿½åŠ åˆ°é˜Ÿåˆ—æœ«å°¾,è¿”å›æ’å…¥çš„èŠ‚ç‚¹çš„åœ°å€ 
+//½«ĞÂÈÎÎñ×·¼Óµ½¶ÓÁĞÄ©Î²,·µ»Ø²åÈëµÄ½ÚµãµÄµØÖ· 
 queueNode append(queue waitingqueue, void * data){
     queueNode newqueueNode=NULL;
     newqueueNode=(queueNode)malloc(sizeof(struct _queueNode));
@@ -34,15 +34,15 @@ queueNode append(queue waitingqueue, void * data){
     return newqueueNode;
 }
 
-//åˆ é™¤ptræ‰€æŒ‡å‘ä»»åŠ¡çš„ä¸‹ä¸€ä¸ªä»»åŠ¡
+//É¾³ıptrËùÖ¸ÏòÈÎÎñµÄÏÂÒ»¸öÈÎÎñ
 void deleteAfter(queue waitingqueue, queueNode ptr){
     queueNode q=NULL;
     void * r;
-    if(ptr->next==NULL)  //ptræŒ‡å‘é˜Ÿåˆ—ä¸­çš„æœ€åä¸€ä¸ªä»»åŠ¡
+    if(ptr->next==NULL)  //ptrÖ¸Ïò¶ÓÁĞÖĞµÄ×îºóÒ»¸öÈÎÎñ
         return;
     q=ptr->next;
     ptr->next =q->next;
-    if(ptr->next==NULL)    //è‹¥åˆ é™¤çš„ä¸ºé˜Ÿåˆ—ä¸­çš„æœ€åä¸€ä¸ªä»»åŠ¡ï¼Œåˆ™æ›´æ”¹å°¾æŒ‡é’ˆ
+    if(ptr->next==NULL)    //ÈôÉ¾³ıµÄÎª¶ÓÁĞÖĞµÄ×îºóÒ»¸öÈÎÎñ£¬Ôò¸ü¸ÄÎ²Ö¸Õë
         waitingqueue->tail=ptr;
     r=q->data;
     free(r);
@@ -51,16 +51,16 @@ void deleteAfter(queue waitingqueue, queueNode ptr){
 }
 
 
-//ä»é˜Ÿåˆ—ä¸­è¯»å‡ºå½“å‰ä»»åŠ¡å¹¶å°†å…¶åˆ é™¤ï¼Œè¿”å›dataæŒ‡é’ˆ
+//´Ó¶ÓÁĞÖĞ¶Á³öµ±Ç°ÈÎÎñ²¢½«ÆäÉ¾³ı£¬·µ»ØdataÖ¸Õë
 void * pop(queue waitingqueue){ 
-if(waitingqueue->head==waitingqueue->tail) // ä»»åŠ¡é˜Ÿåˆ—ä¸­åªæœ‰å¤´èŠ‚ç‚¹ 
+if(waitingqueue->head==waitingqueue->tail) // ÈÎÎñ¶ÓÁĞÖĞÖ»ÓĞÍ·½Úµã 
   return NULL;
 else
    {queueNode p=waitingqueue->head->next;
        waitingqueue->head->next=p->next;
        void * q=p->data;
        free(p);
-       if(waitingqueue->head->next==NULL)  //ä»»åŠ¡é˜Ÿåˆ—ä¸­é™¤å¤´èŠ‚ç‚¹å¤–åªæœ‰ä¸€ä¸ªä»»åŠ¡ 
+       if(waitingqueue->head->next==NULL)  //ÈÎÎñ¶ÓÁĞÖĞ³ıÍ·½ÚµãÍâÖ»ÓĞÒ»¸öÈÎÎñ 
           waitingqueue->tail=waitingqueue->head;
      return q;
    }}
@@ -86,7 +86,7 @@ train newTrain(){
 
 trackNode newTrackNode(){
    trackNode newtracknode=NULL;
-   newtracknode=(trackNode)calloc(1,sizeof(struct _trackNode));//åˆå§‹åŒ–å†…å­˜ç©ºé—´ 
+   newtracknode=(trackNode)calloc(1,sizeof(struct _trackNode));//³õÊ¼»¯ÄÚ´æ¿Õ¼ä 
     return newtracknode;
 }
 

@@ -2,8 +2,8 @@
 //  output.c
 //  LittleTrain
 //
-//  Created by æ¨æ—é’ on 16/5/28.
-//  Copyright Â© 2016å¹´ 1601. All rights reserved.
+//  Created by ÑîÁÖÇà on 16/5/28.
+//  Copyright ? 2016Äê 1601. All rights reserved.
 //
 
 #include "train.h"
@@ -321,7 +321,7 @@ void putTrain(int id) {
     screenBuff[(int)yPosition][(int)xPosition] = id + '0';
 }
 void viewer() {
-    system("clear");
+    system("cls");
     for (int i=0; i<24; i++) {
         for (int j=0; j<80; j++) {
             screenBuff[i][j] = buff[i][j];
@@ -346,13 +346,13 @@ void viewer() {
                     fprintf(output, "at %lu ms, train%d is running at speed %d, %lf meters to tracknode%d, next stop is station%d.\n", RUN_TIME, i, trainList[i]->v, trainList[i]->distance, trainList[i]->nextNode, ((trainQueueNode)(trainList[i]->mission->head->next->data))->station);
                     break;
                 case FREE:
-                    fprintf(output, "at %lu ms, train%d is free.\n", RUN_TIME);
+                    fprintf(output, "at %lu ms, train%d is free.\n", RUN_TIME, i);
                     break;
                 case STA:
                     fprintf(output, "at %lu ms, train%d is stopping at station%d.\n", RUN_TIME, i, ((trainQueueNode)(trainList[i]->mission->head->next->data))->station);
                     break;
                 case PAUSE:
-                    fprintf(output, "at %lu ms, train%d is paused.\n", RUN_TIME);
+                    fprintf(output, "at %lu ms, train%d is paused.\n", RUN_TIME, i);
                     break;
                 default:
                     break;

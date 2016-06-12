@@ -2,9 +2,9 @@
 //  main.c
 //  LittleTrain
 //
-//  Created by å·¦æ˜Šä¸œ on 16/5/11.
-//  modifyied by æ¨æ—é’ on 16/5/29
-//  Copyright Â© 2016å¹´ 1601. All rights reserved.
+//  Created by ×óê»¶« on 16/5/11.
+//  modifyied by ÑîÁÖÇà on 16/5/29
+//  Copyright ? 2016Äê 1601. All rights reserved.
 //
 
 #include <stdio.h>
@@ -12,8 +12,8 @@
 #include "train.h"
 #include <time.h>
 
-trackNode trackNodeList[MAXITEM];//ä»¥èŠ‚ç‚¹IDä¸ºä¸‹æ ‡
-train trainList[MAXITEM]; //ä»¥å°ç«è½¦IDä¸ºä¸‹æ ‡
+trackNode trackNodeList[MAXITEM];//ÒÔ½ÚµãIDÎªÏÂ±ê
+train trainList[MAXITEM]; //ÒÔĞ¡»ğ³µIDÎªÏÂ±ê
 
 clock_t minuswhiletime;
 clock_t minussystemtime;
@@ -24,7 +24,7 @@ queue mainMission;
 int trainid;
 
 int secure() {
-    //æ£€æŸ¥å°ç«è½¦æ˜¯å¦éƒ½å¤„äºLOCkçŠ¶æ€ã€‚è‹¥æ˜¯ï¼Œåˆ™è¿”å›1ï¼Œç¨‹åºå°†ç»“æŸè¿è¡Œ
+    //¼ì²éĞ¡»ğ³µÊÇ·ñ¶¼´¦ÓÚLOCk×´Ì¬¡£ÈôÊÇ£¬Ôò·µ»Ø1£¬³ÌĞò½«½áÊøÔËĞĞ
     for (int i=0; i<MAXITEM; i++) {
         if (trainList[i]) {
             if (trainList[i]->status != LOCK) {
@@ -53,7 +53,7 @@ int prevIndex(int trainID){
     return i;
 }
 void changeDirection() {
-    //ä¸åŸæ¥æ–¹å‘ç›¸åçš„æƒ…å†µï¼šæ‰¾ä¸Šä¸€ä¸ªèŠ‚ç‚¹idè®°ä¸ºâ€œiâ€ï¼Œæ ¹æ®ä¸Šä¸€èŠ‚ç‚¹ç±»å‹æ›´æ”¹å°ç«è½¦diatance
+    //ÓëÔ­À´·½ÏòÏà·´µÄÇé¿ö£ºÕÒÉÏÒ»¸ö½Úµãid¼ÇÎª¡°i¡±£¬¸ù¾İÉÏÒ»½ÚµãÀàĞÍ¸ü¸ÄĞ¡»ğ³µdiatance
     int i = trainList[trainid]->nodeList[prevIndex(trainid)];
     if(trackNodeList[i]->type==STATION){
         if (trackNodeList[i]->station.left->id == trainList[trainid]->nextNode) {
@@ -92,16 +92,16 @@ int main(){
     clock_t whiletime;clock_t whilecurrent=0;
     RUN_TIME = clock();
     clock_t Rtime = RUN_TIME;
-    trainQueueNode trainptr;//å°ç«è½¦æ–°æ•°æ®åŸŸæŒ‡é’ˆ
+    trainQueueNode trainptr;//Ğ¡»ğ³µĞÂÊı¾İÓòÖ¸Õë
     mainQueueNode mainptr;
-    //queueNode traincurrent;// å°ç«è½¦ä»»åŠ¡é˜Ÿåˆ—å½“å‰æŒ‡é’ˆ
+    //queueNode traincurrent;// Ğ¡»ğ³µÈÎÎñ¶ÓÁĞµ±Ç°Ö¸Õë
     while(!secure()){
         whiletime=clock();
         minuswhiletime=whiletime-whilecurrent;
         dt = minuswhiletime - minusinputtime;
         RUN_TIME += dt;
         minusinputtime = 0;
-        whilecurrent=whiletime;//while å¾ªç¯æ—¶é—´è®°å½•
+        whilecurrent=whiletime;//while Ñ­»·Ê±¼ä¼ÇÂ¼
         if(RUN_TIME-Rtime>=CLOCKS_PER_SEC){
             input(NULL);
         }
