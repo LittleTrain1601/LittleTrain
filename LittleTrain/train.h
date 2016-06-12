@@ -11,7 +11,7 @@
 #include <time.h>
 #include <stdio.h>
 
-#define MAXITEM 20
+#define MAXITEM 50 //数组变大 
 
 typedef enum {FREE,RUN,PAUSE,LOCK,STA}trainState;
 typedef int branchState;/*根据接收到的进入公共轨道的请求数，分叉节点状态为012，所以直接用int类型*/
@@ -68,6 +68,10 @@ typedef struct _trackNode{
             int ldistance;
             struct _trackNode * right;
             int rdistance;
+            int x;     //图形化界面站点的范围 
+			int y;
+			int width;
+			int height; 
         } station;
         struct {
             branchState status;
@@ -82,6 +86,10 @@ typedef struct _trackNode{
             struct _trackNode * down;//down指向公共轨道里的下一个节点
             int ddistance;
             struct _trackNode * pair;
+            int x;   //公共轨道范围，注意某分叉节点和它的pair这四个域同步初始化 
+			int y;
+			int width;
+			int height; 
         } branch;
         struct {
             struct _trackNode * up;
@@ -147,5 +155,13 @@ void deleteAfter(queue, queueNode ptr);//删除ptr后面的元素
 void * pop(queue);//从队列中读出一个任务并将其删除。返回data指针
 train newTrain();
 trackNode newTrackNode();
+
+//图形化
+char currentmode   ;  //指示右侧模块变更:T为火车模块，S为站点模块，P为公共轨道模块 
+int trainnumber; //序号为0,1,2的三辆车
+int stationnumber;//序号从3开始的站点
+int  totalstation;//站点总数
+int branchnumber;// 序号从3+totalstation-1开始
+int totalbranch;//分叉节点总数 
 
 #endif /* train_h */
