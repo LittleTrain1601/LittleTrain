@@ -1,7 +1,7 @@
 // APPSTART.cpp : 定义应用程序的入口点。
 //
 
-#include "EasyXPng.h"
+#include <easyx.h>
 #include <windows.h>
 
 int windowWidth = 960;
@@ -15,11 +15,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ int       nCmdShow)
 {
 
-	initgraphEx(windowWidth, windowHeight);
+	initgraph(windowWidth, windowHeight);
 	// 获取窗口句柄
 	HWND hWnd = GetHWnd();
 	cutBoard(hWnd);
-	IMAGE_PNG APP_Start;
+	IMAGE APP_Start;
 	loadimage(&APP_Start, _T("./Res/APP_START.jpg"));
 	putimage(0, 0, &APP_Start);
 	MOUSEMSG m;

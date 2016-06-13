@@ -33,12 +33,6 @@
     <ClInclude Include="train.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="EasyXPng.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MyEasyX.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrainGUI.cpp">
