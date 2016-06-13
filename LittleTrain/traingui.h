@@ -7,7 +7,7 @@
 //
 
 #ifndef traingui_h
-#define traingui_
+#define traingui_h
 
 
 //Í¼ĞÎ»¯
