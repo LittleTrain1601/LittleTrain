@@ -249,6 +249,7 @@ void build() {
 		previousNode = currentNode;
 		global_id++;
 		int visited;
+		int range = 0;
 		for (int j = 1; j<nodeNumber; j++) {
 			printf("请输入第%d个节点的类型和坐标：", global_id);
 			fgetc(fp);
@@ -326,7 +327,6 @@ void build() {
 				currentNode->type = BRANCH;
 				currentNode->id = global_id;
 				char branchIO;
-				int range = 0;
 				printf("请输入这对分叉点中，另一个分叉点的ID,顺时针是进入(I)公共轨道还是出(O)公共轨道,以及到监测点的距离:");
 				fscanf(fp, "%d %c %d", &inputId, &branchIO, &range);
 				fprintf(conf, "%d %c %d\n", inputId, branchIO, range);
@@ -399,8 +399,6 @@ void build() {
 				currentNode->traffic.train[1] = -1;
 				connectPreviousBranch(previousNode, currentNode, distence);
 				break;
-			default:
-				break;
 			}
 			trainList[i]->nodeList[trainNodeListIndex++] = currentNode->id;
 			global_id++;
@@ -460,7 +458,7 @@ void input(FILE *fp) {
 		case 'S':
 			fscanf(fp, "%d%d", &nodeID, &serverTrain);
 			stopTime = (rand() % 9) + 2;//(rand() % (10-2+1))+ a;
-			mainData = calloc(1, sizeof(struct _mainQueueNode));
+			mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
 			mainData->type = MSTATION;
 			mainData->station.id = nodeID;
 			mainData->station.time = stopTime;
@@ -470,7 +468,7 @@ void input(FILE *fp) {
 		case 'T':
 			fgetc(fp);
 			fscanf(fp, "%d%d%s", &trainID, &trainSpeed, trainDirection);
-			mainData = calloc(1, sizeof(struct _mainQueueNode));
+			mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
 			mainData->type = MTRAIN;
 			mainData->train.id = trainID;
 			mainData->train.speed = trainSpeed;
@@ -483,7 +481,7 @@ void input(FILE *fp) {
 			append(mainMission, mainData);
 			break;
 		case 'Q':
-			mainData = calloc(1, sizeof(struct _mainQueueNode));
+			mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
 			mainData->type = MLOCK;
 			append(mainMission, mainData);
 			break;

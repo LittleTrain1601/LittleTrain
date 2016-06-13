@@ -94,7 +94,7 @@ void changeDirection() {
 	trainList[trainid]->nextNode = i;
 }
 
-int main() {
+int main1() {
 	mainMission = newQueue();
 	logWriter();
 	build();
@@ -118,7 +118,7 @@ int main() {
 			switch (mainptr->type) {
 			case MSTATION:
 				trainid = mainptr->station.train;
-				trainptr = calloc(1, sizeof(struct _trainQueueNode));
+				trainptr = (trainQueueNode)calloc(1, sizeof(struct _trainQueueNode));
 				trainptr->station = mainptr->station.id;
 				trainptr->time = mainptr->station.time;
 				append(trainList[trainid]->mission, (void *)trainptr);
@@ -148,7 +148,7 @@ int main() {
 			case MLOCK:
 				for (int k = 0; k<MAXITEM; k++) {
 					if (trainList[k]) {
-						trainptr = calloc(1, sizeof(struct _trainQueueNode));
+						trainptr = (trainQueueNode)calloc(1, sizeof(struct _trainQueueNode));
 						trainptr->type = TLOCK;
 						append(trainList[k]->mission, (void *)trainptr);
 					}

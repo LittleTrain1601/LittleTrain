@@ -3,6 +3,10 @@
 
 #include <easyx.h>
 #include <windows.h>
+extern "C" {
+#include "train.h"
+};
+
 
 int windowWidth = 960;
 int windowHeight = 560;
@@ -14,6 +18,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
+	perform();
 	initgraph(windowWidth, windowHeight);
 	// »ñÈ¡´°¿Ú¾ä±ú
 	HWND hWnd = GetHWnd();

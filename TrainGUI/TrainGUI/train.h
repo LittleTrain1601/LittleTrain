@@ -19,8 +19,19 @@ typedef int trafficState;/*根据接收到的通过十字路节点请求数，红绿灯节点状态为012
 						 //一些必要的时间变量（假设时间类型是TIME）在calculator里定义
 extern clock_t RUN_TIME;//小火车开始运行的时间，忽略用户输入打断的时间
 						//flags 在FSM里定义
-extern enum _servicePolicy { SEQUENCING, BYTHEWAY } servicePolicy;
-extern enum policy { AUTO, MANUAL } controlPolicy;
+enum _servicePolicy { SEQUENCING, BYTHEWAY };
+extern enum _servicePolicy servicePolicy;
+enum policy { AUTO, MANUAL };
+extern enum policy controlPolicy;
+
+//这部分用于定义枚举常量
+enum MType { MSTATION, MTRAIN, MLOCK };
+enum MDirection { MCLOCLWISE, MANTICLOCKWISE };
+enum TType { TSTATION, TLOCK };
+enum _Type { STATION, BRANCH, TRAFFIC };
+enum TDirection { clockwise, anticlockwise };
+enum TFlag { permitted, forbidden };
+
 
 //通用任务队列
 typedef struct _queueNode {
@@ -33,7 +44,7 @@ typedef struct _queue {
 }*queue;
 //主任务队列（输入文件中所有的命令）的数据结构体
 typedef struct _mainQueueNode {
-	enum { MSTATION, MTRAIN, MLOCK } type;    //HEAD为头结点
+	enum MType type;    //HEAD为头结点
 	union {
 		struct {
 			int id;
@@ -41,7 +52,7 @@ typedef struct _mainQueueNode {
 			int train;
 		}station;
 		struct {
-			enum { MCLOCLWISE, MANTICLOCKWISE } direction;
+			enum MDirection direction;
 			int speed;
 			int id;
 		}train;
@@ -52,7 +63,7 @@ extern queue mainMission;                      //在main里定义
 
 											   //小火车任务队列的数据结构体
 typedef struct _trainQueueNode {
-	enum { TSTATION, TLOCK }type;             //HEAD为头结点
+	enum TType type;             //HEAD为头结点
 	int station;
 	int time;
 }*trainQueueNode;
@@ -60,7 +71,7 @@ typedef struct _trainQueueNode {
 //站点节点、分岔节点、十字路节点
 typedef struct _trackNode {
 	int id;                                 //id＝－1表示新建立的空节点
-	enum { STATION, BRANCH, TRAFFIC }type;
+	enum _Type type;
 	union {
 		struct {
 			clock_t stop;//火车停靠的时刻
@@ -114,10 +125,10 @@ typedef struct _trackNode {
 typedef struct _train {
 	int id;                                 //id＝－1表示新建立的空节点
 	int v;//速度，单位是m/s
-	enum { clockwise, anticlockwise } direction;
+	enum TDirection direction;
 	int nextNode;//下一个节点的编号
 	double distance;//距离下一个节点的距离
-	enum { permitted, forbidden } flag;
+	enum TFlag flag;
 	trainState status;
 	int passTimes;
 	int nodeList[MAXITEM];//存储小火车所在轨道经过的所有节点ID
@@ -130,7 +141,7 @@ extern train trainList[]; //以小火车ID为下标
 
 						  //input模块
 void build();
-void input();
+void input(FILE * fp);
 
 //output
 extern FILE *outputLog;

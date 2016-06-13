@@ -10,7 +10,7 @@
 #include "train.h"
 #include <stdio.h>
 
-enum _servicePolicy{ SEQUENCING, BYTHEWAY } servicePolicy;
+enum _servicePolicy servicePolicy;
 enum policy controlPolicy;
 
 int firstgo;
