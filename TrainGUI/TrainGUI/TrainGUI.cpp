@@ -1,8 +1,7 @@
 // APPSTART.cpp : 定义应用程序的入口点。
 //
 
-#include <easyx.h>
-#include <windows.h>
+#include "TrainGUI.h"
 extern "C" {
 #include "train.h"
 };
@@ -18,7 +17,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
-	perform();
 	initgraph(windowWidth, windowHeight);
 	// 获取窗口句柄
 	HWND hWnd = GetHWnd();
@@ -27,7 +25,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	loadimage(&APP_Start, _T("./Res/APP_START.jpg"));
 	putimage(0, 0, &APP_Start);
 	Sleep(500);//等待0.5秒
-	fillrectangle(0, 0, 400, 400);//
+	
+	//建立绘制图形和处理鼠标输入的线程
+	HANDLE GUIInputThread, GUIOutputThread;
+	GUIInputThread = (HANDLE)_beginthreadex(NULL, 0, GUIInput, NULL, 0, NULL);
+	GUIOutputThread = (HANDLE)_beginthreadex(NULL, 0, GUIOutput, NULL, 0, NULL);
+
 	MOUSEMSG m;//等待鼠标点击后退出程序
 	while (1)
 	{
@@ -36,11 +39,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		switch (m.uMsg)
 		{
 		case WM_LBUTTONDOWN:
+			programStat = 0;
 			return 0;
 		default:
 			break;
 		}
 	}
+
+	WaitForSingleObject(GUIInput, INFINITE);
+	WaitForSingleObject(GUIOutput, INFINITE);
 	return 0;
 }
 

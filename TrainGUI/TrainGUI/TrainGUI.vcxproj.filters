@@ -56,6 +56,12 @@
     <ClCompile Include="output.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="inputGUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="outputGUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TrainGUI.rc">
