@@ -79,12 +79,134 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 		//WaitForSingleObject(hMutex, INFINITE);
 		//更新图层内容
 		putTrains(&trackStill);
+		SetWorkingImage(&info); //x=694, y=44
 		switch (currentmode)
 		{
 		case 'T':
+			putimage(0, 0, &infoTrain);
 			RECT trainID = {91, 63, 120, 92};
 			_stprintf(TBuff, _T("%d"), trainnumber);
-			drawtext(TBuff, &trainID, DT_WORDBREAK);
+			SetTextColor(BLACK);
+			outtextxy(91, 63, TBuff);
+			//drawtext(TBuff, &trainID, DT_WORDBREAK);
+			LOGFONT f;
+			gettextstyle(&f);
+			f.lfHeight = 22;
+			f.lfQuality = ANTIALIASED_QUALITY;
+			settextstyle(&f);
+			settextcolor(RGB(91, 166, 210));
+			if (pauseStat)
+			{
+				_stprintf(TBuff, _T("全部开始"));
+			}
+			else 
+			{
+				_stprintf(TBuff, _T("全部暂停"));
+			}
+			outtextxy(16, 24, TBuff);
+			f.lfHeight = 18;
+			settextstyle(&f);
+			if (trainList[trainnumber]->status == RUN)
+			{
+				_stprintf(TBuff, _T("暂停这辆车"));
+				outtextxy(16, 109, TBuff);
+			}
+			else if (trainList[trainnumber]->status == PAUSE)
+			{
+				_stprintf(TBuff, _T("启动这辆车"));
+				outtextxy(16, 109, TBuff);
+			}
+			SetTextColor(BLACK);
+			_stprintf(TBuff, _T("%d 米/秒"), trainList[trainnumber]->v);
+			outtextxy(93, 151, TBuff);
+			if (trainList[trainnumber]->direction == clockwise)
+			{
+				_stprintf(TBuff, _T("顺时针"));
+			}
+			else
+			{
+				_stprintf(TBuff, _T("逆时针"));
+			}
+			outtextxy(93, 151, TBuff);
+			break;
+		case 'S':
+			putimage(0, 0, &infoStation);
+			_stprintf(TBuff, _T("车站%d"), stationnumber);
+			settextcolor(BLACK);
+			LOGFONT f;
+			gettextstyle(&f);
+			f.lfHeight = 22;
+			f.lfQuality = ANTIALIASED_QUALITY;
+			settextstyle(&f);
+			outtextxy(16, 66, TBuff);
+			f.lfHeight = 18;
+			settextstyle(&f);
+			int i = 0, flag=1;
+			queueNode currentMission;
+			for (int j = 0; j < totaltrain; j++)
+			{
+				currentMission = trainList[j]->mission->head;
+				while (currentMission -> next)
+				{
+					currentMission = currentMission->next;
+					if (((trainQueueNode)currentMission)->type == TSTATION && ((trainQueueNode)currentMission)->station == stationnumber && i<5)
+					{
+						_stprintf(TBuff, _T("火车%d 停%d秒"), j, ((trainQueueNode)currentMission)->time);
+						outtextxy(16, 146 + 22 * i, TBuff);
+					}
+					else if (i == 5 && flag)
+					{
+						_stprintf(TBuff, _T("……"));
+						outtextxy(16, 146 + 22 * i, TBuff);
+						flag = 0;
+						break;
+					}
+				}
+			}
+			_stprintf(TBuff, _T("%d"), trainnumber);
+			outtextxy(90, 312, TBuff);
+			break;
+		case 'P':
+			int id1, id2, idt=-1;
+			id1 = branchnumber;
+			id2 = trackNodeList[id1]->branch.pair->id;
+			_stprintf(TBuff, _T("分叉点%d和分叉点%d之间"), id1, id2);
+			settextcolor(BLACK);
+			LOGFONT f;
+			gettextstyle(&f);
+			f.lfHeight = 18;
+			f.lfQuality = ANTIALIASED_QUALITY;
+			settextstyle(&f);
+			outtextxy(16, 71, TBuff);
+			//寻找占用轨道的火车
+			int front,behind,j, i;
+			for (i = 0; i < totaltrain; i++)
+			{
+				front = trainList[i]->nextNode;
+				if (front == id1 || front == id2)
+				{
+					for (j = 0; trainList[i]->nodeList[j] != -1; j++)
+					{
+						if (front == trackNodeList[trainList[i]->nodeList[j]]->id)
+						{
+							break;
+						}
+					}
+					j--;
+					if (j == 0)
+					{
+						for (j = 0; trainList[i]->nodeList[j] != -1; j++);
+						j--;
+					}
+					behind = j;
+					if (behind == id1 || behind == id2)
+					{
+						idt = i;
+					}
+				}
+			}
+			checkTrack();
+			break;
 		default:
 			break;
 		}
