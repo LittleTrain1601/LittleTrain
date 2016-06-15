@@ -97,7 +97,7 @@ void changeDirection() {
 int main1() {
 	mainMission = newQueue();
 	logWriter();
-	build();
+	//build();
 	clock_t whiletime; clock_t whilecurrent = 0;
 	RUN_TIME = clock();
 	clock_t Rtime = RUN_TIME;
@@ -112,7 +112,7 @@ int main1() {
 		minusinputtime = 0;
 		whilecurrent = whiletime;//while 循环时间记录
 		if (RUN_TIME - Rtime >= CLOCKS_PER_SEC) {
-			input(NULL);
+			//input(NULL);
 		}
 		while ((mainptr = (mainQueueNode)pop(mainMission)) != NULL) {
 			switch (mainptr->type) {
@@ -179,4 +179,5 @@ int main1() {
 			Rtime = RUN_TIME;
 		}
 	}
+	framestate = 3;
 }
