@@ -2,6 +2,7 @@
 
 int programStat = 1;
 int frameStat = 0;
+int pauseStat = 1;
 char currentmode = 'T';  //指示右侧模块变更:T为火车模块，S为站点模块，P为公共轨道模块 
 int trainnumber = 0; //右侧模块显示的是那辆车的信息
 int totaltrain;//火车总数 
@@ -17,8 +18,10 @@ IMAGE info;
 IMAGE statLayer;
 IMAGE quit;
 IMAGE ask(301, 159);
+IMAGE exitLayer;
 void alertQuit();
 void alertAsk();
+void alertExit();
 
 unsigned __stdcall GUIOutput(void* pArguments) {
 	//为每一个图层载入图像，修改图层时注意备份
@@ -26,11 +29,14 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	loadimage(&info, _T("./Res/TRAIN_MODE.jpg"));
 	loadimage(&statLayer, _T("./Res/POLICY.jpg"));
 	loadimage(&quit, _T("./Res/APP_QUIT.jpg"));
-	SetWorkingImage(&track); //绘制轨道区背景
+	loadimage(&exitLayer, _T("./Res/APP_QUIT.jpg"));
+	//绘制轨道区背景
+	SetWorkingImage(&track); 
 	setfillcolor(WHITE);
 	setlinecolor(WHITE);
 	fillrectangle(0, 0, 694, 516);
-	SetWorkingImage(&ask);//绘制询问窗口，不包含文字
+	//绘制询问窗口，不包含文字
+	SetWorkingImage(&ask);
 	setfillcolor(WHITE);
 	setlinecolor(WHITE);
 	fillrectangle(0, 0, 301, 159);
@@ -62,7 +68,11 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 		}
 		else if (frameStat == 2)
 		{
-			//alertAsk();
+			alertAsk();
+		}
+		else if (frameStat == 3)
+		{
+			alertExit();
 		}
 		FlushBatchDraw();
 		EndBatchDraw();
@@ -100,5 +110,14 @@ void alertQuit()
 
 void alertAsk()
 {
+	patintFullWindowShadow();
+	SetWorkingImage();
+	putimage(329, 200, &ask);
+}
 
+void alertExit()
+{
+	patintFullWindowShadow();
+	SetWorkingImage();
+	putimage(330, 211, &exitLayer);
 }
