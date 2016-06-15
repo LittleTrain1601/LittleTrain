@@ -25,7 +25,7 @@ enum policy { AUTO, MANUAL };
 extern enum policy controlPolicy;
 
 //这部分用于定义枚举常量
-enum MType { MSTATION, MTRAIN, MLOCK };
+enum MType { MSTATION, MTRAIN, MLOCK ,MRESUME,MPAUSE};
 enum MDirection { MCLOCLWISE, MANTICLOCKWISE };
 enum TType { TSTATION, TLOCK };
 enum _Type { STATION, BRANCH, TRAFFIC };

@@ -1,4 +1,4 @@
-#include<easyx.h>
+#include<easyx.h> 
 #include<graphics.h>
 #include<tchar.h>
 #include<train.h>
@@ -31,12 +31,12 @@ int pointnodeid(MOUSEMSG m)
 		{
 			if (trackNodeList[i]->type == BRANCH)
 			{
-				if (m.x >= (trackNodeList[i]->branch.x) && (m.x <= (trackNodeList[i]->branch.x + trackNodeList[i]->branch.width) && (m.y >= (trackNodeList[i]->branch.y) && (m.y <= (trackNodeList[i]->branch.y + trackNodeList[i]->branch.height))
+				if (m.x >= (trackNodeList[i]->branch.x) && (m.x <= (trackNodeList[i]->branch.x + trackNodeList[i]->branch.width))&& (m.y >= (trackNodeList[i]->branch.y)) && (m.y <= (trackNodeList[i]->branch.y + trackNodeList[i]->branch.height)))
 					return trackNodeList[i]->id;
 			}
 			else if (trackNodeList[i]->type == STATION)
 			{
-				if (m.x >= (trackNodeList[i]->station.x) && (m.x <= (trackNodeList[i]->station.x + trackNodeList[i]->station.width) && (m.y >= (trackNodeList[i]->station.y) && (m.y <= (trackNodeList[i]->station.y + trackNodeList[i]->station.height))
+				if (m.x >= (trackNodeList[i]->station.x) && (m.x <= (trackNodeList[i]->station.x + trackNodeList[i]->station.width)) && (m.y >= (trackNodeList[i]->station.y)) && (m.y <= (trackNodeList[i]->station.y + trackNodeList[i]->station.height)))
 					return trackNodeList[i]->id;
 			}
 		}
@@ -57,29 +57,29 @@ int pointnodeid(MOUSEMSG m)
 				programStat = 0;
 			}
 			else if (n.x >= 347 && n.x <= 521 && n.y >= 258 && n.x <= 280)
-			{//立即结束整个工程
+			{//立即结束整个工程？
 			}
 		}
 
 		else if (programStat == 2)
-		{//新的人工策略
+		{//新的人工策略？
 			programStat = 0;
 		}
 
-		else if (toexit == 0 && tochoose == 0)
+		else if (programStat == 0)
 		{
 			if (m.x >= 0 && m.x <= 694 && m.y >= 44 && m.y <= 560)             //点击在轨道区
 			{
 				k = pointnodeid(m);
 				if (k != -1)
 				{
-					if (trackNodeList[k]->type == STATION）
+					if (trackNodeList[k]->type == STATION)
 					{
 					 currentmode = S;
 					 stationnumber = k;
-					 //右侧贴站点的模块图(STATION_MODE.jpg);
+					 //右侧贴站点的模块图(STATION_MODE.jpg);？
 					}
-					else if (trackNodeList[k]->type == BRANCH）
+					else if (trackNodeList[k]->type == BRANCH)
 					{
 							currentmode = P;
 						   branchnumber = k;
@@ -97,7 +97,7 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 	toexit = 1;                              //表示应该弹出退出窗口,结束线程？
 	break;
 
-	case(m.x >= 711 && m.x <= 740 && m.y >= 473 && m.y <= 502)：
+case(m.x >= 711 && m.x <= 740 && m.y >= 473 && m.y <= 502):
 		if (servicePolicy == BYTHEWAY)
 		{
 			servicePolicy = SEQUENCING;
@@ -112,7 +112,7 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 		}
 	break;
 
-	case(m.x >= 862 && m.x <= 891 && m.y >= 473 && m.y <= 502) :
+case(m.x >= 862 && m.x <= 891 && m.y >= 473 && m.y <= 502) :
 		if (servicePolicy == BYTHEWAY)
 		{
 			servicePolicy = SEQUENCING;
@@ -127,16 +127,16 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 		}
 															   break;
 
-	case(m.x >= 711 && m.x <= 740 && m.y >= 511 && m.y <= 540) :
+case(m.x >= 711 && m.x <= 740 && m.y >= 511 && m.y <= 540) :
 		if (controlPolicy == AUTO)
 		{
-			controlPolicy == MANUAL；
+			controlPolicy = MANUAL;
 				RECT r = { 751, 516, 848, 536 };
 			drawtext(_T("人工"), &r);
 		}
 		else
 		{
-			controlPolicy == AUTO；
+			controlPolicy = AUTO;
 				RECT r = { 751, 516, 848, 536 };
 			drawtext(_T("自动"), &r);
 		}
@@ -145,56 +145,90 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 	case(m.x >= 862 && m.x <= 891 && m.y >= 511 && m.y <= 540) :
 		if (controlPolicy == AUTO)
 		{
-			controlPolicy == MANUAL；
+			controlPolicy = MANUAL;
 				RECT r = { 751, 516, 848, 536 };
 			drawtext(_T("人工"), &r);
 		}
 		else
 		{
-			controlPolicy == AUTO；
+			controlPolicy = AUTO;
 				RECT r = { 751, 516, 848, 536 };
 			drawtext(_T("自动"), &r);
 		}
 															   break;
 
-	case(m.x >= 709 && m.x <= 819 && m.y >= 68 && m.y <= 94）:  //全部暂停，加状态
+	case(m.x >= 709 && m.x <= 819 && m.y >= 68 && m.y <= 94): //全部开始
 		if (currentmode == T)
-		{//小火车全部开始                   
+		{
+			for (i = 0; i < totaltrain; i++)
+			{
+				mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
+				mainData->type = MRESUME;
+				mainData->train.id = i;
+				append(mainMission, mainData);
+			}
 		}
 		break;
 
-	case(m.x >= 709 && m.x <= 738 && m.y >= 107 & m.y <= 136）:
+
+	case(m.x >= && m.x <=  && m.y >= && m.y <):  //全部暂停?按钮
 		if (currentmode == T)
 		{
-			if (trainnumber != 0)
+			for (i = 0; i < totaltrain; i++)
+			{
+				mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
+				mainData->type = MPAUSE;
+				mainData->train.id = i;
+				append(mainMission, mainData);
+			}
+		}
+		break;
+		
+	case(m.x >= 709 && m.x <= 738 && m.y >= 107 & m.y <= 136):
+		if (currentmode == T)
+		{
+			if (trainnumber > 0)
 			{
 				trainnumber--;
 				TCHAR tid[20];
-				_stprintf(tid, _T("%d")，trainnumber);
+				_stprintf(tid, _T("%d"),trainnumber);
 				RECT r = { 785, 107, 814, 136 };
 				drawtext(tid, &r);
 			}
 		}
 		break;
 
-		case（m.x >= 860 && m.x <= 889 && m.y >= 107 && m.y <= 136）:
+		case(m.x >= 860 && m.x <= 889 && m.y >= 107 && m.y <= 136):
 		if (currentmode == T)
 		{
-			if (trainnumber != totaltrain - 1)
+			if (trainnumber <totaltrain - 1)
 			{
 				trainnumber++;
 				TCHAR tid[20];
-				_stprintf(tid, _T("%d")，trainnumber);
+				_stprintf(tid, _T("%d",trainnumber);
 				RECT r = { 785, 107, 814, 136 };
 				drawtext(tid, &r);
 			}
 		}
 		break;
 
-	case(m.x >= 711 && m.x <= 801 && m.y >= 153 && m.y <= 178) :
+	case(m.x >= 711 && m.x <= 801 && m.y >= 153 && m.y <= 178) : //暂停这辆车
 		if (currentmode == T)
 		{
-			trainList[trainnumber]->status = PAUSE;
+			mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
+			mainData->type = MPAUSE;
+			mainData->train.id = trainnumber;
+			append(mainMission, mainData);
+	     }
+															   break;
+
+	case(m.x >=  && m.x <=  && m.y >=  && m.y <= ) : //开始这辆车？按钮
+		if (currentmode == T)
+		{
+			mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
+			mainData->type = MRESUME;
+			mainData->train.id = trainnumber;
+			append(mainMission, mainData);
 		}
 															   break;
 
@@ -205,7 +239,7 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 			{
 				trainList[trainnumber]->v--;
 				TCHAR tid[20];
-				_stprintf(tid, _T("%dm/s")，trainList[trainnumber]->v);
+				_stprintf(tid, _T("%dm/s"),trainList[trainnumber]->v);
 				RECT r = { 787, 195, 891, 216 };
 				drawtext(tid, &r);
 			}
@@ -219,7 +253,7 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 			{
 				trainList[trainnumber]->v++;
 				TCHAR tid[20];
-				_stprintf(tid, _T("%dm/s")，trainList[trainnumber]->v);
+				_stprintf(tid, _T("%dm/s"),trainList[trainnumber]->v);
 				RECT r = { 787, 195, 891, 216 };
 				drawtext(tid, &r);
 			}
@@ -266,7 +300,7 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 		if (currentmode == S || currentmode == P)
 		{
 			currentmode = T;
-			//贴小火车模式图(TRAIN_MODE.jpg)							
+			//贴小火车模式图(TRAIN_MODE.jpg)？							
 		}
 															 break;
 
@@ -277,7 +311,7 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 			{
 				servertrain--;
 				TCHAR tid[20];
-				_stprintf(tid, _T("%d")，servertrain);
+				_stprintf(tid, _T("%d"),servertrain);
 				RECT r = { 784, 356, 801, 374 };
 				drawtext(tid, &r);
 			}
@@ -292,7 +326,7 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 			{
 				servertrain++;
 				TCHAR tid[20];
-				_stprintf(tid, _T("%d")，servertrain);
+				_stprintf(tid, _T("%d"),servertrain);
 				RECT r = { 784, 356, 801, 374 };
 				drawtext(tid, &r);
 			}

@@ -155,6 +155,14 @@ int main1() {
 				}
 				fprintf(outputLog, "at %lums receive lock command.\n", RUN_TIME);
 				break;
+			case MPAUSE:
+				trainid = mainptr->train.id;                            //ÔİÍ£
+				trainList[trainid]->status = PAUSE;
+				break;
+			case MRESUME:
+				trainid = mainptr->train.id;                            //¿ªÊ¼
+				trainList[trainid]->status = RUN;
+				break;
 			default:
 				break;
 			}

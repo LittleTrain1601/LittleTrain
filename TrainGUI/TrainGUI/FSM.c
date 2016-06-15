@@ -175,8 +175,7 @@ void trainStatusSwitcher(int id)
 				currenttrain->status = LOCK;
 			}
 		}
-
-		break;
+     break;
 	case RUN:
 		next = currenttrain->nextNode;	 //小火车下一个节点编号
 		nexttrackNode = trackNodeList[next];
