@@ -19,9 +19,14 @@ IMAGE statLayer;
 IMAGE quit;
 IMAGE ask(301, 159);
 IMAGE exitLayer;
+IMAGE stationIco;
+IMAGE trainIco;
+
 void alertQuit();
 void alertAsk();
 void alertExit();
+void drawTrack(IMAGE *Img);
+void putTrains(IMAGE *Img);
 
 unsigned __stdcall GUIOutput(void* pArguments) {
 	//为每一个图层载入图像，修改图层时注意备份
@@ -49,10 +54,29 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	setlinecolor(RGB(196, 196, 196));
 	fillrectangle(154, 115, 285, 115);
 
+	//绘制轨道
+	IMAGE trackStill(694, 516);
+	drawTrack(&trackStill);
+	IMAGE infoTrain;
+	loadimage(&infoTrain, _T("./Res/TRAIN_MODE.jpg"));
+	IMAGE infoStation;
+	loadimage(&infoStation, _T("./Res/STATION_MODE.jpg"));
+	IMAGE infoBranch;
+	LoadImage(&infoBranch, _T("./Res/BRANCH_MODE.jpg"));
+
 	while (programStat)
 	{
 		//WaitForSingleObject(hMutex, INFINITE);
 		//更新图层内容
+		putTrains(&track);
+		switch (currentmode)
+		{
+		case 'T':
+			RECT trainID = {91, 63, 120, 92};
+			drawtext(_T(trainnumber - '0'), &trainID, DT_WORDBREAK);
+		default:
+			break;
+		}
 
 		//绘制图层
 		
@@ -120,4 +144,42 @@ void alertExit()
 	patintFullWindowShadow();
 	SetWorkingImage();
 	putimage(330, 211, &exitLayer);
+}
+
+void drawTrack(IMAGE *Img)
+{
+	SetWorkingImage(Img);
+	setfillcolor(WHITE);
+	setlinecolor(WHITE);
+	fillrectangle(0, 0, 694, 516);
+	setlinecolor(BLACK);
+	int previousX, previousY;
+	for (int i = 0; i < totaltrain; i++)
+	{	
+		trackNode currentNode = trackNodeList[trainList[i]->nodeList[0]];
+		switch (currentNode->type)
+		{
+		case STATION:
+			putimage(currentNode->x - currentNode->width/2, currentNode->y - currentNode->height/2, &stationIco);
+			break;
+		}
+		for (int j = 1; trainList[i]->nodeList[j] != -1; j++)
+		{
+			currentNode = trackNodeList[trainList[i]->nodeList[j]];
+			switch (currentNode->type)
+			{
+			case STATION:
+				putimage(currentNode->x - currentNode->width / 2, currentNode->y - currentNode->height / 2, &stationIco);
+				break;
+			default:
+				putpixel(currentNode->x, currentNode->y, BLACK);
+				break;
+			}
+			line(previousX, previousY, currentNode->x, currentNode->y);
+			previousX = currentNode->x;
+			previousY = currentNode->y;
+		}
+		currentNode = trackNodeList[trainList[i]->nodeList[0]];
+		line(previousX, previousY, currentNode->x, currentNode->y);
+	}
 }
