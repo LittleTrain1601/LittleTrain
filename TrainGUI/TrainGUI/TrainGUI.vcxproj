@@ -148,13 +148,7 @@
     <ClInclude Include="TrainGUI.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="calculator.c" />
-    <ClCompile Include="coreDataAPI.c" />
-    <ClCompile Include="FSM.c" />
-    <ClCompile Include="input.c" />
     <ClCompile Include="inputGUI.cpp" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="output.c" />
     <ClCompile Include="outputGUI.cpp" />
     <ClCompile Include="TrainGUI.cpp" />
   </ItemGroup>

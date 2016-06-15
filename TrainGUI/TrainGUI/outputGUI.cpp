@@ -3,7 +3,7 @@
 int programStat = 1;
 int frameStat = 0;
 char currentmode = 'T';  //指示右侧模块变更:T为火车模块，S为站点模块，P为公共轨道模块 
-int trainnumber; //序号为0,1,2的三辆车
+int trainnumber = 0; //序号为0,1,2的三辆车
 int stationnumber;//序号从3开始的站点
 int totalstation;//站点总数
 int branchnumber;// 序号从3+totalstation-1开始
@@ -40,25 +40,63 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	setfillcolor(RGB(196, 196, 196));
 	setlinecolor(RGB(196, 196, 196));
 	fillrectangle(154, 115, 285, 115);
+
 	while (programStat)
 	{
+		//WaitForSingleObject(hMutex, INFINITE);
+		//更新图层内容
 
-
+		//绘制图层
+		
 		SetWorkingImage();
+		BeginBatchDraw();
 		putimage(0, 44, &track);
 		putimage(694, 44, &info);
 		putimage(694, 424, &statLayer);
 		putimage(0, 0, &captain);
 		if (frameStat == 1)
 		{
-			//alertQuit();
+			alertQuit();
 		}
 		else if (frameStat == 2)
 		{
 			//alertAsk();
 		}
+		FlushBatchDraw();
+		EndBatchDraw();
+		//ReleaseMutex(hMutex);
 	}
 
 	_endthreadex(0);
 	return 0;
+}
+
+void patintFullWindowShadow()
+{
+	// 获取绘图窗口的显存指针
+	DWORD* pbWnd = GetImageBuffer();
+	// 计算原图片每个点的颜色，实现逐渐变量的效果
+	int r, g, b;
+	int light = 32;
+	for (int i = 0; i < 960 * 560; i++)
+	{
+		r = (int)(GetRValue(pbWnd[i]) * light >> 6);
+		g = (int)(GetGValue(pbWnd[i]) * light >> 6);
+		b = (int)(GetBValue(pbWnd[i]) * light >> 6);
+		pbWnd[i] = RGB(r, g, b);
+	}
+
+	// 使之前的显存操作生效（注：操作指向 IMAGE 的显存时不需要这条语句）
+	//FlushBatchDraw();
+}
+void alertQuit()
+{
+	patintFullWindowShadow();
+	SetWorkingImage();
+	putimage(330, 211, &quit);
+}
+
+void alertAsk()
+{
+
 }

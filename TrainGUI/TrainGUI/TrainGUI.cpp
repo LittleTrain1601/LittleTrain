@@ -12,6 +12,9 @@ int windowHeight = 560;
 
 void cutBoard(HWND window);//将程序窗口剪裁至仅有客户区
 
+//互斥锁
+HANDLE hMutex;
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -28,26 +31,39 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	
 	//建立绘制图形和处理鼠标输入的线程
 	HANDLE GUIInputThread, GUIOutputThread;
+	hMutex = CreateMutex(NULL, FALSE, NULL);
 	GUIInputThread = (HANDLE)_beginthreadex(NULL, 0, GUIInput, NULL, 0, NULL);
 	GUIOutputThread = (HANDLE)_beginthreadex(NULL, 0, GUIOutput, NULL, 0, NULL);
 
 	MOUSEMSG m;//等待鼠标点击后退出程序
-	while (1)
+	//WaitForSingleObject(hMutex, INFINITE);
+	while (programStat)
 	{
 		m = GetMouseMsg();
+		//WaitForSingleObject(hMutex, INFINITE);
 
 		switch (m.uMsg)
 		{
 		case WM_LBUTTONDOWN:
-			programStat = 0;
-			return 0;
+			if (frameStat == 0)
+			{
+				frameStat = 1;
+			}
+			else if (frameStat == 1)
+			{
+				programStat = 0;
+			}
+			break;
 		default:
 			break;
 		}
+
+		//ReleaseMutex(hMutex);
 	}
 
 	WaitForSingleObject(GUIInput, INFINITE);
 	WaitForSingleObject(GUIOutput, INFINITE);
+	closegraph();
 	return 0;
 }
 
