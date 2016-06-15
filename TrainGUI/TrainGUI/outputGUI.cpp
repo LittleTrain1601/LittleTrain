@@ -1,4 +1,5 @@
 #include "TrainGUI.h"
+#include <math.h>
 
 
 int programStat = 1;
@@ -11,6 +12,8 @@ int stationnumber;//用户点击的站点id
 int totalstation;//站点总数
 int branchnumber;// 用户点击的公共轨道对应的某一分叉节点id
 int totalbranch;//分叉节点总数 
+int nodeWidth = 22;
+int nodeHeight = 22;
 
 //用作图层
 IMAGE captain;
@@ -21,13 +24,14 @@ IMAGE quit;
 IMAGE ask(301, 159);
 IMAGE exitLayer;
 IMAGE stationIco;
-IMAGE trainIco;
+IMAGE trainIco1;
+IMAGE trainIco2;
 
 void alertQuit();
 void alertAsk();
 void alertExit();
-void drawTrack(IMAGE *Img);
-void putTrains(IMAGE *Img);
+void drawTrack(IMAGE *pImg);
+void putTrains(IMAGE *pImg);
 
 unsigned __stdcall GUIOutput(void* pArguments) {
 	//为每一个图层载入图像，修改图层时注意备份
@@ -36,6 +40,8 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	loadimage(&statLayer, _T("./Res/POLICY.jpg"));
 	loadimage(&quit, _T("./Res/APP_QUIT.jpg"));
 	loadimage(&exitLayer, _T("./Res/APP_QUIT.jpg"));
+	loadimage(&trainIco1, _T("./Res/GUICHU1.jpg"));
+	loadimage(&trainIco2, _T("./Res/GUICHU2.jpg"));
 	//绘制轨道区背景
 	SetWorkingImage(&track); 
 	setfillcolor(WHITE);
@@ -63,24 +69,24 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	IMAGE infoStation;
 	loadimage(&infoStation, _T("./Res/STATION_MODE.jpg"));
 	IMAGE infoBranch;
-	LoadImage(&infoBranch, _T("./Res/BRANCH_MODE.jpg"));
+	loadimage(&infoBranch, _T("./Res/BRANCH_MODE.jpg"));
+
+	//TCHAR字符串缓存
+	TCHAR TBuff[100];
 
 	while (programStat)
 	{
 		//WaitForSingleObject(hMutex, INFINITE);
 		//更新图层内容
-		putTrains(&track);
+		putTrains(&trackStill);
 		switch (currentmode)
 		{
 		case 'T':
 			RECT trainID = {91, 63, 120, 92};
-			drawtext(_T(trainnumber - '0'), &trainID, DT_WORDBREAK);
+			_stprintf(TBuff, _T("%d"), trainnumber);
+			drawtext(TBuff, &trainID, DT_WORDBREAK);
 		default:
 			break;
-		}
-
-
-			}
 		}
 			
 		
@@ -145,14 +151,14 @@ void alertAsk()
 	putimage(329, 200, &ask);
 }
 
-
-}
-
- POINT getlocation(double distance, int x1, int y1, int x2, int y2) {
+POINT getlocation(double distance, int x1, int y1, int x2, int y2) {
+	//从点1到点2
 	POINT current;
-	 current->x=  x2  -(x2-x1)*(int) distance / (sqr((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2)));
-	current->y=y2 -(y2-y1)*(int)distance / (sqr((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2)));
+	int l = sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
+	current.x = x2 - (x2 - x1) * distance / l;
+	current.y = y2 - (y2 - y1) * distance / l;
 	return current;
+}
 
 void alertExit()
 {
@@ -161,9 +167,9 @@ void alertExit()
 	putimage(330, 211, &exitLayer);
 }
 
-void drawTrack(IMAGE *Img)
+void drawTrack(IMAGE *pImg)
 {
-	SetWorkingImage(Img);
+	SetWorkingImage(pImg);
 	setfillcolor(WHITE);
 	setlinecolor(WHITE);
 	fillrectangle(0, 0, 694, 516);
@@ -198,4 +204,47 @@ void drawTrack(IMAGE *Img)
 		line(previousX, previousY, currentNode->x, currentNode->y);
 	}
 
+}
+
+int GUICHUTimes = 0;
+
+void putTrains(IMAGE *pImg)
+{
+	int j;
+	SetWorkingImage(&track);
+	putimage(0, 0, pImg);
+	POINT trainCor;
+	IMAGE *ptrainIco;
+	if (GUICHUTimes)
+	{
+		ptrainIco = &trainIco1;
+		GUICHUTimes = 0;
+	}
+	else
+	{
+		ptrainIco = &trainIco2;
+		GUICHUTimes = 1;
+	}
+
+	for	(int i = 0; i < totaltrain; i++)
+	{
+		trackNode front, behind;
+		front = trackNodeList[trainList[i]->nextNode];
+		for (j = 0; trainList[i]->nodeList[j] != -1; j++)
+		{
+			if (front->id == trackNodeList[trainList[i]->nodeList[j]]->id)
+			{
+				break;
+			}
+		}
+		j--;
+		if (j == 0)
+		{
+			for (j = 0; trainList[i]->nodeList[j] != -1; j++);
+			j--;
+		}
+		behind = trackNodeList[trainList[i]->nodeList[j]];
+		trainCor = getlocation(trainList[i]->distance, behind->x, behind->y, front->x, front->y);
+		putimage(trainCor.x - nodeWidth / 2, trainCor.y - nodeHeight / 2, ptrainIco);
+	}
 }
