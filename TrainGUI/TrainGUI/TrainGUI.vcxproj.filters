@@ -44,6 +44,24 @@
     <ClCompile Include="outputGUI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="calculator.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="coreDataAPI.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FSM.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="input.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="output.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TrainGUI.rc">

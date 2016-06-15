@@ -134,7 +134,7 @@ typedef struct _train {
 extern trackNode trackNodeList[];//以节点ID为下标
 extern train trainList[]; //以小火车ID为下标
 
-						  //input模块
+  //input模块
 void build();
 void input(FILE * fp);
 

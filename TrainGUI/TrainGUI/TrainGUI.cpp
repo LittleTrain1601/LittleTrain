@@ -2,15 +2,14 @@
 //
 
 #include "TrainGUI.h"
-extern "C" {
-#include "train.h"
-};
+
 
 
 int windowWidth = 960;
 int windowHeight = 560;
 
 void cutBoard(HWND window);//将程序窗口剪裁至仅有客户区
+void selectTrack();
 
 //互斥锁
 HANDLE hMutex;
@@ -28,7 +27,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	loadimage(&APP_Start, _T("./Res/APP_START.jpg"));
 	putimage(0, 0, &APP_Start);
 	Sleep(500);//等待0.5秒
-	
+	//选择内置轨道还是init.txt中的轨道
+	selectTrack();
+
+
 	//建立绘制图形和处理鼠标输入的线程
 	HANDLE GUIInputThread, GUIOutputThread;
 	hMutex = CreateMutex(NULL, FALSE, NULL);
@@ -86,4 +88,54 @@ void cutBoard(HWND window)
 	winRec.bottom = winP2.y;
 	rgn = CreateRectRgn(cliRec.left - winRec.left, cliRec.top - winRec.top, cliRec.right - winRec.left, cliRec.bottom - winRec.top);
 	SetWindowRgn(window, rgn, true);
+}
+
+void selectTrack()
+{
+	SetWorkingImage();
+	setfillcolor(RGB(91, 166, 210));
+	setlinecolor(RGB(91, 166, 210));
+	fillrectangle(0, 0, 960, 560);
+	IMAGE cap;
+	IMAGE backup;
+	IMAGE closeHover;
+	loadimage(&cap, _T("./Res/CAPTAIN.jpg"));
+	loadimage(&closeHover, _T("./Res/QUIT_HOVER.jpg"));
+	putimage(0, 0, &cap);
+	getimage(&backup, 0, 0, 960, 560);
+	int chosen = 0;
+	MOUSEMSG m;
+	while (!chosen)
+	{
+		// 获取一条鼠标消息
+		m = GetMouseMsg();
+
+		switch (m.uMsg)
+		{
+		case WM_MOUSEMOVE:
+			if (m.x > 916 && m.x < 960 && m.y > 0 && m.y < 44)
+			{
+				BeginBatchDraw();
+				SetWorkingImage();
+				putimage(0, 0, &backup);
+				putimage(916, 0, &closeHover);
+				FlushBatchDraw();
+				EndBatchDraw();
+			}
+			else
+			{
+				SetWorkingImage();
+				putimage(0, 0, &backup);
+			}
+			break;
+
+		case WM_LBUTTONDOWN:
+			if (m.x > 916 && m.x < 960 && m.y > 0 && m.y < 44)
+			{
+				programStat = 0;;
+			}
+			break;
+		}
+
+	}
 }

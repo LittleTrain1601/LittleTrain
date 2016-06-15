@@ -29,15 +29,12 @@ int pointnodeid(MOUSEMSG m)
 	{
 		for (i = 0; i < 50; i++)
 		{
-			if (trackNodeList[i]->type == BRANCH)
+			if (m.x >= (trackNodeList[i]->x) && (m.x <= (trackNodeList[i]->x + trackNodeList[i]->width)) && (m.y >= (trackNodeList[i]->y)) && (m.y <= (trackNodeList[i]->y + trackNodeList[i]->height)))
 			{
-				if (m.x >= (trackNodeList[i]->branch.x) && (m.x <= (trackNodeList[i]->branch.x + trackNodeList[i]->branch.width))&& (m.y >= (trackNodeList[i]->branch.y)) && (m.y <= (trackNodeList[i]->branch.y + trackNodeList[i]->branch.height)))
+				if (trackNodeList[i]->type == BRANCH || trackNodeList[i]->type == STATION)
 					return trackNodeList[i]->id;
-			}
-			else if (trackNodeList[i]->type == STATION)
-			{
-				if (m.x >= (trackNodeList[i]->station.x) && (m.x <= (trackNodeList[i]->station.x + trackNodeList[i]->station.width)) && (m.y >= (trackNodeList[i]->station.y)) && (m.y <= (trackNodeList[i]->station.y + trackNodeList[i]->station.height)))
-					return trackNodeList[i]->id;
+				else
+					return -1;
 			}
 		}
 		return -1;
@@ -51,23 +48,24 @@ unsigned __stdcall GUIInput(void* pArguments)
 
 	if (m.uMsg == WM_LBUTTONDOWN)
 	{
-		if (programStat == 1)
+		if (frameStat == 1)
 		{
 			if (m.x >= 347 && m.x <= 478 && m.y >= 302 && m.y <= 330)
 			{
-				programStat = 0;
+				frameStat = 0;
 			}
 			else if (m.x >= 347 && m.x <= 521 && m.y >= 258 && m.x <= 280)
-			{//立即结束整个工程？
+			{
+				programStat = 0;
 			}
 		}
 
-		else if (programStat == 2)
+		else if (frameStat == 2)
 		{//新的人工策略？
-			programStat = 0;
+			frameStat = 0;
 		}
 
-		else if (programStat == 0)
+		else if (frameStat == 0)
 		{
 			if (m.x >= 0 && m.x <= 694 && m.y >= 44 && m.y <= 560)             //点击在轨道区
 			{
@@ -78,13 +76,12 @@ unsigned __stdcall GUIInput(void* pArguments)
 					{
 						currentmode = S;
 						stationnumber = k;
-						//右侧贴站点的模块图(STATION_MODE.jpg);？
 					}
 					else if (trackNodeList[k]->type == BRANCH)
 					{
 						currentmode = P;
 						branchnumber = k;
-						//右侧贴公共轨道的模块图(BRANCH_MODE.jpg);？
+						
 					}
 
 				}
@@ -95,7 +92,7 @@ case(m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44) :
 	mainData = calloc(1, sizeof(struct _mainQueueNode));    //点击关闭
 	mainData->type = MLOCK;
 	append(mainMission, mainData);
-	programStat == 1;                              //表示应该弹出退出窗口,结束线程？
+	frameStat == 1;                              //表示应该弹出退出窗口
 	break;
 
 case(m.x >= 711 && m.x <= 740 && m.y >= 473 && m.y <= 502) :
@@ -301,7 +298,7 @@ case(m.x >= 709 && m.x <= 779 && m.y >= 71 && m.y <= 93) :
 	if (currentmode == S || currentmode == P)
 	{
 		currentmode = T;
-		//贴小火车模式图(TRAIN_MODE.jpg)？							
+        							
 	}
 														 break;
 
