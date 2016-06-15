@@ -1,5 +1,6 @@
 #include "TrainGUI.h"
 
+
 int programStat = 1;
 int frameStat = 0;
 char currentmode = 'T';  //指示右侧模块变更:T为火车模块，S为站点模块，P为公共轨道模块 
@@ -47,7 +48,18 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	{
 		//WaitForSingleObject(hMutex, INFINITE);
 		//更新图层内容
+		for (int i = 0; trainList[i] != -1; i++) 
+		{
+			int j ;
+			for (j = 0; nodeList[j] != -1;j++)
+			{
+				int id = nodeList[j];//id为节点id
+				line(trackNodeList[id]->x, trackNodeList[id]->y, trackNodeList[id+1]->x, trackNodeList[id+1]->y);//轨道的绘制
 
+			}
+		}
+			
+		
 		//绘制图层
 		
 		SetWorkingImage();
@@ -101,4 +113,11 @@ void alertQuit()
 void alertAsk()
 {
 
+}
+
+ POINT getlocation(double distance, int x1, int y1, int x2, int y2) {
+	POINT current;
+	 current->x=  x2  -(x2-x1)*(int) distance / (sqr((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2)));
+	current->y=y2 -(y2-y1)*(int)distance / (sqr((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2)));
+	return current;
 }
