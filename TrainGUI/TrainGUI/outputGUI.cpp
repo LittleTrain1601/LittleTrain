@@ -2,7 +2,12 @@
 
 int programStat = 1;
 int frameStat = 0;
-
+char currentmode = 'T';  //指示右侧模块变更:T为火车模块，S为站点模块，P为公共轨道模块 
+int trainnumber; //序号为0,1,2的三辆车
+int stationnumber;//序号从3开始的站点
+int totalstation;//站点总数
+int branchnumber;// 序号从3+totalstation-1开始
+int totalbranch;//分叉节点总数 
 //用作图层
 IMAGE captain;
 IMAGE track(694, 516);
