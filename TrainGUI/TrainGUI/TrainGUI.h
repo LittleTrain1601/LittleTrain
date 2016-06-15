@@ -10,7 +10,7 @@ unsigned __stdcall GUIOutput(void* pArguments);
 
 //程序运行状态，1为正常运行，0为停止运行
 extern int programStat;
-//窗口状态，0表示无弹窗，1表示退出弹窗，2表示选择火车弹窗
+//窗口状态，0表示无弹窗，1表示退出弹窗，2表示选择火车弹窗，3表示所有小火车完成任务准备退出的弹窗
 extern int frameStat;
 extern char currentmode;  //指示右侧模块变更:T为火车模块，S为站点模块，P为公共轨道模块 
 extern int trainnumber; //右侧模块显示的是那辆车的信息
