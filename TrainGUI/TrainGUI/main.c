@@ -107,7 +107,7 @@ int main1() {
 	while (!secure()) {
 		whiletime = clock();
 		minuswhiletime = whiletime - whilecurrent;
-		dt = minuswhiletime - minusinputtime;
+		dt = minuswhiletime + minusinputtime;
 		RUN_TIME += dt;
 		minusinputtime = 0;
 		whilecurrent = whiletime;//while 循环时间记录

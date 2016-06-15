@@ -60,7 +60,7 @@ int arriveresponddomain(int id) {
 			else if (lastNode == nexttrackNode->branch.right->id)
 				range = nexttrackNode->branch.rrange;
 
-			if (currenttrain->distance <= range&&currenttrain->distance>1)   //小火车进入响应区间
+			if (currenttrain->distance <= range&&currenttrain->distance>22)   //小火车进入响应区间
 				return 1;
 			else
 				return 0;
@@ -96,7 +96,7 @@ int arriveresponddomain(int id) {
 		else if (lastNode == nexttrackNode->traffic.up->id) {
 			range = nexttrackNode->traffic.urange;
 		}
-		if (currenttrain->distance <= range&&currenttrain->distance>1) {
+		if (currenttrain->distance <= range&&currenttrain->distance>22) {
 			return 1;
 		}
 		else {
@@ -189,7 +189,7 @@ void trainStatusSwitcher(int id)
 			trafficNodeStatusSwitcher(ENTER, id, next);
 			currenttrain->status = RUN;
 		}
-		else if ((nexttrackNode->type == TRAFFIC) && (currenttrain->distance <= 1))//小火车逼近十字路节点
+		else if ((nexttrackNode->type == TRAFFIC) && (currenttrain->distance <= 22))//小火车逼近十字路节点
 		{
 			trafficNodeStatusSwitcher(PASS, id, next);
 			if (currenttrain->flag == forbidden)
@@ -200,7 +200,7 @@ void trainStatusSwitcher(int id)
 			else
 				currenttrain->status = RUN;
 		}
-		else if ((nexttrackNode->type == BRANCH) && currenttrain->distance <= 1)//小火车逼近公共轨道
+		else if ((nexttrackNode->type == BRANCH) && currenttrain->distance <= 22)//小火车逼近公共轨道
 		{
 			if (branchtype(id, next) == 1)  //小火车即将进入公共轨道
 			{
@@ -292,7 +292,7 @@ void trainStatusSwitcher(int id)
 	case PAUSE:
 		next = currenttrain->nextNode;	 //小火车下一个节点编号
 		nexttrackNode = trackNodeList[next];
-		if ((nexttrackNode->type == TRAFFIC) && (currenttrain->distance <= 1))  //等待进入十字路节点
+		if ((nexttrackNode->type == TRAFFIC) && (currenttrain->distance <= 22))  //等待进入十字路节点
 		{
 			trafficNodeStatusSwitcher(PASS, id, currenttrain->nextNode);
 			if (currenttrain->flag == permitted)
@@ -301,7 +301,7 @@ void trainStatusSwitcher(int id)
 				fprintf(outputLog, "at %lums train%d status changes from PAUSE to RUN.\n", RUN_TIME, id);
 			}
 		}
-		else if ((nexttrackNode->type == BRANCH) && (branchtype(id, nexttrackNode->id) == 1) && (currenttrain->distance <= 1)) //等待进入公共轨道
+		else if ((nexttrackNode->type == BRANCH) && (branchtype(id, nexttrackNode->id) == 1) && (currenttrain->distance <= 22)) //等待进入公共轨道
 		{
 			branchNodeStatusSwitcher(PASS, id, currenttrain->nextNode);
 			if (currenttrain->flag == permitted)
@@ -348,8 +348,8 @@ void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 					currenttrackNode->traffic.train[0] = trainID;
 				else if (currenttrackNode->traffic.train[1] == -1)
 					currenttrackNode->traffic.train[1] = trainID;
-				firstgo = judge(currenttrackNode->traffic.train[0], currenttrackNode->traffic.train[1]); //根据当前策略判断出两辆竞争的小火车谁先走
-				firsttrain = trainList[currenttrackNode->traffic.train[0]];
+				judge(currenttrackNode->traffic.train[0], currenttrackNode->traffic.train[1]); //根据当前策略判断出两辆竞争的小火车谁先走
+				/*firsttrain = trainList[currenttrackNode->traffic.train[0]];
 				secondtrain = trainList[currenttrackNode->traffic.train[1]];
 				if (firstgo == currenttrackNode->traffic.train[0])
 				{
@@ -360,7 +360,7 @@ void trafficNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 				{
 					secondtrain->flag = permitted;
 					firsttrain->flag = forbidden;
-				}
+				}*/
 			}
 		}
 		else if (req == PASS&&currenttrain->flag == permitted)
@@ -471,8 +471,8 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 					currenttrackNode->branch.train[1] = trainID;
 					currenttrackNode->branch.pair->branch.train[1] = trainID;
 				}
-				firstgo = judge(currenttrackNode->branch.train[0], currenttrackNode->branch.train[1]);//根据当前策略判断出两辆竞争的小火车谁先进入公共轨道
-				firsttrain = trainList[currenttrackNode->branch.train[0]];
+				judge(currenttrackNode->branch.train[0], currenttrackNode->branch.train[1]);//根据当前策略判断出两辆竞争的小火车谁先进入公共轨道
+				/*firsttrain = trainList[currenttrackNode->branch.train[0]];
 				secondtrain = trainList[currenttrackNode->branch.train[1]];
 				if (firstgo == currenttrackNode->branch.train[0])
 				{
@@ -483,7 +483,7 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 				{
 					secondtrain->flag = permitted;
 					firsttrain->flag = forbidden;
-				}
+				}*/
 			}
 		}
 		else if (req == PASS&&currenttrain->flag == permitted)

@@ -17,6 +17,28 @@ clock_t minusinputtime;
 clock_t RUN_TIME = 0;
 clock_t dt;
 
+int choiceflag = 0;
+char tochoose[100];
+char firstchoice[20];
+char secondchoice[20];
+trackNode competebranch(int train1, int train2)    //返回两辆小车所竞争的公共轨道对应的分叉节点ID
+{
+	int i;
+	for (i = 0; i < 50; i++)
+	{
+		if (trackNodeList[i]->type == BRANCH)
+		{
+			if ((trackNodeList[i]->branch.train[0] == train1) && (trackNodeList[i]->branch.train[1] == train2))
+				return (trackNodeList[i]);
+			else if ((trackNodeList[i]->branch.train[0] == train2) && (trackNodeList[i]->branch.train[1] == train1))
+				return (trackNodeList[i]);
+		}
+	}
+	return NULL;
+}
+
+
+
 int nextIndex(int trainID, int currentID) {
 	int i;
 	int nodeid = currentID;
@@ -162,23 +184,39 @@ int judge(int train1, int train2) {
 	//判定竞争的小火车通过顺序。根据人工干预和交替模式选择不同判定方法.要判定的两个火车的ID允许通过的火车ID
 	clock_t inputtime;
 	clock_t inputcurrent;
-	if (controlPolicy == MANUAL) {
-		inputtime = clock();
-		int a;
-		printf("please choose the train\n");
-		printf("%d %d\n", train1, train2);
-		scanf("%d", &a);
-		getchar();
-		trainList[a]->flag = permitted;
-		if (a == train1)
-			trainList[train2]->flag = forbidden;
-		else
-			trainList[train1]->flag = forbidden;
-		inputcurrent = clock();
-		minusinputtime += inputtime - inputcurrent;
-		return a;
+	trackNode branchtocompete;
+	int trainchoosed;
 
-	}
+	frameStat = 2;
+	if (controlPolicy == MANUAL) 
+	{
+		inputtime = clock();
+		branchtocompete=competebranch(train1, train2);
+		if (branchtocompete != NULL)
+		{
+			int chooseone = branchtocompete->branch.train[0];
+			int choosetwo = branchtocompete->branch.train[1];
+			sprintf(tochoose, "节点%d和节点%d之间的公共轨道有两辆火车申请进入。允许那一辆先通过？", branchtocompete->id, branchtocompete->branch.pair->id)
+				sprintf(firstchoice, "火车%d", chooseone);
+			sprintf(secondchoice, "火车%d", choosetwo);
+				if (choiceflag == 1)
+				{
+					trainchoosed = chooseone;
+					trainList[chooseone]->flag = permitted;
+					trainList[choosetwo]->flag = forbidden;
+				}
+			if (choiceflag == 2)
+			{
+				trainchoosed = choosetwo;
+				trainList[choosetwo]->flag = permitted;
+				trainList[chooseone]->flag = forbidden;
+			}
+		}
+			inputcurrent = clock();
+			minusinputtime += inputtime - inputcurrent;
+				return trainchoosed;
+}
+	
 	else {
 		if (trainList[train1]->passTimes>trainList[train2]->passTimes) {
 			trainList[train2]->flag = permitted; trainList[train1]->flag = forbidden;
