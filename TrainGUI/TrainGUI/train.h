@@ -28,7 +28,7 @@ extern enum policy controlPolicy;
 enum MType { MSTATION, MTRAIN, MLOCK ,MRESUME,MPAUSE};
 enum MDirection { MCLOCLWISE, MANTICLOCKWISE };
 enum TType { TSTATION, TLOCK };
-enum _Type { STATION, BRANCH, TRAFFIC };
+enum _Type { STATION, BRANCH, TRAFFIC,TURN };
 enum TDirection { clockwise, anticlockwise };
 enum TFlag { permitted, forbidden };
 
@@ -142,7 +142,7 @@ extern trackNode trackNodeList[];//以节点ID为下标
 extern train trainList[]; //以小火车ID为下标
 
 //图形化新增
-extern int choiceflag； //指示用户在人工选择窗口下的点击
+extern int choiceflag; //指示用户在人工选择窗口下的点击
 extern char tochoose[];   //人工选择窗口的前言
 extern char firstchoice[]; //人工选择窗口下的两个选项
 extern char secondchoice[];

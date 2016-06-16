@@ -11,13 +11,14 @@
 #include<time.h>
 #include<stdlib.h>
 #include "train.h"
+#include"TrainGUI.h"
 
 extern clock_t minuswhiletime;
 clock_t minusinputtime;
 clock_t RUN_TIME = 0;
 clock_t dt;
 
-int choiceflag = 0;
+extern int choiceflag = 0;
 char tochoose[100];
 char firstchoice[20];
 char secondchoice[20];
@@ -187,16 +188,17 @@ int judge(int train1, int train2) {
 	trackNode branchtocompete;
 	int trainchoosed;
 
-	frameStat = 2;
+	
 	if (controlPolicy == MANUAL) 
 	{
+		frameStat = 2;
 		inputtime = clock();
 		branchtocompete=competebranch(train1, train2);
 		if (branchtocompete != NULL)
 		{
 			int chooseone = branchtocompete->branch.train[0];
 			int choosetwo = branchtocompete->branch.train[1];
-			sprintf(tochoose, "节点%d和节点%d之间的公共轨道有两辆火车申请进入。允许那一辆先通过？", branchtocompete->id, branchtocompete->branch.pair->id)
+			sprintf(tochoose, "节点%d和节点%d之间的公共轨道有两辆火车申请进入。允许那一辆先通过？", branchtocompete->id, branchtocompete->branch.pair->id);
 				sprintf(firstchoice, "火车%d", chooseone);
 			sprintf(secondchoice, "火车%d", choosetwo);
 				if (choiceflag == 1)
