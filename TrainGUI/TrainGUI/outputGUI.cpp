@@ -26,6 +26,7 @@ IMAGE exitLayer;
 IMAGE stationIco;
 IMAGE trainIco1;
 IMAGE trainIco2;
+IMAGE lightIco;
 
 void alertQuit();
 void alertAsk();
@@ -42,6 +43,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	loadimage(&exitLayer, _T("./Res/APP_QUIT.jpg"));
 	loadimage(&trainIco1, _T("./Res/GUICHU1.jpg"));
 	loadimage(&trainIco2, _T("./Res/GUICHU2.jpg"));
+	loadimage(&lightIco, _T("./Res/LIGHT.jpg"));
 	//绘制轨道区背景
 	SetWorkingImage(&track); 
 	setfillcolor(WHITE);
@@ -86,7 +88,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			putimage(0, 0, &infoTrain);
 			RECT trainID = {91, 63, 120, 92};
 			_stprintf(TBuff, _T("%d"), trainnumber);
-			SetTextColor(BLACK);
+			settextcolor(BLACK);
 			outtextxy(91, 63, TBuff);
 			//drawtext(TBuff, &trainID, DT_WORDBREAK);
 			LOGFONT f;
@@ -116,7 +118,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 				_stprintf(TBuff, _T("启动这辆车"));
 				outtextxy(16, 109, TBuff);
 			}
-			SetTextColor(BLACK);
+			settextcolor(BLACK);
 			_stprintf(TBuff, _T("%d 米/秒"), trainList[trainnumber]->v);
 			outtextxy(93, 151, TBuff);
 			if (trainList[trainnumber]->direction == clockwise)
@@ -368,5 +370,11 @@ void putTrains(IMAGE *pImg)
 		behind = trackNodeList[trainList[i]->nodeList[j]];
 		trainCor = getlocation(trainList[i]->distance, behind->x, behind->y, front->x, front->y);
 		putimage(trainCor.x - nodeWidth / 2, trainCor.y - nodeHeight / 2, ptrainIco);
+		//红绿灯距离交叉点22m
+		if (trainList[i]->flag = forbidden)
+		{
+			trainCor = getlocation(22, behind->x, behind->y, front->x, front->y);
+			putimage(trainCor.x - nodeWidth / 2, trainCor.y - nodeHeight / 2, &lightIco);
+		}
 	}
 }

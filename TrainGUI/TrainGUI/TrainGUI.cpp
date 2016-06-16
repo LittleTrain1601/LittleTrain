@@ -27,6 +27,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	loadimage(&APP_Start, _T("./Res/APP_START.jpg"));
 	putimage(0, 0, &APP_Start);
 	Sleep(500);//等待0.5秒
+	frameStat = 0;
 	//选择内置轨道还是init.txt中的轨道
 	selectTrack();
 
@@ -93,15 +94,12 @@ void cutBoard(HWND window)
 void selectTrack()
 {
 	SetWorkingImage();
-	setfillcolor(RGB(91, 166, 210));
-	setlinecolor(RGB(91, 166, 210));
-	fillrectangle(0, 0, 960, 560);
-	IMAGE cap;
+	IMAGE pannel;
+	loadimage(&pannel, _T("./Res/SELECT_TRACK.jpg"));
+	putimage(0, 0, &pannel);
 	IMAGE backup;
 	IMAGE closeHover;
-	loadimage(&cap, _T("./Res/CAPTAIN.jpg"));
 	loadimage(&closeHover, _T("./Res/QUIT_HOVER.jpg"));
-	putimage(0, 0, &cap);
 	getimage(&backup, 0, 0, 960, 560);
 	int chosen = 0;
 	MOUSEMSG m;
@@ -116,7 +114,6 @@ void selectTrack()
 			if (m.x > 916 && m.x < 960 && m.y > 0 && m.y < 44)
 			{
 				BeginBatchDraw();
-				SetWorkingImage();
 				putimage(0, 0, &backup);
 				putimage(916, 0, &closeHover);
 				FlushBatchDraw();
@@ -124,7 +121,6 @@ void selectTrack()
 			}
 			else
 			{
-				SetWorkingImage();
 				putimage(0, 0, &backup);
 			}
 			break;
@@ -134,8 +130,13 @@ void selectTrack()
 			{
 				programStat = 0;;
 			}
+			else if (m.x > 414 && m.y > 291 && m.x < 546 && m.y < 335)
+			{
+				chosen = 1;
+			}
 			break;
 		}
 
 	}
+	buildDefault();
 }

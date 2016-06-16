@@ -498,3 +498,8 @@ void input(FILE *fp) {
 		fclose(fp);
 	}
 }
+
+void buildDefault()
+{
+	
+}

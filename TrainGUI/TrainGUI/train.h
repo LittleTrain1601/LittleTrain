@@ -147,6 +147,7 @@ extern char firstchoice[]; //人工选择窗口下的两个选项
 extern char secondchoice[];
   //input模块
 void build();
+void buildDefault();
 void input(FILE * fp);
 
 //output
