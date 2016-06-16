@@ -78,7 +78,13 @@ unsigned  __stdcall GUIInput(void* pArguments)
 					choiceflag = 2;
 				frameStat = 0;
 			}
-
+			
+			else if (frameStat == 3)
+			{
+				if (m.x >= 347 && m.x <= 478 && m.y >= 302 && m.y <= 330)
+					programStat = 0;
+			}
+			
 			else if (frameStat == 0)
 			{
 				if (m.x >= 0 && m.x <= 694 && m.y >= 44 && m.y <= 560)             //点击在轨道区
