@@ -18,7 +18,7 @@ clock_t minusinputtime;
 clock_t RUN_TIME = 0;
 clock_t dt;
 
-int choiceflag = 0;
+extern int choiceflag = 0;
 char tochoose[100];
 char firstchoice[20];
 char secondchoice[20];
@@ -188,9 +188,10 @@ int judge(int train1, int train2) {
 	trackNode branchtocompete;
 	int trainchoosed;
 
-	frameStat = 2;
+	
 	if (controlPolicy == MANUAL) 
 	{
+		frameStat = 2;
 		inputtime = clock();
 		branchtocompete=competebranch(train1, train2);
 		if (branchtocompete != NULL)
