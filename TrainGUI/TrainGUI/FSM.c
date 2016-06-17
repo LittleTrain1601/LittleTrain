@@ -216,6 +216,7 @@ void trainStatusSwitcher(int id)
 					nexttrackNode->branch.flag = 1;  //小火车进入公共轨道后，将该段轨道标记为“忙”
 					nexttrackNode->branch.innerTrain = id;  //指示占用公共轨道的小火车
 					nexttrackNode->branch.pair->branch.flag = 1;
+					fprintf(outputLog, "at %lums the railway between branchNode%d and its pair becomes occupied.\n", RUN_TIME, next);
 				}
 			}
 		}
@@ -224,7 +225,8 @@ void trainStatusSwitcher(int id)
 				if (branchtype(id, next) == 0)
 				{nexttrackNode->branch.flag = 0;                       //小火车出公共轨道，将该段轨道标记为空闲
 				nexttrackNode->branch.pair->branch.flag = 0;
-				nexttrackNode->branch.innerTrain = -1;           
+				nexttrackNode->branch.innerTrain = -1; 
+				fprintf(outputLog, "at %lums the railway between branchNode%d and its pair becomes free.\n", RUN_TIME, next);
 			    }
 		    }
 		
@@ -421,7 +423,7 @@ void branchNodeStatusSwitcher(request req, int trainID, int trackNodeID)
 		{
 			currenttrackNode->branch.status = 1;
 			currenttrackNode->branch.pair->branch.status = 1;
-			fprintf(outputLog, "at %lums branchNode%d and its pair status changes from 0 to 1.\n", RUN_TIME, trackNodeID);//输出分叉节点的状态转换情况
+			fprintf(outputLog, "at %lums the branchNode%d and its pair status changes from 0 to 1.\n", RUN_TIME, trackNodeID);//输出分叉节点的状态转换情况
 			currenttrain->flag = permitted;
 			if (currenttrackNode->branch.train[0] == -1 && currenttrackNode->branch.pair->branch.train[0] == -1)   //将小火车加入分叉点的竞争数组
 			{

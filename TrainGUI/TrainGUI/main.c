@@ -128,20 +128,20 @@ int main1() {
 				trainid = mainptr->train.id;
 				trainList[trainid]->v = mainptr->train.speed;
 				if (mainptr->train.direction == MCLOCLWISE&&trainList[trainid]->direction == clockwise) {
-					fprintf(outputLog, "at %lums train%d change speed to %d.\n", RUN_TIME, trainid, mainptr->train.speed);
+					fprintf(outputLog, "at %lums train%d changes speed to %d.\n", RUN_TIME, trainid, mainptr->train.speed);
 				}
 				else if (mainptr->train.direction == MCLOCLWISE&&trainList[trainid]->direction == anticlockwise) {
 					changeDirection();
 					trainList[trainid]->direction = clockwise;
-					fprintf(outputLog, "at %lums train%d change speed to %d change direction to clockwise.\n", RUN_TIME, trainid, mainptr->train.speed);
+					fprintf(outputLog, "at %lums train%d changes speed to %d, changes direction to clockwise.\n", RUN_TIME, trainid, mainptr->train.speed);
 				}
 				else if (mainptr->train.direction == MANTICLOCKWISE&&trainList[trainid]->direction == anticlockwise) {
-					fprintf(outputLog, "at %lums train%d change speed to %d.\n", RUN_TIME, trainid, mainptr->train.speed);
+					fprintf(outputLog, "at %lums train%d changes speed to %d.\n", RUN_TIME, trainid, mainptr->train.speed);
 				}
 				else {
 					changeDirection();
 					trainList[trainid]->direction = anticlockwise;
-					fprintf(outputLog, "at %lums train%d change speed to %d change direction to anticlockwise.\n", RUN_TIME, trainid, mainptr->train.speed);
+					fprintf(outputLog, "at %lums train%d changes speed to %d, changes direction to anticlockwise.\n", RUN_TIME, trainid, mainptr->train.speed);
 				}
 
 				break;
@@ -179,5 +179,5 @@ int main1() {
 			Rtime = RUN_TIME;
 		}
 	}
-	framestate = 3;
+	frameStat = 3;
 }
