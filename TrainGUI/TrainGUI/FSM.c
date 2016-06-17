@@ -214,18 +214,21 @@ void trainStatusSwitcher(int id)
 				{
 					currenttrain->status = RUN;
 					nexttrackNode->branch.flag = 1;  //小火车进入公共轨道后，将该段轨道标记为“忙”
-					nexttrackNode->branch.innerTrain = id;
+					nexttrackNode->branch.innerTrain = id;  //指示占用公共轨道的小火车
 					nexttrackNode->branch.pair->branch.flag = 1;
 				}
 			}
-			else                                           //小火车出公共轨道，将该段轨道标记为空闲
-			{
-				nexttrackNode->branch.flag = 0;
-				nexttrackNode->branch.pair->branch.flag = 0;
-				nexttrackNode->branch.innerTrain = -1;
-			}
 		}
-		else if (nexttrackNode->type == STATION&&currenttrain->distance == 0)//到站
+			else if ((nexttrackNode->type == BRANCH) && currenttrain->distance <= 10)                                        
+			{
+				if (branchtype(id, next) == 0)
+				{nexttrackNode->branch.flag = 0;                       //小火车出公共轨道，将该段轨道标记为空闲
+				nexttrackNode->branch.pair->branch.flag = 0;
+				nexttrackNode->branch.innerTrain = -1;           
+			    }
+		    }
+		
+			else if (nexttrackNode->type == STATION&&currenttrain->distance == 0)//到站
 		{
 			currenttrain->status = STA;
 			fprintf(outputLog, "at %lums train%d status changes from RUN to STA.\n", RUN_TIME, id);
