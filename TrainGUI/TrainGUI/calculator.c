@@ -152,28 +152,42 @@ void updateTrain(int id) {//循环里计算一辆小火车的位置并更新。 	Int id 小火车的I
 int checkTrack(int trainID, int branch1, int branch2) {
 	//检查两个节点之间的轨道是否占用 	两个节点的ID 	占用返回1，无占用返回0
 	int occupied = 0;
+	int inTrain = -1;
 	trackNode trackptr;
 	trackptr = trackNodeList[branch1];
 	while (trackptr->id != branch2) {
 		switch (trackptr->type) {
-		case STATION:
-			trackptr = trackNodeList[trainList[trainID]->nodeList[nextIndex(trainID, trackptr->id)]];
-			break;
-		case TRAFFIC:
-			trackptr = trackNodeList[trainList[trainID]->nodeList[nextIndex(trainID, trackptr->id)]];
-			break;
 		case BRANCH:
 			if (trackptr->branch.flag == 1) {
 				occupied = 1;
+				inTrain = trackptr->branch.innerTrain;
 			}
 			else {
 				trackptr = trackNodeList[trainList[trainID]->nodeList[nextIndex(trainID, trackptr->id)]];
 			}
 			break;
 		default:
+			trackptr = trackNodeList[trainList[trainID]->nodeList[nextIndex(trainID, trackptr->id)]];
 			break;
 		}
 		if (occupied) {
+			break;
+		}
+	}
+	if (!occupied)
+	{
+		return 0;
+	}
+	trackptr = trackNodeList[branch1];
+	while (trackptr->id != branch2)
+	{
+		switch (trackptr->type) {
+		case BRANCH:
+			trackptr->branch.innerTrain = inTrain;
+			trackptr = trackNodeList[trainList[trainID]->nodeList[nextIndex(trainID, trackptr->id)]];
+			break;
+		default:
+			trackptr = trackNodeList[trainList[trainID]->nodeList[nextIndex(trainID, trackptr->id)]];
 			break;
 		}
 	}

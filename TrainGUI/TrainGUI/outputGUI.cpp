@@ -40,7 +40,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	loadimage(&info, _T("./Res/TRAIN_MODE.jpg"));
 	loadimage(&statLayer, _T("./Res/POLICY.jpg"));
 	loadimage(&quit, _T("./Res/APP_QUIT.jpg"));
-	loadimage(&exitLayer, _T("./Res/APP_QUIT.jpg"));
+	loadimage(&exitLayer, _T("./Res/APP_EXIT.jpg"));
 	loadimage(&trainIco1, _T("./Res/GUICHU1.jpg"));
 	loadimage(&trainIco2, _T("./Res/GUICHU2.jpg"));
 	loadimage(&lightIco, _T("./Res/LIGHT.jpg"));
@@ -172,6 +172,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			int id1, id2, idt=-1;
 			id1 = branchnumber;
 			id2 = trackNodeList[id1]->branch.pair->id;
+			idt = trackNodeList[id1]->branch.innerTrain;
 			_stprintf(TBuff, _T("分叉点%d和分叉点%d之间"), id1, id2);
 			settextcolor(BLACK);
 			LOGFONT f;
@@ -181,33 +182,22 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			settextstyle(&f);
 			outtextxy(16, 71, TBuff);
 			//寻找占用轨道的火车
-			int front,behind,j, i;
-			for (i = 0; i < totaltrain; i++)
+			if (idt != -1)
 			{
-				front = trainList[i]->nextNode;
-				if (front == id1 || front == id2)
+				if (checkTrack(idt, id1, id2))
 				{
-					for (j = 0; trainList[i]->nodeList[j] != -1; j++)
-					{
-						if (front == trackNodeList[trainList[i]->nodeList[j]]->id)
-						{
-							break;
-						}
-					}
-					j--;
-					if (j == 0)
-					{
-						for (j = 0; trainList[i]->nodeList[j] != -1; j++);
-						j--;
-					}
-					behind = j;
-					if (behind == id1 || behind == id2)
-					{
-						idt = i;
-					}
+					_stprintf(TBuff, _T("被火车%d占用"), idt);
+				}
+				else
+				{
+					_stprintf(TBuff, _T("空闲"));
 				}
 			}
-			checkTrack();
+			else
+			{
+				_stprintf(TBuff, _T("空闲"));
+			}
+			outtextxy(16, 93, TBuff);
 			break;
 		default:
 			break;
