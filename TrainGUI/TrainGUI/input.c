@@ -16,6 +16,7 @@
 //坐标以左上角为原点
 
 //ID与坐标映射数组。记录火车初始坐标和各个节点坐标
+extern int totaltrain;
 int trainNumber;
 int global_id = 0;
 int x[MAXITEM];
@@ -510,6 +511,7 @@ double nodeDistance(int id1, int id2)
 }
 void buildDefault()
 {
+	totaltrain = 3;
 	trainList[0] = newTrain();
 	trainList[1] = newTrain();
 	trainList[2] = newTrain();

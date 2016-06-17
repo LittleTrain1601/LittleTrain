@@ -12,6 +12,8 @@
 #include "train.h"
 #include <time.h>
 
+extern int frameStat;
+
 trackNode trackNodeList[MAXITEM];//以节点ID为下标
 train trainList[MAXITEM]; //以小火车ID为下标
 
@@ -94,7 +96,7 @@ void changeDirection() {
 	trainList[trainid]->nextNode = i;
 }
 
-int main1() {
+unsigned __stdcall main1(void* pArguments) {
 	mainMission = newQueue();
 	logWriter();
 	//build();
@@ -174,10 +176,12 @@ int main1() {
 				updateTrain(trainList[i]->id);
 			}
 		}
+		/*
 		if (RUN_TIME - Rtime >= CLOCKS_PER_SEC) {
-			viewer();
+			//viewer();
 			Rtime = RUN_TIME;
 		}
+		*/
 	}
 	frameStat = 3;
 }

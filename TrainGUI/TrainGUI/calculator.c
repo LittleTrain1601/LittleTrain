@@ -11,12 +11,12 @@
 #include<time.h>
 #include<stdlib.h>
 #include "train.h"
-#include "TrainGUI.h"
 
 extern clock_t minuswhiletime;
 clock_t minusinputtime;
 clock_t RUN_TIME = 0;
 clock_t dt;
+extern frameStat;
 
 extern int choiceflag = 0;
 char tochoose[100];

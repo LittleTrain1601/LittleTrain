@@ -13,7 +13,7 @@ void cutBoard(HWND window);//将程序窗口剪裁至仅有客户区
 int selectTrack();//返回1表示默认轨道，返回2表示自定义轨道
 
 //互斥锁
-HANDLE hMutex;
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -27,18 +27,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	IMAGE APP_Start;
 	loadimage(&APP_Start, _T("./Res/APP_START.jpg"));
 	putimage(0, 0, &APP_Start);
+	buildDefault();
 	Sleep(500);//等待0.5秒
 	frameStat = 0;
 	//选择内置轨道还是init.txt中的轨道
 	selectTrack();
-
+	if (programStat == 0)
+	{
+		closegraph;
+		return 0;
+	}
 
 	//建立绘制图形和处理鼠标输入的线程
-	HANDLE GUIInputThread, GUIOutputThread;
-	hMutex = CreateMutex(NULL, FALSE, NULL);
+	HANDLE GUIInputThread, GUIOutputThread, main1Thread;
+	
 	GUIInputThread = (HANDLE)_beginthreadex(NULL, 0, GUIInput, NULL, 0, NULL);
 	GUIOutputThread = (HANDLE)_beginthreadex(NULL, 0, GUIOutput, NULL, 0, NULL);
-
+	main1Thread = (HANDLE)_beginthreadex(NULL, 0, main1, NULL, 0, NULL);
+	/*
 	MOUSEMSG m;//等待鼠标点击后退出程序
 	//WaitForSingleObject(hMutex, INFINITE);
 	while (programStat)
@@ -64,9 +70,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		//ReleaseMutex(hMutex);
 	}
-
+	*/
 	WaitForSingleObject(GUIInput, INFINITE);
 	WaitForSingleObject(GUIOutput, INFINITE);
+	WaitForSingleObject(main1Thread, INFINITE);
 	closegraph();
 	return 0;
 }
@@ -136,7 +143,8 @@ int selectTrack()
 		case WM_LBUTTONDOWN:
 			if (m.x > 916 && m.x < 960 && m.y > 0 && m.y < 44)
 			{
-				programStat = 0;;
+				programStat = 0;
+				chosen = 3;
 			}
 			else if (m.x > 414 && m.y > 291 && m.x < 546 && m.y < 335)
 			{
@@ -150,6 +158,5 @@ int selectTrack()
 		}
 
 	}
-	buildDefault();
 	return chosen;
 }

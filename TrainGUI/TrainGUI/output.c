@@ -18,7 +18,7 @@ void logWriter() {
 	outputLog = fopen("output.txt", "w");
 	//outputLog = stdout;
 }
-
+/*
 void putTrain(int id) {
 	int x1, y1, x2, y2;
 	x1 = trainList[id]->x1;
@@ -335,6 +335,9 @@ void putTrain(int id) {
 	}
 	screenBuff[(int)yPosition][(int)xPosition] = id + '0';
 }
+*/
+
+/*
 void viewer() {
 	//system("cls");
 	for (int i = 0; i<24; i++) {
@@ -375,3 +378,4 @@ void viewer() {
 		}
 	}
 }
+*/

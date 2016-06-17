@@ -28,6 +28,8 @@ IMAGE trainIco1;
 IMAGE trainIco2;
 IMAGE lightIco;
 
+HANDLE setWorkingImageMutex;
+
 void alertQuit();
 void alertAsk();
 void alertExit();
@@ -36,6 +38,7 @@ void putTrains(IMAGE *pImg);
 
 unsigned __stdcall GUIOutput(void* pArguments) {
 	//为每一个图层载入图像，修改图层时注意备份
+	setWorkingImageMutex = CreateMutex(NULL, FALSE, NULL);
 	loadimage(&captain, _T("./Res/CAPTAIN.jpg"));
 	loadimage(&info, _T("./Res/TRAIN_MODE.jpg"));
 	loadimage(&statLayer, _T("./Res/POLICY.jpg"));
@@ -44,7 +47,9 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	loadimage(&trainIco1, _T("./Res/GUICHU1.jpg"));
 	loadimage(&trainIco2, _T("./Res/GUICHU2.jpg"));
 	loadimage(&lightIco, _T("./Res/LIGHT.jpg"));
+	loadimage(&stationIco, _T("./Res/STATION.jpg"));
 	//绘制轨道区背景
+	//WaitForSingleObject(setWorkingImageMutex, INFINITE);
 	SetWorkingImage(&track); 
 	setfillcolor(WHITE);
 	setlinecolor(WHITE);
@@ -62,7 +67,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	setfillcolor(RGB(196, 196, 196));
 	setlinecolor(RGB(196, 196, 196));
 	fillrectangle(154, 115, 285, 115);
-
+	//ReleaseMutex(setWorkingImageMutex);
 	//绘制轨道
 	IMAGE trackStill(694, 516);
 	drawTrack(&trackStill);
@@ -82,16 +87,16 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 		//更新图层内容
 		putTrains(&trackStill);
 		SetWorkingImage(&info); //x=694, y=44
+		LOGFONT f;
 		switch (currentmode)
 		{
 		case 'T':
 			putimage(0, 0, &infoTrain);
-			RECT trainID = {91, 63, 120, 92};
+			//RECT trainID = {91, 63, 120, 92};
 			_stprintf(TBuff, _T("%d"), trainnumber);
 			settextcolor(BLACK);
 			outtextxy(91, 63, TBuff);
 			//drawtext(TBuff, &trainID, DT_WORDBREAK);
-			LOGFONT f;
 			gettextstyle(&f);
 			f.lfHeight = 22;
 			f.lfQuality = ANTIALIASED_QUALITY;
@@ -132,10 +137,10 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			outtextxy(93, 151, TBuff);
 			break;
 		case 'S':
+		{
 			putimage(0, 0, &infoStation);
 			_stprintf(TBuff, _T("车站%d"), stationnumber);
 			settextcolor(BLACK);
-			LOGFONT f;
 			gettextstyle(&f);
 			f.lfHeight = 22;
 			f.lfQuality = ANTIALIASED_QUALITY;
@@ -143,15 +148,15 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			outtextxy(16, 66, TBuff);
 			f.lfHeight = 18;
 			settextstyle(&f);
-			int i = 0, flag=1;
+			int i = 0, flag = 1;
 			queueNode currentMission;
 			for (int j = 0; j < totaltrain; j++)
 			{
 				currentMission = trainList[j]->mission->head;
-				while (currentMission -> next)
+				while (currentMission->next)
 				{
 					currentMission = currentMission->next;
-					if (((trainQueueNode)currentMission)->type == TSTATION && ((trainQueueNode)currentMission)->station == stationnumber && i<5)
+					if (((trainQueueNode)currentMission)->type == TSTATION && ((trainQueueNode)currentMission)->station == stationnumber && i < 5)
 					{
 						_stprintf(TBuff, _T("火车%d 停%d秒"), j, ((trainQueueNode)currentMission)->time);
 						outtextxy(16, 146 + 22 * i, TBuff);
@@ -167,7 +172,8 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			}
 			_stprintf(TBuff, _T("%d"), trainnumber);
 			outtextxy(90, 312, TBuff);
-			break;
+		}
+		break;
 		case 'P':
 			int id1, id2, idt=-1;
 			id1 = branchnumber;
@@ -175,7 +181,6 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			idt = trackNodeList[id1]->branch.innerTrain;
 			_stprintf(TBuff, _T("分叉点%d和分叉点%d之间"), id1, id2);
 			settextcolor(BLACK);
-			LOGFONT f;
 			gettextstyle(&f);
 			f.lfHeight = 18;
 			f.lfQuality = ANTIALIASED_QUALITY;
@@ -198,8 +203,6 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 				_stprintf(TBuff, _T("空闲"));
 			}
 			outtextxy(16, 93, TBuff);
-			break;
-		default:
 			break;
 		}
 			
@@ -283,6 +286,7 @@ void alertExit()
 
 void drawTrack(IMAGE *pImg)
 {
+	//WaitForSingleObject(setWorkingImageMutex, INFINITE);
 	SetWorkingImage(pImg);
 	setfillcolor(WHITE);
 	setlinecolor(WHITE);
@@ -298,6 +302,8 @@ void drawTrack(IMAGE *pImg)
 			putimage(currentNode->x - currentNode->width/2, currentNode->y - currentNode->height/2, &stationIco);
 			break;
 		}
+		previousX = currentNode->x;
+		previousY = currentNode->y;
 		for (int j = 1; trainList[i]->nodeList[j] != -1; j++)
 		{
 			currentNode = trackNodeList[trainList[i]->nodeList[j]];
@@ -317,7 +323,7 @@ void drawTrack(IMAGE *pImg)
 		currentNode = trackNodeList[trainList[i]->nodeList[0]];
 		line(previousX, previousY, currentNode->x, currentNode->y);
 	}
-
+	//ReleaseMutex(setWorkingImageMutex);
 }
 
 int GUICHUTimes = 0;
@@ -351,12 +357,13 @@ void putTrains(IMAGE *pImg)
 				break;
 			}
 		}
-		j--;
 		if (j == 0)
 		{
 			for (j = 0; trainList[i]->nodeList[j] != -1; j++);
 			j--;
 		}
+		j--;
+
 		behind = trackNodeList[trainList[i]->nodeList[j]];
 		trainCor = getlocation(trainList[i]->distance, behind->x, behind->y, front->x, front->y);
 		putimage(trainCor.x - nodeWidth / 2, trainCor.y - nodeHeight / 2, ptrainIco);
