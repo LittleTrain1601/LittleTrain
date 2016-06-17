@@ -223,10 +223,10 @@ void build() {
 			buff[j][x2] = buff[j][x2] != ' ' ? buff[j][x2] : trackChar;
 		}
 		printTrack();
-		trainList[i]->x1 = x1;
-		trainList[i]->y1 = y1;
-		trainList[i]->x2 = x2;
-		trainList[i]->y2 = y2;
+		//trainList[i]->x1 = x1;
+		//trainList[i]->y1 = y1;
+		//trainList[i]->x2 = x2;
+		//trainList[i]->y2 = y2;
 		printf("请输入轨道上站点数量、分岔点数量以及十字交叉点的数量和：");
 		fscanf(fp, "%d", &nodeNumber);
 		fprintf(conf, "%d\n", nodeNumber);
@@ -499,9 +499,284 @@ void input(FILE *fp) {
 	}
 }
 
+double nodeDistance(int id1, int id2)
+{
+	int x1, x2, y1, y2;
+	x1 = trackNodeList[id1]->x;
+	y1 = trackNodeList[id1]->y;
+	x2 = trackNodeList[id2]->x;
+	y2 = trackNodeList[id2]->y;
+	return sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
+}
 void buildDefault()
 {
 	trainList[0] = newTrain();
 	trainList[1] = newTrain();
 	trainList[2] = newTrain();
+	trainList[0]->id = 0;
+	trainList[0]->v = 10;
+	trainList[0]->direction = clockwise;
+	trainList[0]->flag = permitted;
+	trainList[0]->nextNode = 3;
+	trainList[0]->distance = 50;
+	trainList[0]->mission = newQueue();
+	trainList[0]->nodeList[0] = 3;
+	trainList[0]->nodeList[1] = 4;
+	trainList[0]->nodeList[2] = 5;
+	trainList[0]->nodeList[3] = 6;
+	trainList[0]->nodeList[4] = 7;
+	trainList[0]->nodeList[5] = 8;
+	trainList[0]->nodeList[6] = 9;
+	trainList[0]->passTimes = 0;
+	trainList[0]->status = PAUSE;
+	trainList[1]->direction = anticlockwise;
+	trainList[1]->distance = 50;
+	trainList[1]->flag = permitted;
+	trainList[1]->id = 1;
+	trainList[1]->mission = newQueue();
+	trainList[1]->nextNode = 13;
+	trainList[1]->nodeList[0] = 10;
+	trainList[1]->nodeList[1] = 11;
+	trainList[1]->nodeList[2] = 12;
+	trainList[1]->nodeList[3] = 13;
+	trainList[1]->nodeList[4] = 6;
+	trainList[1]->nodeList[5] = 5;
+	trainList[1]->passTimes = 0;
+	trainList[1]->status = PAUSE;
+	trainList[1]->v = 50;
+	trainList[2]->direction = clockwise;
+	trainList[2]->distance = 50;
+	trainList[2]->flag = permitted;
+	trainList[2]->id = 2;
+	trainList[2]->mission = newQueue;
+	trainList[2]->nextNode = 16;
+	trainList[2]->nodeList[0] = 14;
+	trainList[2]->nodeList[1] = 15;
+	trainList[2]->nodeList[2] = 16;
+	trainList[2]->nodeList[3] = 17;
+	trainList[2]->nodeList[4] = 7;
+	trainList[2]->nodeList[5] = 6;
+	trainList[2]->nodeList[6] = 5;
+	trainList[2]->nodeList[7] = 10;
+	trainList[2]->nodeList[8] = 11;
+	trainList[2]->passTimes = 0;
+	trainList[2]->status = PAUSE;
+	trainList[2]->v = 15;
+	for (int i = 3; i < 18; i++)
+	{
+		trackNodeList[i] = newTrackNode();
+	}
+	trackNodeList[3]->id = 3;
+	trackNodeList[3]->height = 22;
+	trackNodeList[3]->type = STATION;
+	trackNodeList[3]->width = 22;
+	trackNodeList[3]->x = 197;
+	trackNodeList[3]->y = 102;
+	trackNodeList[4]->id = 4;
+	trackNodeList[4]->type = STATION;
+	trackNodeList[4]->x = 297;
+	trackNodeList[4]->y = 102;
+	trackNodeList[4]->width = 22;
+	trackNodeList[4]->height = 22;
+	trackNodeList[5]->id = 5;
+	trackNodeList[5]->type = BRANCH;
+	trackNodeList[5]->x = 397;
+	trackNodeList[5]->y = 202;
+	trackNodeList[5]->width = 22;
+	trackNodeList[5]->height = 22;
+	trackNodeList[6]->id = 6;
+	trackNodeList[6]->type = BRANCH;
+	trackNodeList[6]->x = 347;
+	trackNodeList[6]->y = 252;
+	trackNodeList[6]->width = 22;
+	trackNodeList[6]->height = 22;
+	trackNodeList[7]->id = 7;
+	trackNodeList[7]->type = BRANCH;
+	trackNodeList[7]->x = 297;
+	trackNodeList[7]->y = 302;
+	trackNodeList[7]->width = 22;
+	trackNodeList[7]->height = 22;
+	trackNodeList[8]->id = 8;
+	trackNodeList[8]->type = STATION;
+	trackNodeList[8]->x = 197;
+	trackNodeList[8]->y = 302;
+	trackNodeList[8]->width = 22;
+	trackNodeList[8]->height = 22;
+	trackNodeList[9]->id = 9;
+	trackNodeList[9]->type = TURN;
+	trackNodeList[9]->x = 97;
+	trackNodeList[9]->y = 202;
+	trackNodeList[9]->width = 22;
+	trackNodeList[9]->height = 22;
+	trackNodeList[10]->id = 10;
+	trackNodeList[10]->type = STATION;
+	trackNodeList[10]->x = 447;
+	trackNodeList[10]->y = 152;
+	trackNodeList[10]->width = 22;
+	trackNodeList[10]->height = 22;
+	trackNodeList[11]->id = 11;
+	trackNodeList[11]->type = BRANCH;
+	trackNodeList[11]->x = 497;
+	trackNodeList[11]->y = 102;
+	trackNodeList[11]->width = 22;
+	trackNodeList[11]->height = 22;
+	trackNodeList[12]->id = 12;
+	trackNodeList[12]->type = STATION;
+	trackNodeList[12]->x = 497;
+	trackNodeList[12]->y = 202;
+	trackNodeList[12]->width = 22;
+	trackNodeList[12]->height = 22;
+	trackNodeList[13]->id = 13;
+	trackNodeList[13]->type = STATION;
+	trackNodeList[13]->x = 497;
+	trackNodeList[13]->y = 302;
+	trackNodeList[13]->width = 22;
+	trackNodeList[13]->height = 22;
+	trackNodeList[14]->id = 14;
+	trackNodeList[14]->type = STATION;
+	trackNodeList[14]->x = 597;
+	trackNodeList[14]->y = 102;
+	trackNodeList[14]->width = 22;
+	trackNodeList[14]->height = 22;
+	trackNodeList[15]->id = 15;
+	trackNodeList[15]->type = STATION;
+	trackNodeList[15]->x = 597;
+	trackNodeList[15]->y = 302;
+	trackNodeList[15]->width = 22;
+	trackNodeList[15]->height = 22;
+	trackNodeList[16]->id = 16;
+	trackNodeList[16]->type = TURN;
+	trackNodeList[16]->x = 597;
+	trackNodeList[16]->y = 502;
+	trackNodeList[16]->width = 22;
+	trackNodeList[16]->height = 22;
+	trackNodeList[17]->id = 10;
+	trackNodeList[17]->type = STATION;
+	trackNodeList[17]->x = 97;
+	trackNodeList[17]->y = 502;
+	trackNodeList[17]->width = 22;
+	trackNodeList[17]->height = 22;
+
+	trackNodeList[3]->station.stop = 0;
+	trackNodeList[3]->station.left = trackNodeList[9];
+	trackNodeList[3]->station.ldistance = nodeDistance(9, 3);
+	trackNodeList[3]->station.right = trackNodeList[4];
+	trackNodeList[3]->station.rdistance = nodeDistance(3, 4);
+
+	trackNodeList[4]->station.stop = 0;
+	trackNodeList[4]->station.left = trackNodeList[3];
+	trackNodeList[4]->station.ldistance = nodeDistance(4, 3);
+	trackNodeList[4]->station.right = trackNodeList[5];
+	trackNodeList[4]->station.rdistance = nodeDistance(5, 4);
+
+	trackNodeList[5]->branch.flag = 0;
+	trackNodeList[5]->branch.innerTrain = -1;
+	trackNodeList[5]->branch.pair = trackNodeList[7];
+	trackNodeList[5]->branch.status = 0;
+	trackNodeList[5]->branch.train[0] = -1;
+	trackNodeList[5]->branch.train[1] = -1;
+	trackNodeList[5]->branch.down = trackNodeList[6];
+	trackNodeList[5]->branch.ddistance = nodeDistance(5, 6);
+	trackNodeList[5]->branch.left = trackNodeList[4];
+	trackNodeList[5]->branch.ldistance = nodeDistance(4, 5);
+	trackNodeList[5]->branch.lrange = 50;
+	trackNodeList[5]->branch.right = trackNodeList[10];
+	trackNodeList[5]->branch.rdistance = nodeDistance(5, 10);
+	trackNodeList[5]->branch.rrange = 50;
+
+	trackNodeList[6]->branch.flag = 0;
+	trackNodeList[6]->branch.innerTrain = -1;
+	trackNodeList[6]->branch.pair = trackNodeList[11];
+	trackNodeList[6]->branch.status = 0;
+	trackNodeList[6]->branch.train[0] = -1;
+	trackNodeList[6]->branch.train[1] = -1;
+	trackNodeList[6]->branch.down = trackNodeList[5];
+	trackNodeList[6]->branch.ddistance = nodeDistance(5, 6);
+	trackNodeList[6]->branch.left = trackNodeList[13];
+	trackNodeList[6]->branch.ldistance = nodeDistance(6, 13);
+	trackNodeList[6]->branch.lrange = 50;
+	trackNodeList[6]->branch.right = trackNodeList[7];
+	trackNodeList[6]->branch.rdistance = nodeDistance(6, 7);
+	trackNodeList[6]->branch.rrange = 50;
+
+	trackNodeList[7]->branch.flag = 0;
+	trackNodeList[7]->branch.innerTrain = -1;
+	trackNodeList[7]->branch.pair = trackNodeList[5];
+	trackNodeList[7]->branch.status = 0;
+	trackNodeList[7]->branch.train[0] = -1;
+	trackNodeList[7]->branch.train[1] = -1;
+	trackNodeList[7]->branch.down = trackNodeList[6];
+	trackNodeList[7]->branch.ddistance = nodeDistance(7, 6);
+	trackNodeList[7]->branch.left = trackNodeList[8];
+	trackNodeList[7]->branch.ldistance = nodeDistance(8, 7);
+	trackNodeList[7]->branch.lrange = 50;
+	trackNodeList[7]->branch.right = trackNodeList[17];
+	trackNodeList[7]->branch.rdistance = nodeDistance(7, 17);
+	trackNodeList[7]->branch.rrange = 50;
+
+	trackNodeList[8]->station.stop = 0;
+	trackNodeList[8]->station.left = trackNodeList[7];
+	trackNodeList[8]->station.ldistance = nodeDistance(7, 8);
+	trackNodeList[8]->station.right = trackNodeList[9];
+	trackNodeList[8]->station.rdistance = nodeDistance(9, 7);
+
+	trackNodeList[9]->turn.left = trackNodeList[8];
+	trackNodeList[9]->turn.ldistance = nodeDistance(8, 9);
+	trackNodeList[9]->turn.right = trackNodeList[3];
+	trackNodeList[9]->turn.rdistance = nodeDistance(3, 9);
+
+	trackNodeList[10]->station.stop = 0;
+	trackNodeList[10]->station.left = trackNodeList[5];
+	trackNodeList[10]->station.ldistance = nodeDistance(5, 10);
+	trackNodeList[10]->station.right = trackNodeList[11];
+	trackNodeList[10]->station.rdistance = nodeDistance(11, 10);
+
+	trackNodeList[11]->branch.flag = 0;
+	trackNodeList[11]->branch.innerTrain = -1;
+	trackNodeList[11]->branch.pair = trackNodeList[6];
+	trackNodeList[11]->branch.status = 0;
+	trackNodeList[11]->branch.train[0] = -1;
+	trackNodeList[11]->branch.train[1] = -1;
+	trackNodeList[11]->branch.down = trackNodeList[10];
+	trackNodeList[11]->branch.ddistance = nodeDistance(10, 11);
+	trackNodeList[11]->branch.left = trackNodeList[12];
+	trackNodeList[11]->branch.ldistance = nodeDistance(11, 12);
+	trackNodeList[11]->branch.lrange = 50;
+	trackNodeList[11]->branch.right = trackNodeList[14];
+	trackNodeList[11]->branch.rdistance = nodeDistance(11, 14);
+	trackNodeList[11]->branch.rrange = 50;
+
+	trackNodeList[12]->station.stop = 0;
+	trackNodeList[12]->station.left = trackNodeList[11];
+	trackNodeList[12]->station.ldistance = nodeDistance(11, 12);
+	trackNodeList[12]->station.right = trackNodeList[13];
+	trackNodeList[12]->station.rdistance = nodeDistance(13, 13);
+
+	trackNodeList[13]->station.stop = 0;
+	trackNodeList[13]->station.left = trackNodeList[12];
+	trackNodeList[13]->station.ldistance = nodeDistance(12, 13);
+	trackNodeList[13]->station.right = trackNodeList[6];
+	trackNodeList[13]->station.rdistance = nodeDistance(6, 13);
+
+	trackNodeList[14]->station.stop = 0;
+	trackNodeList[14]->station.left = trackNodeList[11];
+	trackNodeList[14]->station.ldistance = nodeDistance(14, 11);
+	trackNodeList[14]->station.right = trackNodeList[15];
+	trackNodeList[14]->station.rdistance = nodeDistance(14, 15);
+
+	trackNodeList[15]->station.stop = 0;
+	trackNodeList[15]->station.left = trackNodeList[14];
+	trackNodeList[15]->station.ldistance = nodeDistance(14, 15);
+	trackNodeList[15]->station.right = trackNodeList[16];
+	trackNodeList[15]->station.rdistance = nodeDistance(16, 15);
+
+	trackNodeList[16]->turn.left = trackNodeList[15];
+	trackNodeList[16]->turn.ldistance = nodeDistance(15, 16);
+	trackNodeList[16]->turn.right = trackNodeList[17];
+	trackNodeList[16]->turn.rdistance = nodeDistance(17, 16);
+
+	trackNodeList[17]->turn.left = trackNodeList[16];
+	trackNodeList[17]->turn.ldistance = nodeDistance(16, 17);
+	trackNodeList[17]->turn.right = trackNodeList[7];
+	trackNodeList[17]->turn.rdistance = nodeDistance(7, 17);
 }

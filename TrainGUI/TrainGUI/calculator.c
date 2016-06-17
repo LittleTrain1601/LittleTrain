@@ -11,6 +11,7 @@
 #include<time.h>
 #include<stdlib.h>
 #include "train.h"
+#include "TrainGUI.h"
 
 extern clock_t minuswhiletime;
 clock_t minusinputtime;
@@ -196,8 +197,8 @@ int judge(int train1, int train2) {
 		{
 			int chooseone = branchtocompete->branch.train[0];
 			int choosetwo = branchtocompete->branch.train[1];
-			sprintf(tochoose, "节点%d和节点%d之间的公共轨道有两辆火车申请进入。允许那一辆先通过？", branchtocompete->id, branchtocompete->branch.pair->id)
-				sprintf(firstchoice, "火车%d", chooseone);
+			sprintf(tochoose, "节点%d和节点%d之间的公共轨道有两辆火车申请进入。允许那一辆先通过？", branchtocompete->id, branchtocompete->branch.pair->id);
+			sprintf(firstchoice, "火车%d", chooseone);
 			sprintf(secondchoice, "火车%d", choosetwo);
 				if (choiceflag == 1)
 				{
