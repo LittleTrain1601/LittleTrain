@@ -15,6 +15,10 @@ int stopTime;
 clock_t mpausetime;
 clock_t  mresumetime;
 clock_t minusmanualtime;
+IMAGE back;
+IMAGE closeHover;
+loadimage(&closeHover, _T("./Res/QUIT_HOVER.jpg"));
+getimage(&back, 0, 0, 960, 560);
 
 //判断某站点是否是某小火车轨道上的站点，是返回1，否返回0
 int cangivemission(int stationid, int trainid)
@@ -55,8 +59,16 @@ unsigned  __stdcall GUIInput(void* pArguments)
 		//检测鼠标事件并处理
 		// 获取一条鼠标消息
 		m = GetMouseMsg();
-
-		if (m.uMsg == WM_LBUTTONDOWN)
+		if (m.uMsg == WM_MOUSEMOVE）
+		{ if (m.x > 916 && m.x < 960 && m.y > 0 && m.y < 44)
+			{
+				BeginBatchDraw();
+				putimage(0, 0, &back);
+				putimage(916, 0, &closeHover);
+				FlushBatchDraw();
+				EndBatchDraw();
+			} }
+		else if (m.uMsg == WM_LBUTTONDOWN)
 		{
 			if (frameStat == 1)
 			{
