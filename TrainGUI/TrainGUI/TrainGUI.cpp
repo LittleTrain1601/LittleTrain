@@ -2,6 +2,7 @@
 //
 
 #include "TrainGUI.h"
+#include <io.h>
 
 
 
@@ -9,7 +10,7 @@ int windowWidth = 960;
 int windowHeight = 560;
 
 void cutBoard(HWND window);//将程序窗口剪裁至仅有客户区
-void selectTrack();
+int selectTrack();//返回1表示默认轨道，返回2表示自定义轨道
 
 //互斥锁
 HANDLE hMutex;
@@ -91,11 +92,18 @@ void cutBoard(HWND window)
 	SetWindowRgn(window, rgn, true);
 }
 
-void selectTrack()
+int selectTrack()
 {
 	SetWorkingImage();
 	IMAGE pannel;
-	loadimage(&pannel, _T("./Res/SELECT_TRACK.jpg"));
+	if (access("./init.txt", 0))
+	{
+		loadimage(&pannel, _T("./Res/SELECT_TRACK.jpg"));
+	}
+	else
+	{
+		loadimage(&pannel, _T("./Res/SELECT_TRACK2.jpg"));
+	}
 	putimage(0, 0, &pannel);
 	IMAGE backup;
 	IMAGE closeHover;
@@ -134,9 +142,14 @@ void selectTrack()
 			{
 				chosen = 1;
 			}
+			else if (m.x > 414 && m.y > 380 && m.x < 546 && m.y < 424)
+			{
+				chosen = 2;
+			}
 			break;
 		}
 
 	}
 	buildDefault();
+	return chosen;
 }
