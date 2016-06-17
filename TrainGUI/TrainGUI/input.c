@@ -501,5 +501,7 @@ void input(FILE *fp) {
 
 void buildDefault()
 {
-	
+	trainList[0] = newTrain();
+	trainList[1] = newTrain();
+	trainList[2] = newTrain();
 }

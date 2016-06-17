@@ -94,6 +94,7 @@ typedef struct _trackNode {
 			branchState status;
 			int train[2];//发出请求的火车ID
 			int flag;//flag==1则这一段轨道忙 flag==0则这一段轨道空闲
+			int innerTrain;//占用轨道的火车id，应当与flag一起修改
 			struct _trackNode * left;
 			int ldistance;
 			int lrange;
