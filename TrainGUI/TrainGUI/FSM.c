@@ -299,22 +299,30 @@ void trainStatusSwitcher(int id)
 	case PAUSE:
 		next = currenttrain->nextNode;	 //小火车下一个节点编号
 		nexttrackNode = trackNodeList[next];
-		if ((nexttrackNode->type == TRAFFIC) && (currenttrain->distance <= 22))  //等待进入十字路节点
+		if ((currenttrain->mission->head) == (currenttrain->mission->tail)) //且小火车没有未完成的任务
 		{
-			trafficNodeStatusSwitcher(PASS, id, currenttrain->nextNode);
-			if (currenttrain->flag == permitted)
-			{
-				currenttrain->status = RUN;
-				fprintf(outputLog, "at %lums train%d status changes from PAUSE to RUN.\n", RUN_TIME, id);
-			}
+			currenttrain->status = FREE;
+			fprintf(outputLog, "at %lums train%d status changes from PAUSE to FREE.\n", RUN_TIME, id);
 		}
-		else if ((nexttrackNode->type == BRANCH) && (branchtype(id, nexttrackNode->id) == 1) && (currenttrain->distance <= 22)) //等待进入公共轨道
+		else
 		{
-			branchNodeStatusSwitcher(PASS, id, currenttrain->nextNode);
-			if (currenttrain->flag == permitted)
+			if ((nexttrackNode->type == TRAFFIC) && (currenttrain->distance <= 22))  //等待进入十字路节点
 			{
-				currenttrain->status = RUN;
-				fprintf(outputLog, "at %lums train%d status changes from PAUSE to RUN.\n", RUN_TIME, id);
+				trafficNodeStatusSwitcher(PASS, id, currenttrain->nextNode);
+				if (currenttrain->flag == permitted)
+				{
+					currenttrain->status = RUN;
+					fprintf(outputLog, "at %lums train%d status changes from PAUSE to RUN.\n", RUN_TIME, id);
+				}
+			}
+			else if ((nexttrackNode->type == BRANCH) && (branchtype(id, nexttrackNode->id) == 1) && (currenttrain->distance <= 22)) //等待进入公共轨道
+			{
+				branchNodeStatusSwitcher(PASS, id, currenttrain->nextNode);
+				if (currenttrain->flag == permitted)
+				{
+					currenttrain->status = RUN;
+					fprintf(outputLog, "at %lums train%d status changes from PAUSE to RUN.\n", RUN_TIME, id);
+				}
 			}
 		}
 		break;
