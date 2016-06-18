@@ -10,7 +10,7 @@
 #define train_h
 #include <time.h>
 #include <stdio.h>
-
+#include<math.h>
 #define MAXITEM 50 //数组变大 
 
 typedef enum { FREE, RUN, PAUSE, LOCK, STA }trainState;

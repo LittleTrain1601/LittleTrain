@@ -267,7 +267,7 @@ unsigned  __stdcall GUIInput(void* pArguments)
 
 
 					{
-						if (trainList[trainnumber]->status == RUN)
+						if (trainList[trainnumber]->status == RUN)    //暂停这辆车
 						{
 							mainQueueNode mainData;
 							mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
@@ -275,12 +275,7 @@ unsigned  __stdcall GUIInput(void* pArguments)
 							mainData->train.id = trainnumber;
 							append(mainMission, mainData);
 						}
-					}
-					else if (m.x >= 711 && m.x <= 801 && m.y >= 153 && m.y <= 178)  //开始这辆车按钮
-
-
-					{
-						if (trainList[trainnumber]->status == PAUSE)
+						else if (trainList[trainnumber]->status == PAUSE)//开始这辆车
 						{
 							mainQueueNode mainData;
 							mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
@@ -289,6 +284,7 @@ unsigned  __stdcall GUIInput(void* pArguments)
 							append(mainMission, mainData);
 						}
 					}
+					
 						else if (m.x >= 748 && m.x <= 777 && m.y >= 191 && m.y <= 220)
 						{
 

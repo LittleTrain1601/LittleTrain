@@ -507,7 +507,11 @@ double nodeDistance(int id1, int id2)
 	y1 = trackNodeList[id1]->y;
 	x2 = trackNodeList[id2]->x;
 	y2 = trackNodeList[id2]->y;
+	
+	 
 	return sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
+	
+	
 }
 void buildDefault()
 {
