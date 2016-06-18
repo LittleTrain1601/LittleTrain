@@ -126,7 +126,7 @@ void updateTrain(int id) {//循环里计算一辆小火车的位置并更新。 	Int id 小火车的I
 					trainList[id]->distance += trackNodeList[nodeid]->branch.ddistance;
 				}
 			}
-			else {
+			else if (trackNodeList[nodeid]->type == TRAFFIC) {
 				trainList[id]->nextNode = trainList[id]->nodeList[nextIndex(id, trainList[id]->nextNode)];
 				if (trackNodeList[nodeid]->traffic.left->id == trainList[id]->nextNode) {
 					trainList[id]->distance += trackNodeList[nodeid]->traffic.ldistance;
@@ -139,6 +139,16 @@ void updateTrain(int id) {//循环里计算一辆小火车的位置并更新。 	Int id 小火车的I
 				}
 				else {
 					trainList[id]->distance += trackNodeList[nodeid]->traffic.udistance;
+				}
+			}
+			else if (trackNodeList[nodeid]->type == TURN)
+			{
+				trainList[id]->nextNode = trainList[id]->nodeList[nextIndex(id, trainList[id]->nextNode)];
+				if (trackNodeList[nodeid]->turn.left->id == trainList[id]->nextNode) {
+					trainList[id]->distance += trackNodeList[nodeid]->turn.ldistance;
+				}
+				else {
+					trainList[id]->distance += trackNodeList[nodeid]->turn.rdistance;
 				}
 			}
 

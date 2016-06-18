@@ -22,5 +22,6 @@ extern int trainnumber; //右侧模块显示的是那辆车的信息
 extern "C" int totaltrain;//火车总数 
 extern int stationnumber;//用户点击的站点id
 extern int branchnumber;// 用户点击的公共轨道对应的某一分叉节点id
+extern "C" HANDLE hMutex;
 
 extern HANDLE hMutex;

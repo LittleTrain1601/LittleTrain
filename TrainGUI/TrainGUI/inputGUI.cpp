@@ -55,6 +55,7 @@ unsigned  __stdcall GUIInput(void* pArguments)
 {
 	while (programStat)
 	{
+		WaitForSingleObject(hMutex, INFINITE);
 		//检测鼠标事件并处理
 		// 获取一条鼠标消息
 		m = GetMouseMsg();
@@ -408,8 +409,9 @@ unsigned  __stdcall GUIInput(void* pArguments)
 				}
 			}
 		}
+		ReleaseMutex(hMutex);
 	}
-	RUN_TIME = RUN_TIME - minusmanualtime;
+	//RUN_TIME = RUN_TIME - minusmanualtime;
 	_endthreadex(0);
 	return 0;
 }

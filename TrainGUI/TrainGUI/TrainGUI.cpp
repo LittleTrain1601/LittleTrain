@@ -40,37 +40,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	//建立绘制图形和处理鼠标输入的线程
 	HANDLE GUIInputThread, GUIOutputThread, main1Thread;
-	
+	hMutex = CreateMutex(NULL, FALSE, NULL);
 	GUIInputThread = (HANDLE)_beginthreadex(NULL, 0, GUIInput, NULL, 0, NULL);
 	GUIOutputThread = (HANDLE)_beginthreadex(NULL, 0, GUIOutput, NULL, 0, NULL);
 	main1Thread = (HANDLE)_beginthreadex(NULL, 0, main1, NULL, 0, NULL);
-	/*
-	MOUSEMSG m;//等待鼠标点击后退出程序
-	//WaitForSingleObject(hMutex, INFINITE);
-	while (programStat)
-	{
-		m = GetMouseMsg();
-		//WaitForSingleObject(hMutex, INFINITE);
-
-		switch (m.uMsg)
-		{
-		case WM_LBUTTONDOWN:
-			if (frameStat == 0)
-			{
-				frameStat = 1;
-			}
-			else if (frameStat == 1)
-			{
-				programStat = 0;
-			}
-			break;
-		default:
-			break;
-		}
-
-		//ReleaseMutex(hMutex);
-	}
-	*/
 	WaitForSingleObject(GUIInput, INFINITE);
 	WaitForSingleObject(GUIOutput, INFINITE);
 	WaitForSingleObject(main1Thread, INFINITE);

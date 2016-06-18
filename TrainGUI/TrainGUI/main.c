@@ -11,8 +11,11 @@
 #include<stdlib.h>
 #include "train.h"
 #include <time.h>
+#include <windows.h>
+#include <process.h>
 
 extern int frameStat;
+HANDLE hMutex;
 
 trackNode trackNodeList[MAXITEM];//以节点ID为下标
 train trainList[MAXITEM]; //以小火车ID为下标
@@ -107,6 +110,7 @@ unsigned __stdcall main1(void* pArguments) {
 	mainQueueNode mainptr;
 	//queueNode traincurrent;// 小火车任务队列当前指针
 	while (!secure()) {
+		WaitForSingleObject(hMutex, INFINITE);
 		whiletime = clock();
 		minuswhiletime = whiletime - whilecurrent;
 		dt = minuswhiletime + minusinputtime;
@@ -176,6 +180,7 @@ unsigned __stdcall main1(void* pArguments) {
 				updateTrain(trainList[i]->id);
 			}
 		}
+		ReleaseMutex(hMutex);
 		/*
 		if (RUN_TIME - Rtime >= CLOCKS_PER_SEC) {
 			//viewer();

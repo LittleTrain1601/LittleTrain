@@ -83,7 +83,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 
 	while (programStat)
 	{
-		//WaitForSingleObject(hMutex, INFINITE);
+		WaitForSingleObject(hMutex, INFINITE);
 		//¸üÐÂÍ¼²ãÄÚÈÝ
 		putTrains(&trackStill);
 		SetWorkingImage(&info); //x=694, y=44
@@ -229,7 +229,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 		}
 		FlushBatchDraw();
 		EndBatchDraw();
-		//ReleaseMutex(hMutex);
+		ReleaseMutex(hMutex);
 	}
 
 	_endthreadex(0);
@@ -368,7 +368,7 @@ void putTrains(IMAGE *pImg)
 		trainCor = getlocation(trainList[i]->distance, behind->x, behind->y, front->x, front->y);
 		putimage(trainCor.x - nodeWidth / 2, trainCor.y - nodeHeight / 2, ptrainIco);
 		//ºìÂÌµÆ¾àÀë½»²æµã22m
-		if (trainList[i]->flag = forbidden)
+		if (trainList[i]->flag == forbidden)
 		{
 			trainCor = getlocation(22, behind->x, behind->y, front->x, front->y);
 			putimage(trainCor.x - nodeWidth / 2, trainCor.y - nodeHeight / 2, &lightIco);
