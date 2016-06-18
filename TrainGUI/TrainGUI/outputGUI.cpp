@@ -360,7 +360,6 @@ void putTrains(IMAGE *pImg)
 		if (j == 0)
 		{
 			for (j = 0; trainList[i]->nodeList[j] != -1; j++);
-			j--;
 		}
 		j--;
 
