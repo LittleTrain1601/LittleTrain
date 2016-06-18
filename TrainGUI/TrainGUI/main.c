@@ -15,6 +15,7 @@
 #include <process.h>
 
 extern int frameStat;
+extern int programStat;
 HANDLE hMutex;
 
 trackNode trackNodeList[MAXITEM];//以节点ID为下标
@@ -109,7 +110,7 @@ unsigned __stdcall main1(void* pArguments) {
 	trainQueueNode trainptr;//小火车新数据域指针
 	mainQueueNode mainptr;
 	//queueNode traincurrent;// 小火车任务队列当前指针
-	while (!secure()) {
+	while (programStat && !secure()) {
 		WaitForSingleObject(hMutex, INFINITE);
 		whiletime = clock();
 		minuswhiletime = whiletime - whilecurrent;
@@ -167,7 +168,17 @@ unsigned __stdcall main1(void* pArguments) {
 				break;
 			case MRESUME:
 				trainid = mainptr->train.id;                            //开始
-				trainList[trainid]->status = RUN;
+				if (trainList[trainid]->mission->head != trainList[trainid]->mission->tail)
+				{
+					trainQueueNode trainData = (trainQueueNode)(trainList[trainid]->mission->head->next->data);
+					if(trainData->type==TLOCK)
+					trainList[trainid]->status = LOCK;
+				 else
+					trainList[trainid]->status = RUN;
+				}
+				else if (trainList[trainid]->mission->head == trainList[trainid]->mission->tail)
+					trainList[trainid]->status = FREE;
+				
 				break;
 			default:
 				break;
@@ -189,4 +200,6 @@ unsigned __stdcall main1(void* pArguments) {
 		*/
 	}
 	frameStat = 3;
+	_endthreadex(0);
+	return 0;
 }

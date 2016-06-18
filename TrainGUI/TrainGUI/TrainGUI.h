@@ -13,7 +13,7 @@ unsigned __stdcall GUIInput(void* pArguments);
 unsigned __stdcall GUIOutput(void* pArguments);
 
 //程序运行状态，1为正常运行，0为停止运行
-extern int programStat;
+extern "C" int programStat;
 //窗口状态，0表示无弹窗，1表示退出弹窗，2表示选择火车弹窗，3表示所有小火车完成任务准备退出的弹窗
 extern "C" int frameStat;
 extern int pauseStat;//是否点击了全部暂停按钮,1为已点击

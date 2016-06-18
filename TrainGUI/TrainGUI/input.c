@@ -550,7 +550,7 @@ void buildDefault()
 	trainList[2]->distance = 50;
 	trainList[2]->flag = permitted;
 	trainList[2]->id = 2;
-	trainList[2]->mission = newQueue;
+	trainList[2]->mission = newQueue();
 	trainList[2]->nextNode = 16;
 	trainList[2]->nodeList[0] = 14;
 	trainList[2]->nodeList[1] = 15;

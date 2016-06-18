@@ -53,6 +53,8 @@ int pointnodeid(MOUSEMSG m)
 
 unsigned  __stdcall GUIInput(void* pArguments)
 {
+
+	loadimage(&closeHover, _T("./Res/QUIT_HOVER.jpg"));
 	while (programStat)
 	{
 		//检测鼠标事件并处理
@@ -60,9 +62,8 @@ unsigned  __stdcall GUIInput(void* pArguments)
 		m = GetMouseMsg();
 		WaitForSingleObject(hMutex, INFINITE);
 		if (m.uMsg==WM_MOUSEMOVE)
-		 { if (m.x > 916 && m.x < 960 && m.y > 0 && m.y < 44)
+		 { /*if (m.x > 916 && m.x < 960 && m.y > 0 && m.y < 44)
 			{
-				loadimage(&closeHover, _T("./Res/QUIT_HOVER.jpg"));
 				getimage(&back, 0, 0, 960, 560);
 
 				BeginBatchDraw();
@@ -70,7 +71,8 @@ unsigned  __stdcall GUIInput(void* pArguments)
 				putimage(916, 0, &closeHover);
 				FlushBatchDraw();
 				EndBatchDraw();
-			} }
+			} */
+		}
 		else if (m.uMsg == WM_LBUTTONDOWN)
 		{
 			if (frameStat == 1)
@@ -79,7 +81,7 @@ unsigned  __stdcall GUIInput(void* pArguments)
 				{
 					frameStat = 0;
 				}
-				else if (m.x >= 347 && m.x <= 521 && m.y >= 258 && m.x <= 280)
+				else if ((m.x >= 347) && (m.x <= 521) && (m.y >= 258) && (m.y <= 280))
 				{
 					programStat = 0;
 				}
@@ -130,7 +132,7 @@ unsigned  __stdcall GUIInput(void* pArguments)
 						mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));    //点击关闭
 						mainData->type = MLOCK;
 						append(mainMission, mainData);
-						frameStat == 1;
+						frameStat = 1;
 					}                            //表示应该弹出退出窗口
 
 
@@ -217,15 +219,7 @@ unsigned  __stdcall GUIInput(void* pArguments)
 								}
 
 							}
-						}
-					}
-
-
-					else if (m.x >= 709 && m.x <= 819 && m.y >= 68 && m.y <= 94)   //全部暂停按钮
-					{
-						if (currentmode == 'T')
-						{
-							if (pauseStat == 0)
+							else if (pauseStat == 0)
 							{
 								mpausetime = clock();
 								pauseStat = 1;
@@ -240,6 +234,9 @@ unsigned  __stdcall GUIInput(void* pArguments)
 							}
 						}
 					}
+
+
+					
 
 					else if (m.x >= 709 && m.x <= 738 && m.y >= 107 & m.y <= 136)
 					{
