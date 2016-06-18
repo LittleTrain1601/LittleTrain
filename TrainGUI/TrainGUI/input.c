@@ -516,10 +516,10 @@ void buildDefault()
 	trainList[1] = newTrain();
 	trainList[2] = newTrain();
 	trainList[0]->id = 0;
-	trainList[0]->v = 10;
+	trainList[0]->v = 0;
 	trainList[0]->direction = clockwise;
 	trainList[0]->flag = permitted;
-	trainList[0]->nextNode = 3;
+	trainList[0]->nextNode = 4;
 	trainList[0]->distance = 50;
 	trainList[0]->mission = newQueue();
 	trainList[0]->nodeList[0] = 3;
@@ -536,7 +536,7 @@ void buildDefault()
 	trainList[1]->flag = permitted;
 	trainList[1]->id = 1;
 	trainList[1]->mission = newQueue();
-	trainList[1]->nextNode = 13;
+	trainList[1]->nextNode = 12;
 	trainList[1]->nodeList[0] = 10;
 	trainList[1]->nodeList[1] = 11;
 	trainList[1]->nodeList[2] = 12;
@@ -545,13 +545,13 @@ void buildDefault()
 	trainList[1]->nodeList[5] = 5;
 	trainList[1]->passTimes = 0;
 	trainList[1]->status = PAUSE;
-	trainList[1]->v = 50;
+	trainList[1]->v = 0;
 	trainList[2]->direction = clockwise;
 	trainList[2]->distance = 50;
 	trainList[2]->flag = permitted;
 	trainList[2]->id = 2;
 	trainList[2]->mission = newQueue();
-	trainList[2]->nextNode = 16;
+	trainList[2]->nextNode = 14;
 	trainList[2]->nodeList[0] = 14;
 	trainList[2]->nodeList[1] = 15;
 	trainList[2]->nodeList[2] = 16;
@@ -563,7 +563,7 @@ void buildDefault()
 	trainList[2]->nodeList[8] = 11;
 	trainList[2]->passTimes = 0;
 	trainList[2]->status = PAUSE;
-	trainList[2]->v = 15;
+	trainList[2]->v = 0;
 	for (int i = 3; i < 18; i++)
 	{
 		trackNodeList[i] = newTrackNode();
@@ -652,7 +652,7 @@ void buildDefault()
 	trackNodeList[16]->y = 502;
 	trackNodeList[16]->width = 22;
 	trackNodeList[16]->height = 22;
-	trackNodeList[17]->id = 10;
+	trackNodeList[17]->id = 17;
 	trackNodeList[17]->type = STATION;
 	trackNodeList[17]->x = 97;
 	trackNodeList[17]->y = 502;

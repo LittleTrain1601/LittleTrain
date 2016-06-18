@@ -32,17 +32,25 @@ int cangivemission(int stationid, int trainid)
 }
 
 //判断用户在轨道区是否点击了站点或者公共轨道，返回所点的站点id或公共轨道对应的分叉节点id,若未点击站点或公共轨道，返回-1
-int pointnodeid(MOUSEMSG m)
+int pointnodeid()
 {
 	if (m.uMsg == WM_LBUTTONDOWN)
 	{
 		for (i = 0; i < 50; i++)
 		{
-			if ((m.x>=((trackNodeList[i]->x)-((trackNodeList[i]->width)/2)))&&( m.x<=((trackNodeList[i]->x)+((trackNodeList[i]->width) / 2)))&&( m.y>=((trackNodeList[i]->y)-((trackNodeList[i]->height) / 2)))&& (m.y<=((trackNodeList[i]->y)+((trackNodeList[i]->width) / 2))))
-			 {if (trackNodeList[i]->type == BRANCH || trackNodeList[i]->type == STATION)
-					return trackNodeList[i]->id;
-				else
-					return -1;
+			if (trackNodeList[i] == NULL)
+			{
+				;
+			}
+			else
+			{
+				if ((m.x >= ((trackNodeList[i]->x) - ((trackNodeList[i]->width) / 2))) && (m.x <= ((trackNodeList[i]->x) + ((trackNodeList[i]->width) / 2))) && ((m.y-44) >= ((trackNodeList[i]->y) - ((trackNodeList[i]->height) / 2))) && ((m.y-44) <= ((trackNodeList[i]->y) + ((trackNodeList[i]->height) / 2))))
+				{
+					if (trackNodeList[i]->type == BRANCH || trackNodeList[i]->type == STATION)
+						return trackNodeList[i]->id;
+					else
+						return -1;
+				}
 			}
 		}
 		return -1;
@@ -61,6 +69,7 @@ unsigned  __stdcall GUIInput(void* pArguments)
 		// 获取一条鼠标消息
 		m = GetMouseMsg();
 		WaitForSingleObject(hMutex, INFINITE);
+		SetWorkingImage();
 		if (m.uMsg==WM_MOUSEMOVE)
 		 { /*if (m.x > 916 && m.x < 960 && m.y > 0 && m.y < 44)
 			{
@@ -106,7 +115,7 @@ unsigned  __stdcall GUIInput(void* pArguments)
 			{
 				if (m.x >= 0 && m.x <= 694 && m.y >= 44 && m.y <= 560)             //点击在轨道区
 				{
-					k = pointnodeid(m);
+					k = pointnodeid();
 					if (k != -1)
 					{
 						if (trackNodeList[k]->type == STATION)
@@ -125,85 +134,86 @@ unsigned  __stdcall GUIInput(void* pArguments)
 				}
 				else              //点击不在轨道区
 				{
-
-					if (m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44)
+					if (currentmode == 'T')
 					{
-						mainQueueNode mainData;
-						mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));    //点击关闭
-						mainData->type = MLOCK;
-						append(mainMission, mainData);
-						frameStat = 1;
-					}                            //表示应该弹出退出窗口
-
-
-					else if (m.x >= 711 && m.x <= 740 && m.y >= 473 && m.y <= 502)
-					{
-						if (servicePolicy == BYTHEWAY)
+						if (m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44)
 						{
-							servicePolicy = SEQUENCING;
+							mainQueueNode mainData;
+							mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));    //点击关闭
+							mainData->type = MLOCK;
+							append(mainMission, mainData);
+							frameStat = 1;
+						}                            //表示应该弹出退出窗口
 
 
-						}
-						else
+						else if (m.x >= 711 && m.x <= 740 && m.y >= 473 && m.y <= 502)
 						{
-							servicePolicy = BYTHEWAY;
+							if (servicePolicy == BYTHEWAY)
+							{
+								servicePolicy = SEQUENCING;
 
 
+							}
+							else
+							{
+								servicePolicy = BYTHEWAY;
+
+
+							}
 						}
-					}
 
-					else if (m.x >= 862 && m.x <= 891 && m.y >= 473 && m.y <= 502)
-					{
-						if (servicePolicy == BYTHEWAY)
+						else if (m.x >= 862 && m.x <= 891 && m.y >= 473 && m.y <= 502)
 						{
-							servicePolicy = SEQUENCING;
+							if (servicePolicy == BYTHEWAY)
+							{
+								servicePolicy = SEQUENCING;
 
 
+							}
+							else
+							{
+								servicePolicy = BYTHEWAY;
+
+
+							}
 						}
-						else
+
+						else if (m.x >= 711 && m.x <= 740 && m.y >= 511 && m.y <= 540)
 						{
-							servicePolicy = BYTHEWAY;
+							if (controlPolicy == AUTO)
+							{
+								controlPolicy = MANUAL;
 
 
+							}
+							else
+							{
+								controlPolicy = AUTO;
+
+
+							}
 						}
-					}
 
-					else if (m.x >= 711 && m.x <= 740 && m.y >= 511 && m.y <= 540)
-					{
-						if (controlPolicy == AUTO)
+						else if (m.x >= 862 && m.x <= 891 && m.y >= 511 && m.y <= 540)
 						{
-							controlPolicy = MANUAL;
+							if (controlPolicy == AUTO)
+							{
+								controlPolicy = MANUAL;
 
 
+							}
+							else
+							{
+								controlPolicy = AUTO;
+
+
+							}
 						}
-						else
-						{
-							controlPolicy = AUTO;
-
-
-						}
-					}
-
-					else if (m.x >= 862 && m.x <= 891 && m.y >= 511 && m.y <= 540)
-					{
-						if (controlPolicy == AUTO)
-						{
-							controlPolicy = MANUAL;
-
-
-						}
-						else
-						{
-							controlPolicy = AUTO;
-
-
-						}
-					}
-
+					
 					else if (m.x >= 709 && m.x <= 819 && m.y >= 68 && m.y <= 94)  //全部开始
 					{
-						if (currentmode == 'T')
-						{
+						
+						
 							if (pauseStat == 1)
 							{
 								mresumetime = clock();
@@ -233,92 +243,90 @@ unsigned  __stdcall GUIInput(void* pArguments)
 								}
 							}
 						}
-					}
-
-
-					
-
 					else if (m.x >= 709 && m.x <= 738 && m.y >= 107 & m.y <= 136)
 					{
-						if (currentmode == 'T')
+						if (trainnumber > 0)
 						{
-							if (trainnumber > 0)
-							{
-								trainnumber--;
+							trainnumber--;
 
-							}
 						}
 					}
 
 					else if (m.x >= 860 && m.x <= 889 && m.y >= 107 && m.y <= 136)
 					{
-						if (currentmode == 'T')
-						{
-							if (trainnumber < totaltrain - 1)
-							{
-								trainnumber++;
 
-							}
+						if (trainnumber < totaltrain - 1)
+						{
+							trainnumber++;
+
 						}
+
 					}
 
 					else if (m.x >= 711 && m.x <= 801 && m.y >= 153 && m.y <= 178)  //暂停这辆车
+
+
 					{
-						if (currentmode == 'T')
+						if (trainList[trainnumber]->status == RUN)
 						{
-							if (trainList[trainnumber]->status == RUN)
-							{
-								mainQueueNode mainData;
-								mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
-								mainData->type = MPAUSE;
-								mainData->train.id = trainnumber;
-								append(mainMission, mainData);
-							}
+							mainQueueNode mainData;
+							mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
+							mainData->type = MPAUSE;
+							mainData->train.id = trainnumber;
+							append(mainMission, mainData);
 						}
 					}
-
 					else if (m.x >= 711 && m.x <= 801 && m.y >= 153 && m.y <= 178)  //开始这辆车按钮
+
+
 					{
-						if (currentmode == 'T')
+						if (trainList[trainnumber]->status == PAUSE)
 						{
-							if (trainList[trainnumber]->status == PAUSE)
-							{
-								mainQueueNode mainData;
-								mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
-								mainData->type = MRESUME;
-								mainData->train.id = trainnumber;
-								append(mainMission, mainData);
-							}
+							mainQueueNode mainData;
+							mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
+							mainData->type = MRESUME;
+							mainData->train.id = trainnumber;
+							append(mainMission, mainData);
 						}
 					}
-
-					else if (m.x >= 748 && m.x <= 777 && m.y >= 191 && m.y <= 220)
-					{
-						if (currentmode == 'T')
+						else if (m.x >= 748 && m.x <= 777 && m.y >= 191 && m.y <= 220)
 						{
+
 							if (trainList[trainnumber]->v > 0)
 							{
 								trainList[trainnumber]->v--;
 
 							}
-						}
-					}
 
-					else if (m.x >= 899 && m.x <= 928 && m.y >= 191 && m.y <= 220)
-					{
-						if (currentmode == 'T')
+						}
+
+						else if (m.x >= 899 && m.x <= 928 && m.y >= 191 && m.y <= 220)
 						{
+
 							if (trainList[trainnumber]->v < 50)
 							{
 								trainList[trainnumber]->v++;
 
 							}
-						}
-					}
 
-					else if (m.x >= 748 && m.x <= 777 && m.y >= 224 && m.y <= 253)
-					{
-						if (currentmode == 'T')
+						}
+						else if (m.x >= 748 && m.x <= 777 && m.y >= 224 && m.y <= 253)
+						{
+
+							if (trainList[trainnumber]->direction == clockwise)
+							{
+								trainList[trainnumber]->direction = anticlockwise;
+
+							}
+							else
+							{
+								trainList[trainnumber]->direction = clockwise;
+
+							}
+
+						}
+						else if (m.x >= 899 && m.x <= 928 && m.y >= 224 && m.y <= 253)
+
 						{
 							if (trainList[trainnumber]->direction == clockwise)
 							{
@@ -330,77 +338,207 @@ unsigned  __stdcall GUIInput(void* pArguments)
 								trainList[trainnumber]->direction = clockwise;
 
 							}
-						}
-					}
 
-					else if (m.x >= 899 && m.x <= 928 && m.y >= 224 && m.y <= 253)
+						}
+}
+
+
+                      else if (currentmode == 'S')
+					  {
+						  if (m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44)
+						  {
+							  mainQueueNode mainData;
+							  mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));    //点击关闭
+							  mainData->type = MLOCK;
+							  append(mainMission, mainData);
+							  frameStat = 1;
+						  }                            //表示应该弹出退出窗口
+
+
+						  else if (m.x >= 711 && m.x <= 740 && m.y >= 473 && m.y <= 502)
+						  {
+							  if (servicePolicy == BYTHEWAY)
+							  {
+								  servicePolicy = SEQUENCING;
+
+
+							  }
+							  else
+							  {
+								  servicePolicy = BYTHEWAY;
+
+
+							  }
+						  }
+
+						  else if (m.x >= 862 && m.x <= 891 && m.y >= 473 && m.y <= 502)
+						  {
+							  if (servicePolicy == BYTHEWAY)
+							  {
+								  servicePolicy = SEQUENCING;
+
+
+							  }
+							  else
+							  {
+								  servicePolicy = BYTHEWAY;
+
+
+							  }
+						  }
+
+						  else if (m.x >= 711 && m.x <= 740 && m.y >= 511 && m.y <= 540)
+						  {
+							  if (controlPolicy == AUTO)
+							  {
+								  controlPolicy = MANUAL;
+
+
+							  }
+							  else
+							  {
+								  controlPolicy = AUTO;
+
+
+							  }
+						  }
+
+						  else if (m.x >= 862 && m.x <= 891 && m.y >= 511 && m.y <= 540)
+						  {
+							  if (controlPolicy == AUTO)
+							  {
+								  controlPolicy = MANUAL;
+
+
+							  }
+							  else
+							  {
+								  controlPolicy = AUTO;
+
+
+							  }
+						  }
+						  else if (m.x >= 709 && m.x <= 779 && m.y >= 71 && m.y <= 93)
+							  currentmode = 'T';
+						  else if (m.x >= 711 && m.x <= 739 && m.y >= 349 && m.y <= 378)
+						  {
+							  if (trainnumber > 0)
+							  {
+								  trainnumber--;
+
+							  }
+						  }
+						  else if (m.x >= 862 && m.x <= 890 && m.y >= 349 && m.y <= 378)
+						  {
+							  if (trainnumber < totaltrain - 1)
+							  {
+								  trainnumber++;
+
+							  }
+						  }
+						  else if (m.x >= 712 && m.x <= 822 && m.y >= 381 && m.y <= 404)
+						  {
+							  
+								  if (cangivemission(stationnumber, trainnumber) == 1)
+								  {
+									  mainQueueNode mainData;
+									  stopTime = (rand() % 9) + 2;//(rand() % (10-2+1))+ a;
+									  mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
+									  mainData->type = MSTATION;
+									  mainData->station.id = stationnumber;
+									  mainData->station.time = stopTime;
+									  mainData->station.train = trainnumber;
+									  append(mainMission, mainData);
+								  }
+							  
+						  }
+					  }
+
+				else if (currentmode == 'P')
 					{
-						if (currentmode == 'T')
+						if (m.x >= 916 && m.x <= 960 && m.y >= 0 && m.y <= 44)
 						{
-							if (trainList[trainnumber]->direction == clockwise)
+							mainQueueNode mainData;
+							mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));    //点击关闭
+							mainData->type = MLOCK;
+							append(mainMission, mainData);
+							frameStat = 1;
+						}                            //表示应该弹出退出窗口
+
+
+						else if (m.x >= 711 && m.x <= 740 && m.y >= 473 && m.y <= 502)
+						{
+							if (servicePolicy == BYTHEWAY)
 							{
-								trainList[trainnumber]->direction = anticlockwise;
+								servicePolicy = SEQUENCING;
+
 
 							}
 							else
 							{
-								trainList[trainnumber]->direction = clockwise;
+								servicePolicy = BYTHEWAY;
+
 
 							}
 						}
-					}
 
-					else if (m.x >= 709 && m.x <= 779 && m.y >= 71 && m.y <= 93)
-					{
-						if (currentmode == 'S' || currentmode == 'P')
-
-							currentmode = 'T';
-
-
-					}
-
-					else if (m.x >= 711 && m.x <= 739 && m.y >= 349 && m.y <= 378)
-					{
-						if (currentmode == 'S')
+						else if (m.x >= 862 && m.x <= 891 && m.y >= 473 && m.y <= 502)
 						{
-							if (trainnumber > 0)
+							if (servicePolicy == BYTHEWAY)
 							{
-								trainnumber--;
+								servicePolicy = SEQUENCING;
+
+
+							}
+							else
+							{
+								servicePolicy = BYTHEWAY;
+
 
 							}
 						}
-					}
 
-
-					else if (m.x >= 862 && m.x <= 890 && m.y >= 349 && m.y <= 378)
-					{
-						if (currentmode == 'S')
+						else if (m.x >= 711 && m.x <= 740 && m.y >= 511 && m.y <= 540)
 						{
-							if (trainnumber < totaltrain - 1)
+							if (controlPolicy == AUTO)
 							{
-								trainnumber++;
+								controlPolicy = MANUAL;
+
+
+							}
+							else
+							{
+								controlPolicy = AUTO;
+
 
 							}
 						}
-					}
 
-					else if (m.x >= 712 && m.x <= 822 && m.y >= 381 && m.y <= 404)
-					{
-						if (currentmode == 'S')
+						else if (m.x >= 862 && m.x <= 891 && m.y >= 511 && m.y <= 540)
 						{
-							if (cangivemission(stationnumber, trainnumber) == 1)
+							if (controlPolicy == AUTO)
 							{
-								mainQueueNode mainData;
-								stopTime = (rand() % 9) + 2;//(rand() % (10-2+1))+ a;
-								mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
-								mainData->type = MSTATION;
-								mainData->station.id = stationnumber;
-								mainData->station.time = stopTime;
-								mainData->station.train = trainnumber;
-								append(mainMission, mainData);
+								controlPolicy = MANUAL;
+
+
+							}
+							else
+							{
+								controlPolicy = AUTO;
+
+
 							}
 						}
-					}
+						else if (m.x >= 709 && m.x <= 779 && m.y >= 71 && m.y <= 93)
+								currentmode = 'T';
+							}
+
+				
+
+
+					
+
+					
 
 
 				}

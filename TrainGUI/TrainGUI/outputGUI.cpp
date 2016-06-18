@@ -77,6 +77,8 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	loadimage(&infoStation, _T("./Res/STATION_MODE.jpg"));
 	IMAGE infoBranch;
 	loadimage(&infoBranch, _T("./Res/BRANCH_MODE.jpg"));
+	IMAGE infoPolicy;
+	loadimage(&infoPolicy, _T("./Res/POLICY.jpg"));
 
 	//TCHAR字符串缓存
 	TCHAR TBuff[100];
@@ -95,7 +97,12 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			//RECT trainID = {91, 63, 120, 92};
 			_stprintf(TBuff, _T("%d"), trainnumber);
 			settextcolor(BLACK);
-			outtextxy(91, 63, TBuff);
+			gettextstyle(&f);
+			f.lfHeight = 18;
+			f.lfQuality = ANTIALIASED_QUALITY;
+			settextstyle(&f);
+			setbkmode(TRANSPARENT);
+			outtextxy(91, 67, TBuff);
 			//drawtext(TBuff, &trainID, DT_WORDBREAK);
 			gettextstyle(&f);
 			f.lfHeight = 22;
@@ -134,7 +141,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			{
 				_stprintf(TBuff, _T("逆时针"));
 			}
-			outtextxy(93, 151, TBuff);
+			outtextxy(93, 185, TBuff);
 			break;
 		case 'S':
 		{
@@ -145,6 +152,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			f.lfHeight = 22;
 			f.lfQuality = ANTIALIASED_QUALITY;
 			settextstyle(&f);
+			setbkmode(TRANSPARENT);
 			outtextxy(16, 66, TBuff);
 			f.lfHeight = 18;
 			settextstyle(&f);
@@ -175,6 +183,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 		}
 		break;
 		case 'P':
+			putimage(0, 0, &infoBranch);
 			int id1, id2, idt=-1;
 			id1 = branchnumber;
 			id2 = trackNodeList[id1]->branch.pair->id;
@@ -185,6 +194,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			f.lfHeight = 18;
 			f.lfQuality = ANTIALIASED_QUALITY;
 			settextstyle(&f);
+			setbkmode(TRANSPARENT);
 			outtextxy(16, 71, TBuff);
 			//寻找占用轨道的火车
 			if (idt != -1)
@@ -205,8 +215,28 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 			outtextxy(16, 93, TBuff);
 			break;
 		}
-			
-		
+		SetWorkingImage(&statLayer);
+		putimage(0, 0, &infoPolicy);
+		if (servicePolicy == BYTHEWAY)
+		{
+			_stprintf(TBuff, _T("顺便服务"));
+		}
+		else
+		{
+			_stprintf(TBuff, _T("顺序服务"));
+		}
+		settextcolor(BLACK);
+		setbkmode(TRANSPARENT);
+		outtextxy(57, 54, TBuff);
+		if (controlPolicy == MANUAL)
+		{
+			_stprintf(TBuff, _T("人工控制"));
+		}
+		else
+		{
+			_stprintf(TBuff, _T("自动控制"));
+		}
+		outtextxy(57, 90, TBuff);
 		//绘制图层
 		
 		SetWorkingImage();
