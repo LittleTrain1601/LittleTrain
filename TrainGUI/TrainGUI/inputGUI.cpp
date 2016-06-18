@@ -55,10 +55,10 @@ unsigned  __stdcall GUIInput(void* pArguments)
 {
 	while (programStat)
 	{
-		WaitForSingleObject(hMutex, INFINITE);
 		//检测鼠标事件并处理
 		// 获取一条鼠标消息
 		m = GetMouseMsg();
+		WaitForSingleObject(hMutex, INFINITE);
 		if (m.uMsg==WM_MOUSEMOVE)
 		 { if (m.x > 916 && m.x < 960 && m.y > 0 && m.y < 44)
 			{
