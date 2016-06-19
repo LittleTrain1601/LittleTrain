@@ -308,33 +308,38 @@ unsigned  __stdcall GUIInput(void* pArguments)
 						}
 						else if (m.x >= 748 && m.x <= 777 && m.y >= 224 && m.y <= 253)
 						{
-
+							mainQueueNode mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
+							mainData->type = MTRAIN;
+							mainData->train.id = trainnumber;
+							mainData->train.speed = trainList[trainnumber]->v;
 							if (trainList[trainnumber]->direction == clockwise)
 							{
-								trainList[trainnumber]->direction = anticlockwise;
+								mainData->train.direction = MANTICLOCKWISE;
 
 							}
 							else
 							{
-								trainList[trainnumber]->direction = clockwise;
-
+								mainData->train.direction = MCLOCLWISE;
 							}
-
+							append(mainMission, mainData);
 						}
 						else if (m.x >= 899 && m.x <= 928 && m.y >= 224 && m.y <= 253)
 
 						{
+							mainQueueNode mainData = (mainQueueNode)calloc(1, sizeof(struct _mainQueueNode));
+							mainData->type = MTRAIN;
+							mainData->train.id = trainnumber;
+							mainData->train.speed = trainList[trainnumber]->v;
 							if (trainList[trainnumber]->direction == clockwise)
 							{
-								trainList[trainnumber]->direction = anticlockwise;
+								mainData->train.direction = MANTICLOCKWISE;
 
 							}
 							else
 							{
-								trainList[trainnumber]->direction = clockwise;
-
+								mainData->train.direction = MCLOCLWISE;
 							}
-
+							append(mainMission, mainData);
 						}
 }
 

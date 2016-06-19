@@ -35,6 +35,7 @@ void alertAsk();
 void alertExit();
 void drawTrack(IMAGE *pImg);
 void putTrains(IMAGE *pImg);
+int lastIndex(int trainID, int currentID);
 
 unsigned __stdcall GUIOutput(void* pArguments) {
 	//为每一个图层载入图像，修改图层时注意备份
@@ -380,18 +381,7 @@ void putTrains(IMAGE *pImg)
 	{
 		trackNode front, behind;
 		front = trackNodeList[trainList[i]->nextNode];
-		for (j = 0; trainList[i]->nodeList[j] != -1; j++)
-		{
-			if (front->id == trackNodeList[trainList[i]->nodeList[j]]->id)
-			{
-				break;
-			}
-		}
-		if (j == 0)
-		{
-			for (j = 0; trainList[i]->nodeList[j] != -1; j++);
-		}
-		j--;
+		j = lastIndex(i, front->id);
 
 		behind = trackNodeList[trainList[i]->nodeList[j]];
 		trainCor = getlocation(trainList[i]->distance, behind->x, behind->y, front->x, front->y);
@@ -403,4 +393,29 @@ void putTrains(IMAGE *pImg)
 			putimage(trainCor.x - nodeWidth / 2, trainCor.y - nodeHeight / 2, &lightIco);
 		}
 	}
+}
+
+int lastIndex(int trainID, int currentID) {
+	int i;
+	int nodeid = currentID;
+	for (i = 0; nodeid != trainList[trainID]->nodeList[i]; i++) {
+		if (trainList[trainID]->nodeList[i] == -1) {
+			i = 0;
+		}
+	}
+	if (trainList[trainID]->direction == anticlockwise) {
+		if (trainList[trainID]->nodeList[++i] == -1) {
+			i = 0;
+		}
+	}
+	else {
+		if (i == 0) {
+			for (; trainList[trainID]->nodeList[i] != -1; i++) {}
+			i--;
+		}
+		else {
+			i--;
+		}
+	}
+	return i;
 }
