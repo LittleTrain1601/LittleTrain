@@ -11,14 +11,17 @@
 #include<time.h>
 #include<stdlib.h>
 #include "train.h"
+#include <windows.h>
+#include <process.h>
 
 extern clock_t minuswhiletime;
 clock_t minusinputtime;
 clock_t RUN_TIME = 0;
 clock_t dt;
 extern frameStat;
+extern HANDLE hMutex;
 
-extern int choiceflag = 0;
+int choiceflag = 0;
 char tochoose[100];
 char firstchoice[20];
 char secondchoice[20];
@@ -229,12 +232,15 @@ int judge(int train1, int train2) {
 			sprintf(tochoose, "节点%d和节点%d之间的公共轨道有两辆火车申请进入。允许那一辆先通过？", branchtocompete->id, branchtocompete->branch.pair->id);
 			sprintf(firstchoice, "火车%d", chooseone);
 			sprintf(secondchoice, "火车%d", choosetwo);
-				if (choiceflag == 1)
-				{
-					trainchoosed = chooseone;
-					trainList[chooseone]->flag = permitted;
-					trainList[choosetwo]->flag = forbidden;
-				}
+			ReleaseMutex(hMutex);
+			while (choiceflag == 0);
+			WaitForSingleObject(hMutex, INFINITE);
+			if (choiceflag == 1)
+			{
+				trainchoosed = chooseone;
+				trainList[chooseone]->flag = permitted;
+				trainList[choosetwo]->flag = forbidden;
+			}
 			if (choiceflag == 2)
 			{
 				trainchoosed = choosetwo;
@@ -242,9 +248,9 @@ int judge(int train1, int train2) {
 				trainList[chooseone]->flag = forbidden;
 			}
 		}
-			inputcurrent = clock();
-			minusinputtime += inputtime - inputcurrent;
-				return trainchoosed;
+		inputcurrent = clock();
+		minusinputtime += inputtime - inputcurrent;
+		return trainchoosed;
 }
 	
 	else {

@@ -141,11 +141,7 @@ typedef struct _train {
 extern trackNode trackNodeList[];//以节点ID为下标
 extern train trainList[]; //以小火车ID为下标
 
-//图形化新增
-extern int choiceflag; //指示用户在人工选择窗口下的点击
-extern char tochoose[];   //人工选择窗口的前言
-extern char firstchoice[]; //人工选择窗口下的两个选项
-extern char secondchoice[];
+
   //input模块
 void build();
 void buildDefault();

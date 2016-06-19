@@ -15,6 +15,9 @@ int totalbranch;//·Ö²æ½Úµã×ÜÊý
 int nodeWidth = 22;
 int nodeHeight = 22;
 
+//TCHAR×Ö·û´®»º´æ
+TCHAR TBuff[100];
+
 //ÓÃ×÷Í¼²ã
 IMAGE captain;
 IMAGE track(694, 516);
@@ -81,8 +84,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	IMAGE infoPolicy;
 	loadimage(&infoPolicy, _T("./Res/POLICY.jpg"));
 
-	//TCHAR×Ö·û´®»º´æ
-	TCHAR TBuff[100];
+
 
 	while (programStat)
 	{
@@ -297,6 +299,17 @@ void alertAsk()
 	patintFullWindowShadow();
 	SetWorkingImage();
 	putimage(329, 200, &ask);
+	RECT tochooseRgn = { 346, 219, 346+264, 219+85 };
+	CharToTchar(tochoose, TBuff);
+	settextcolor(BLACK);
+	setbkmode(TRANSPARENT);
+	drawtext(TBuff, &tochooseRgn, DT_WORDBREAK);
+	RECT firstchoiceRgn = {346, 315, 346+131, 315+28 };
+	CharToTchar(firstchoice, TBuff);
+	drawtext(TBuff, &firstchoiceRgn, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+	RECT secondchoiceRgn = {483, 315, 483+131, 315+28};
+	CharToTchar(secondchoice, TBuff);
+	drawtext(TBuff, &secondchoiceRgn, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 }
 
 POINT getlocation(double distance, int x1, int y1, int x2, int y2) {
@@ -418,4 +431,12 @@ int lastIndex(int trainID, int currentID) {
 		}
 	}
 	return i;
+}
+
+void CharToTchar(const char * _char, TCHAR * tchar)
+{
+	int iLength;
+
+	iLength = MultiByteToWideChar(CP_ACP, 0, _char, strlen(_char) + 1, NULL, 0);
+	MultiByteToWideChar(CP_ACP, 0, _char, strlen(_char) + 1, tchar, iLength);
 }

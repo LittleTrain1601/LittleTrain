@@ -4,7 +4,6 @@
 #include<tchar.h>
 
 extern "C" {
-#include "train.h"
 #include<stdlib.h>
 #include<time.h>
 }; 

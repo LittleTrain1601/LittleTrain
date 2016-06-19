@@ -7,10 +7,16 @@
 extern "C" {
 #include "train.h";
 unsigned __stdcall main1(void* pArguments);
+extern int choiceflag;
+extern char tochoose[100];
+extern char firstchoice[20];
+extern char secondchoice[20];
 };
 
 unsigned __stdcall GUIInput(void* pArguments);
 unsigned __stdcall GUIOutput(void* pArguments);
+
+void CharToTchar(const char * _char, TCHAR * tchar);
 
 //程序运行状态，1为正常运行，0为停止运行
 extern "C" int programStat;

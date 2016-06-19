@@ -520,7 +520,7 @@ void buildDefault()
 	trainList[1] = newTrain();
 	trainList[2] = newTrain();
 	trainList[0]->id = 0;
-	trainList[0]->v = 0;
+	trainList[0]->v = 10;
 	trainList[0]->direction = clockwise;
 	trainList[0]->flag = permitted;
 	trainList[0]->nextNode = 4;
@@ -549,7 +549,7 @@ void buildDefault()
 	trainList[1]->nodeList[5] = 5;
 	trainList[1]->passTimes = 0;
 	trainList[1]->status = PAUSE;
-	trainList[1]->v = 0;
+	trainList[1]->v = 10;
 	trainList[2]->direction = clockwise;
 	trainList[2]->distance = 50;
 	trainList[2]->flag = permitted;
@@ -567,7 +567,7 @@ void buildDefault()
 	trainList[2]->nodeList[8] = 11;
 	trainList[2]->passTimes = 0;
 	trainList[2]->status = PAUSE;
-	trainList[2]->v = 0;
+	trainList[2]->v = 10;
 	for (int i = 3; i < 18; i++)
 	{
 		trackNodeList[i] = newTrackNode();
