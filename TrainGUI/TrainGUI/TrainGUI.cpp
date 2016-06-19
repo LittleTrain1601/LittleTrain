@@ -40,13 +40,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	//建立绘制图形和处理鼠标输入的线程
 	HANDLE GUIInputThread, GUIOutputThread, main1Thread;
+	HANDLE hThread[3];
 	hMutex = CreateMutex(NULL, FALSE, NULL);
 	GUIInputThread = (HANDLE)_beginthreadex(NULL, 0, GUIInput, NULL, 0, NULL);
 	GUIOutputThread = (HANDLE)_beginthreadex(NULL, 0, GUIOutput, NULL, 0, NULL);
 	main1Thread = (HANDLE)_beginthreadex(NULL, 0, main1, NULL, 0, NULL);
-	WaitForSingleObject(GUIInput, INFINITE);
-	WaitForSingleObject(GUIOutput, INFINITE);
-	WaitForSingleObject(main1Thread, INFINITE);
+	hThread[0] = main1Thread;
+	hThread[1] = GUIOutputThread;
+	hThread[2] = GUIInputThread;
+	WaitForMultipleObjects(3, hThread, TRUE, INFINITE);
 	closegraph();
 	return 0;
 }
