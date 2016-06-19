@@ -27,6 +27,10 @@ trackNode competebranch(int train1, int train2)    //·µ»ØÁ½Á¾Ğ¡³µËù¾ºÕùµÄ¹«¹²¹ìµ
 	int i;
 	for (i = 0; i < 50; i++)
 	{
+		if (trackNodeList[i] == NULL)
+		{
+			continue;
+		}
 		if (trackNodeList[i]->type == BRANCH)
 		{
 			if ((trackNodeList[i]->branch.train[0] == train1) && (trackNodeList[i]->branch.train[1] == train2))
