@@ -25,7 +25,7 @@ enum policy { AUTO, MANUAL };
 extern enum policy controlPolicy;
 
 //这部分用于定义枚举常量
-enum MType { MSTATION, MTRAIN, MLOCK ,MRESUME,MPAUSE};
+enum MType { MSTATION, MTRAIN, MLOCK ,MRESUME,MPAUSE};//增加暂停和恢复
 enum MDirection { MCLOCLWISE, MANTICLOCKWISE };
 enum TType { TSTATION, TLOCK };
 enum _Type { STATION, BRANCH, TRAFFIC, TURN };
@@ -84,7 +84,7 @@ typedef struct _trackNode {
 			struct _trackNode * right;
 			int rdistance;
 		} station;
-		struct {                         //转弯节点
+		struct {                         //多边形轨道的转弯节点
 			struct _trackNode * left;
 			int ldistance;
 			struct _trackNode * right;

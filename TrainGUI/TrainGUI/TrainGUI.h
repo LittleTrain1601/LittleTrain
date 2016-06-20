@@ -7,15 +7,15 @@
 extern "C" {
 #include "train.h";
 unsigned __stdcall main1(void* pArguments);
-extern int choiceflag;
-extern char tochoose[100];
+extern int choiceflag;    //指示用户在人工选择窗口下的点击
+extern char tochoose[100];   
 extern char firstchoice[20];
 extern char secondchoice[20];
 };
-
+//inputGUI.cpp模块
 unsigned __stdcall GUIInput(void* pArguments);
+//outpurGUI.cpp模块
 unsigned __stdcall GUIOutput(void* pArguments);
-
 void CharToTchar(const char * _char, TCHAR * tchar);
 
 //程序运行状态，1为正常运行，0为停止运行
