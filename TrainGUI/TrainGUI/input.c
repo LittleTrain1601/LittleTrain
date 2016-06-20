@@ -520,7 +520,7 @@ void buildDefault()
 	trainList[1] = newTrain();
 	trainList[2] = newTrain();
 	trainList[0]->id = 0;
-	trainList[0]->v = 10;
+	trainList[0]->v = 30;
 	trainList[0]->direction = clockwise;
 	trainList[0]->flag = permitted;
 	trainList[0]->nextNode = 4;
@@ -528,11 +528,13 @@ void buildDefault()
 	trainList[0]->mission = newQueue();
 	trainList[0]->nodeList[0] = 3;
 	trainList[0]->nodeList[1] = 4;
-	trainList[0]->nodeList[2] = 5;
-	trainList[0]->nodeList[3] = 6;
-	trainList[0]->nodeList[4] = 7;
-	trainList[0]->nodeList[5] = 8;
-	trainList[0]->nodeList[6] = 9;
+	trainList[0]->nodeList[2] = 11;
+	trainList[0]->nodeList[3] = 10;
+	trainList[0]->nodeList[4] = 5;
+	trainList[0]->nodeList[5] = 6;
+	trainList[0]->nodeList[6] = 7;
+	trainList[0]->nodeList[7] = 8;
+	trainList[0]->nodeList[8] = 9;
 	trainList[0]->passTimes = 0;
 	trainList[0]->status = PAUSE;
 	trainList[1]->direction = anticlockwise;
@@ -541,17 +543,15 @@ void buildDefault()
 	trainList[1]->id = 1;
 	trainList[1]->mission = newQueue();
 	trainList[1]->nextNode = 12;
-	trainList[1]->nodeList[0] = 10;
-	trainList[1]->nodeList[1] = 11;
-	trainList[1]->nodeList[2] = 12;
-	trainList[1]->nodeList[3] = 13;
-	trainList[1]->nodeList[4] = 6;
-	trainList[1]->nodeList[5] = 5;
+	trainList[1]->nodeList[0] = 12;
+	trainList[1]->nodeList[1] = 13;
+	trainList[1]->nodeList[2] = 6;
+	trainList[1]->nodeList[3] = 5;
 	trainList[1]->passTimes = 0;
 	trainList[1]->status = PAUSE;
 	trainList[1]->v = 10;
 	trainList[2]->direction = clockwise;
-	trainList[2]->distance = 50;
+	trainList[2]->distance = 10;
 	trainList[2]->flag = permitted;
 	trainList[2]->id = 2;
 	trainList[2]->mission = newQueue();
@@ -567,7 +567,7 @@ void buildDefault()
 	trainList[2]->nodeList[8] = 11;
 	trainList[2]->passTimes = 0;
 	trainList[2]->status = PAUSE;
-	trainList[2]->v = 10;
+	trainList[2]->v = 30;
 	for (int i = 3; i < 18; i++)
 	{
 		trackNodeList[i] = newTrackNode();
@@ -657,7 +657,7 @@ void buildDefault()
 	trackNodeList[16]->width = 22;
 	trackNodeList[16]->height = 22;
 	trackNodeList[17]->id = 17;
-	trackNodeList[17]->type = STATION;
+	trackNodeList[17]->type = TURN;
 	trackNodeList[17]->x = 97;
 	trackNodeList[17]->y = 502;
 	trackNodeList[17]->width = 22;
@@ -672,19 +672,19 @@ void buildDefault()
 	trackNodeList[4]->station.stop = 0;
 	trackNodeList[4]->station.left = trackNodeList[3];
 	trackNodeList[4]->station.ldistance = nodeDistance(4, 3);
-	trackNodeList[4]->station.right = trackNodeList[5];
-	trackNodeList[4]->station.rdistance = nodeDistance(5, 4);
+	trackNodeList[4]->station.right = trackNodeList[11];
+	trackNodeList[4]->station.rdistance = nodeDistance(11, 4);
 
 	trackNodeList[5]->branch.flag = 0;
 	trackNodeList[5]->branch.innerTrain = -1;
-	trackNodeList[5]->branch.pair = trackNodeList[7];
+	trackNodeList[5]->branch.pair = trackNodeList[6];
 	trackNodeList[5]->branch.status = 0;
 	trackNodeList[5]->branch.train[0] = -1;
 	trackNodeList[5]->branch.train[1] = -1;
 	trackNodeList[5]->branch.down = trackNodeList[6];
 	trackNodeList[5]->branch.ddistance = nodeDistance(5, 6);
-	trackNodeList[5]->branch.left = trackNodeList[4];
-	trackNodeList[5]->branch.ldistance = nodeDistance(4, 5);
+	trackNodeList[5]->branch.left = trackNodeList[12];
+	trackNodeList[5]->branch.ldistance = nodeDistance(12, 5);
 	trackNodeList[5]->branch.lrange = 50;
 	trackNodeList[5]->branch.right = trackNodeList[10];
 	trackNodeList[5]->branch.rdistance = nodeDistance(5, 10);
@@ -692,7 +692,7 @@ void buildDefault()
 
 	trackNodeList[6]->branch.flag = 0;
 	trackNodeList[6]->branch.innerTrain = -1;
-	trackNodeList[6]->branch.pair = trackNodeList[11];
+	trackNodeList[6]->branch.pair = trackNodeList[5];
 	trackNodeList[6]->branch.status = 0;
 	trackNodeList[6]->branch.train[0] = -1;
 	trackNodeList[6]->branch.train[1] = -1;
@@ -707,7 +707,7 @@ void buildDefault()
 
 	trackNodeList[7]->branch.flag = 0;
 	trackNodeList[7]->branch.innerTrain = -1;
-	trackNodeList[7]->branch.pair = trackNodeList[5];
+	trackNodeList[7]->branch.pair = trackNodeList[11];
 	trackNodeList[7]->branch.status = 0;
 	trackNodeList[7]->branch.train[0] = -1;
 	trackNodeList[7]->branch.train[1] = -1;
@@ -724,7 +724,7 @@ void buildDefault()
 	trackNodeList[8]->station.left = trackNodeList[7];
 	trackNodeList[8]->station.ldistance = nodeDistance(7, 8);
 	trackNodeList[8]->station.right = trackNodeList[9];
-	trackNodeList[8]->station.rdistance = nodeDistance(9, 7);
+	trackNodeList[8]->station.rdistance = nodeDistance(9, 8);
 
 	trackNodeList[9]->turn.left = trackNodeList[8];
 	trackNodeList[9]->turn.ldistance = nodeDistance(8, 9);
@@ -739,24 +739,24 @@ void buildDefault()
 
 	trackNodeList[11]->branch.flag = 0;
 	trackNodeList[11]->branch.innerTrain = -1;
-	trackNodeList[11]->branch.pair = trackNodeList[6];
+	trackNodeList[11]->branch.pair = trackNodeList[7];
 	trackNodeList[11]->branch.status = 0;
 	trackNodeList[11]->branch.train[0] = -1;
 	trackNodeList[11]->branch.train[1] = -1;
 	trackNodeList[11]->branch.down = trackNodeList[10];
 	trackNodeList[11]->branch.ddistance = nodeDistance(10, 11);
-	trackNodeList[11]->branch.left = trackNodeList[12];
-	trackNodeList[11]->branch.ldistance = nodeDistance(11, 12);
+	trackNodeList[11]->branch.left = trackNodeList[4];
+	trackNodeList[11]->branch.ldistance = nodeDistance(11, 4);
 	trackNodeList[11]->branch.lrange = 50;
 	trackNodeList[11]->branch.right = trackNodeList[14];
 	trackNodeList[11]->branch.rdistance = nodeDistance(11, 14);
 	trackNodeList[11]->branch.rrange = 50;
 
 	trackNodeList[12]->station.stop = 0;
-	trackNodeList[12]->station.left = trackNodeList[11];
-	trackNodeList[12]->station.ldistance = nodeDistance(11, 12);
+	trackNodeList[12]->station.left = trackNodeList[5];
+	trackNodeList[12]->station.ldistance = nodeDistance(5, 12);
 	trackNodeList[12]->station.right = trackNodeList[13];
-	trackNodeList[12]->station.rdistance = nodeDistance(13, 13);
+	trackNodeList[12]->station.rdistance = nodeDistance(13, 12);
 
 	trackNodeList[13]->station.stop = 0;
 	trackNodeList[13]->station.left = trackNodeList[12];

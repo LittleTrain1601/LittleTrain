@@ -78,7 +78,7 @@ void updateTrain(int id) {//循环里计算一辆小火车的位置并更新。 	Int id 小火车的I
 	int nodeid = trainList[id]->nextNode;
 	queueNode traincurrentptr;//小火车链表当前指针1
 	trainQueueNode traindata;
-	if (trainList[id]->status == RUN) {
+	if (trainList[id]->status == RUN && trainList[id]->flag == permitted) {
 		//if(trainList[id]->direction==)   
 		//else{
 		trainList[id]->distance = trainList[id]->distance - x;
@@ -175,7 +175,7 @@ int checkTrack(int trainID, int branch1, int branch2) {
 	while (trackptr->id != branch2) {
 		switch (trackptr->type) {
 		case BRANCH:
-			if (trackptr->branch.flag == 1) {
+			if (trackptr->branch.flag == 1 && trackptr->branch.innerTrain != inTrain) {
 				occupied = 1;
 				inTrain = trackptr->branch.innerTrain;
 			}
@@ -255,23 +255,31 @@ int judge(int train1, int train2) {
 	
 	else {
 		if (trainList[train1]->passTimes>trainList[train2]->passTimes) {
-			trainList[train2]->flag = permitted; trainList[train1]->flag = forbidden;
+			trainList[train2]->flag = permitted;
+			trainList[train2]->passTimes++;
+			trainList[train1]->flag = forbidden;
 			return train2;
 		}
 		else if (trainList[train1]->passTimes<trainList[train2]->passTimes) {
-			trainList[train1]->flag = permitted;  trainList[train2]->flag = forbidden;
+			trainList[train1]->flag = permitted;  
+			trainList[train1]->passTimes++;
+			trainList[train2]->flag = forbidden;
 			return train1;
 		}
 		else
 		{
 			if (train1>train2)
 			{
-				trainList[train1]->flag = permitted;  trainList[train2]->flag = forbidden;
+				trainList[train1]->flag = permitted;
+				trainList[train1]->passTimes++;
+				trainList[train2]->flag = forbidden;
 				return train1;
 			}
 			else
 			{
-				trainList[train2]->flag = permitted;  trainList[train1]->flag = forbidden;
+				trainList[train2]->flag = permitted;
+				trainList[train2]->passTimes++;
+				trainList[train1]->flag = forbidden;
 				return train2;
 			}
 

@@ -200,6 +200,16 @@ void trainStatusSwitcher(int id)
 			else
 				currenttrain->status = RUN;
 		}
+		else if ((nexttrackNode->type == BRANCH) && currenttrain->distance <= 10)
+		{
+			if (branchtype(id, next) == 0)
+			{
+				nexttrackNode->branch.flag = 0;                       //小火车出公共轨道，将该段轨道标记为空闲
+				nexttrackNode->branch.pair->branch.flag = 0;
+				nexttrackNode->branch.innerTrain = -1;
+				fprintf(outputLog, "at %lums the railway between branchNode%d and its pair becomes free.\n", RUN_TIME, next);
+			}
+		}
 		else if ((nexttrackNode->type == BRANCH) && currenttrain->distance <= 22)//小火车逼近公共轨道
 		{
 			if (branchtype(id, next) == 1)  //小火车即将进入公共轨道
@@ -220,17 +230,7 @@ void trainStatusSwitcher(int id)
 				}
 			}
 		}
-			else if ((nexttrackNode->type == BRANCH) && currenttrain->distance <= 10)                                        
-			{
-				if (branchtype(id, next) == 0)
-				{nexttrackNode->branch.flag = 0;                       //小火车出公共轨道，将该段轨道标记为空闲
-				nexttrackNode->branch.pair->branch.flag = 0;
-				nexttrackNode->branch.innerTrain = -1; 
-				fprintf(outputLog, "at %lums the railway between branchNode%d and its pair becomes free.\n", RUN_TIME, next);
-			    }
-		    }
-		
-			else if (nexttrackNode->type == STATION&&currenttrain->distance == 0)//到站
+		else if (nexttrackNode->type == STATION&&currenttrain->distance == 0)//到站
 		{
 			currenttrain->status = STA;
 			fprintf(outputLog, "at %lums train%d status changes from RUN to STA.\n", RUN_TIME, id);

@@ -70,7 +70,7 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 	//绘制右侧按钮
 	setfillcolor(RGB(196, 196, 196));
 	setlinecolor(RGB(196, 196, 196));
-	fillrectangle(154, 115, 285, 115);
+	fillrectangle(154, 115, 285, 143);
 	//ReleaseMutex(setWorkingImageMutex);
 	//绘制轨道
 	IMAGE trackStill(694, 516);
@@ -145,6 +145,8 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 				_stprintf(TBuff, _T("逆时针"));
 			}
 			outtextxy(93, 185, TBuff);
+			_stprintf(TBuff, _T("程序运行时间：%lu 秒"), RUN_TIME/CLOCKS_PER_SEC);
+			outtextxy(16, 360, TBuff);
 			break;
 		case 'S':
 		{
@@ -167,10 +169,11 @@ unsigned __stdcall GUIOutput(void* pArguments) {
 				while (currentMission->next)
 				{
 					currentMission = currentMission->next;
-					if (((trainQueueNode)currentMission)->type == TSTATION && ((trainQueueNode)currentMission)->station == stationnumber && i < 5)
+					if (((trainQueueNode)currentMission->data)->type == TSTATION && ((trainQueueNode)currentMission->data)->station == stationnumber && i < 5)
 					{
-						_stprintf(TBuff, _T("火车%d 停%d秒"), j, ((trainQueueNode)currentMission)->time);
+						_stprintf(TBuff, _T("火车%d 停%d秒"), j, ((trainQueueNode)currentMission->data)->time);
 						outtextxy(16, 146 + 22 * i, TBuff);
+						i++;
 					}
 					else if (i == 5 && flag)
 					{
